@@ -1,7 +1,7 @@
 # Проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Светлана Елисеева](https://up.htmlacademy.ru/ecmascript/13/user/1408525).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Мастеров](https://htmlacademy.ru/profile/id912463).
 
 ---
 

@@ -2,8 +2,13 @@ import {createUserProfileTemplate} from "./view/userProfile.js";
 import {createMainNavigationTemplate} from "./view/mainNavigation.js";
 import {createSortingMenuTemplate} from "./view/sortingMenu.js";
 import {createFilmsListsContainerTemplate} from "./view/filmsListsContainer.js";
-import {createfilmCardTemplate} from "./view/filmCard.js";
-import {createFilmsCountTemplate} from "./view/filmsCount";
+import {createFilmCardTemplate} from "./view/filmCard.js";
+import {createFilmsCountTemplate} from "./view/filmsCount.js";
+import {createFilmDetailsPopupTemplate} from "./view/filmDetailsPopup.js";
+import {createFilmDetailsTemplate} from "./view/filmDetails.js";
+import {createFilmControlsTemplate} from "./view/filmControls";
+import {createFilmCommentsListTemplate} from "./view/filmCommentsList";
+import {createNewCommentTemplate} from "./view/newComment";
 
 const FilmCount = {
   MAIN: 5,
@@ -25,11 +30,12 @@ renderElements(mainElement, createSortingMenuTemplate(), `beforeend`);
 renderElements(mainElement, createFilmsListsContainerTemplate(), `beforeend`);
 renderElements(footerElement, createFilmsCountTemplate(), `beforeend`);
 
+
 const filmsListsContainer = mainElement.querySelector(`.films`);
 const mainFilmsList = filmsListsContainer.querySelector(`.films-list:first-child > .films-list__container`);
 const topRatedFilmsList = filmsListsContainer.querySelector(`.films-list:nth-child(2) > .films-list__container`);
 const topCommentedFilmsList = filmsListsContainer.querySelector(`.films-list:nth-child(3) > .films-list__container`);
-const renderFilmCard = (filmsList) => renderElements(filmsList, createfilmCardTemplate(), `beforeend`);
+const renderFilmCard = (filmsList) => renderElements(filmsList, createFilmCardTemplate(), `beforeend`);
 
 for (let i = 0; i < FilmCount.MAIN; i++) {
   renderFilmCard(mainFilmsList);
@@ -43,4 +49,14 @@ for (let i = 0; i < FilmCount.TOP_COMMENTED; i++) {
   renderFilmCard(topCommentedFilmsList);
 }
 
+renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
 
+const filmDetailsPopup = mainElement.querySelector(`.film-details`);
+const filmDetailsTopContainer = filmDetailsPopup.querySelector(`.film-details__top-container`);
+const filmDetailsBottomContainer = filmDetailsPopup.querySelector(`.film-details__bottom-container`);
+const filmCommentsContainer = filmDetailsBottomContainer.querySelector(`.film-details__comments-wrap`);
+
+renderElements(filmDetailsTopContainer, createFilmDetailsTemplate(), `beforeend`);
+renderElements(filmDetailsTopContainer, createFilmControlsTemplate(), `beforeend`);
+renderElements(filmCommentsContainer, createFilmCommentsListTemplate(), `beforeend`);
+renderElements(filmCommentsContainer, createNewCommentTemplate(), 'beforeend');

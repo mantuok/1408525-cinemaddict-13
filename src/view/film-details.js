@@ -1,5 +1,5 @@
 export const createFilmDetailsTemplate = () => {
-  return `      <div class="film-details__info-wrap">
+  return `<div class="film-details__info-wrap">
   <div class="film-details__poster">
     <img class="film-details__poster-img" src="./images/posters/the-great-flamarion.jpg" alt="">
 

@@ -11,5 +11,5 @@ export const createFilmDetailsPopupTemplate = () => {
       </section>
     </div>
     </form>
-  </section>`
+  </section>`;
 };

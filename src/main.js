@@ -9,6 +9,7 @@ import {createFilmDetailsTemplate} from "./view/film-details.js";
 import {createFilmControlsTemplate} from "./view/film-controls.js";
 import {createCommentsListTemplate} from "./view/comments-list.js";
 import {createNewCommentTemplate} from "./view/new-comment.js";
+import {generateFilm} from "./mock/film.js"
 
 const FilmCount = {
   MAIN: 5,
@@ -60,3 +61,5 @@ renderElements(popupTopContainerElement, createFilmDetailsTemplate(), `beforeend
 renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
 renderElements(commentsContainerElement, createCommentsListTemplate(), `beforeend`);
 renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');
+
+console.log(generateFilm());

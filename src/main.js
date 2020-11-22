@@ -36,30 +36,33 @@ const filmsListsContainerElement = mainElement.querySelector(`.films`);
 const mainFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:first-child > .films-list__container`);
 const topRatedFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:nth-child(2) > .films-list__container`);
 const topCommentedFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:nth-child(3) > .films-list__container`);
-const renderFilmCard = (filmsList) => renderElements(filmsList, createFilmCardTemplate(), `beforeend`);
-
-for (let i = 0; i < FilmCount.MAIN; i++) {
-  renderFilmCard(mainFilmsListElement);
+const renderFilmCards = (filmCount, filmsList, films) => {
+  for (let i = 0; i < filmCount; i++) {
+    renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
+  }
 };
 
-for (let i = 0; i < FilmCount.TOP_RATED; i++) {
-  renderFilmCard(topRatedFilmsListElement);
-}
+const mainFilms = new Array(FilmCount.MAIN).fill().map(generateFilm);
+const topRatedFilms = new Array(FilmCount.TOP_RATED).fill().map(generateFilm);
+const topCommentedFilms = new Array(FilmCount.TOP_COMMENTED).fill().map(generateFilm);
 
-for (let i = 0; i < FilmCount.TOP_COMMENTED; i++) {
-  renderFilmCard(topCommentedFilmsListElement);
-}
+// console.log(generateFilm());
+// console.log(topRatedFilms);
 
-renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
+renderFilmCards(FilmCount.MAIN, mainFilmsListElement, mainFilms);
+renderFilmCards(FilmCount.TOP_RATED, topRatedFilmsListElement, topRatedFilms);
+renderFilmCards(FilmCount.TOP_COMMENTED, topCommentedFilmsListElement, topCommentedFilms);
 
-const filmDetailsPopupElement = mainElement.querySelector(`.film-details`);
-const popupTopContainerElement = filmDetailsPopupElement.querySelector(`.film-details__top-container`);
-const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film-details__bottom-container`);
-const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
+// renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
 
-renderElements(popupTopContainerElement, createFilmDetailsTemplate(), `beforeend`);
-renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
-renderElements(commentsContainerElement, createCommentsListTemplate(), `beforeend`);
-renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');
+// const filmDetailsPopupElement = mainElement.querySelector(`.film-details`);
+// const popupTopContainerElement = filmDetailsPopupElement.querySelector(`.film-details__top-container`);
+// const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film-details__bottom-container`);
+// const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
 
-console.log(generateFilm());
+// renderElements(popupTopContainerElement, createFilmDetailsTemplate(), `beforeend`);
+// renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
+// renderElements(commentsContainerElement, createCommentsListTemplate(), `beforeend`);
+// renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');
+
+

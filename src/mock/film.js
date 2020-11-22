@@ -59,12 +59,13 @@ const getYearFormat = (date) => dayjs(date).format(`YYYY`);
 const getFullDateFormat = (date) => dayjs(date).format(`DD MMMM YYYY`);
 const getGenre = () => getRandomFrom(genres);
 const getCommets = () => getRandomArray(comments);
-const getCommentsIds = () => getCommets().map(({id}) => id);
 
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);
+  const commentsList = getCommets();
+  const getCommentsIds = () => commentsList.map(({id}) => id);
   return {
-    poster: `./public/images/posters/popeye-meets-sinbad.png`,
+    poster: `./images/posters/popeye-meets-sinbad.png`,
     title: `Popeye meets sindbad`,
     titleOriginal: `Popeye meets sindbad`,
     rating: getFilmRating(),
@@ -73,7 +74,7 @@ export const generateFilm = () => {
     actors: `Jack Mercer, Mae Questel, Gus Wickie`,
     year: getYearFormat(filmDate),
     date: getFullDateFormat(filmDate),
-    length: `1h 30m`,
+    duration: `1h 30m`,
     country: `USA`,
     genre: getGenre(),
     description: getDescription(),

@@ -12,6 +12,12 @@ import {createNewCommentTemplate} from "./view/new-comment.js";
 import {generateFilm} from "./mock/film.js"
 
 const FilmCount = {
+  MAIN: 15,
+  TOP_RATED: 2,
+  TOP_COMMENTED: 2
+}
+
+const FilmCountRender = {
   MAIN: 5,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
@@ -36,8 +42,8 @@ const filmsListsContainerElement = mainElement.querySelector(`.films`);
 const mainFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:first-child > .films-list__container`);
 const topRatedFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:nth-child(2) > .films-list__container`);
 const topCommentedFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:nth-child(3) > .films-list__container`);
-const renderFilmCards = (filmCount, filmsList, films) => {
-  for (let i = 0; i < filmCount; i++) {
+const renderFilmCards = (filmCountRender, filmsList, films) => {
+  for (let i = 0; i < filmCountRender; i++) {
     renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
   }
 };
@@ -49,9 +55,9 @@ const topCommentedFilms = new Array(FilmCount.TOP_COMMENTED).fill().map(generate
 // console.log(generateFilm());
 // console.log(topRatedFilms);
 
-renderFilmCards(FilmCount.MAIN, mainFilmsListElement, mainFilms);
-renderFilmCards(FilmCount.TOP_RATED, topRatedFilmsListElement, topRatedFilms);
-renderFilmCards(FilmCount.TOP_COMMENTED, topCommentedFilmsListElement, topCommentedFilms);
+renderFilmCards(FilmCountRender.MAIN, mainFilmsListElement, mainFilms);
+renderFilmCards(FilmCountRender.TOP_RATED, topRatedFilmsListElement, topRatedFilms);
+renderFilmCards(FilmCountRender.TOP_COMMENTED, topCommentedFilmsListElement, topCommentedFilms);
 
 // renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
 

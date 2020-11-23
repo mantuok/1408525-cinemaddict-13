@@ -49,8 +49,7 @@ const renderFilmCards = (filmCountRender, filmsList, films) => {
 };
 
 const films = new Array(FilmCount.MAIN).fill().map(generateFilm);
-// const topRatedFilms = new Array(FilmCount.TOP_RATED).fill().map(generateFilm);
-// const topCommentedFilms = new Array(FilmCount.TOP_COMMENTED).fill().map(generateFilm);
+
 
 // console.log(generateFilm());
 // console.log(topRatedFilms);
@@ -67,8 +66,8 @@ const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film
 const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
 
 renderElements(popupTopContainerElement, createFilmDetailsTemplate(films[0]), `beforeend`);
-// renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
-// renderElements(commentsContainerElement, createCommentsListTemplate(), `beforeend`);
-// renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');
+renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
+renderElements(commentsContainerElement, createCommentsListTemplate(films[0]), `beforeend`);
+renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');
 
 

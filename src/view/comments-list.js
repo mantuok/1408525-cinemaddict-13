@@ -1,5 +1,7 @@
-export const createCommentsListTemplate = () => {
-  return `<h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
+export const createCommentsListTemplate = (film) => {
+  const {comments} = film;
+  console.log(comments);
+  return `<h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
   <ul class="film-details__comments-list">
     <li class="film-details__comment">

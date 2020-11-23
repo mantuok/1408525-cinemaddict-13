@@ -27,7 +27,8 @@ const dates = [
 
 const genres = [
   `drama`,
-  `comedy, drama`
+  `comedy, drama`,
+  `thriller, comedy, drama`
 ];
 
 const comments = [
@@ -78,7 +79,7 @@ export const generateFilm = () => {
     country: `USA`,
     genre: getGenre(),
     description: getDescription(),
-    parentAdvisory: `R`,
+    contentRating: `R`,
     comments: getCommentsIds()
   }
 }

@@ -48,25 +48,25 @@ const renderFilmCards = (filmCountRender, filmsList, films) => {
   }
 };
 
-const mainFilms = new Array(FilmCount.MAIN).fill().map(generateFilm);
-const topRatedFilms = new Array(FilmCount.TOP_RATED).fill().map(generateFilm);
-const topCommentedFilms = new Array(FilmCount.TOP_COMMENTED).fill().map(generateFilm);
+const films = new Array(FilmCount.MAIN).fill().map(generateFilm);
+// const topRatedFilms = new Array(FilmCount.TOP_RATED).fill().map(generateFilm);
+// const topCommentedFilms = new Array(FilmCount.TOP_COMMENTED).fill().map(generateFilm);
 
 // console.log(generateFilm());
 // console.log(topRatedFilms);
 
-renderFilmCards(FilmCountRender.MAIN, mainFilmsListElement, mainFilms);
-renderFilmCards(FilmCountRender.TOP_RATED, topRatedFilmsListElement, topRatedFilms);
-renderFilmCards(FilmCountRender.TOP_COMMENTED, topCommentedFilmsListElement, topCommentedFilms);
+renderFilmCards(FilmCountRender.MAIN, mainFilmsListElement, films);
+renderFilmCards(FilmCountRender.TOP_RATED, topRatedFilmsListElement, films);
+renderFilmCards(FilmCountRender.TOP_COMMENTED, topCommentedFilmsListElement, films);
 
-// renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
+renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
 
-// const filmDetailsPopupElement = mainElement.querySelector(`.film-details`);
-// const popupTopContainerElement = filmDetailsPopupElement.querySelector(`.film-details__top-container`);
-// const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film-details__bottom-container`);
-// const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
+const filmDetailsPopupElement = mainElement.querySelector(`.film-details`);
+const popupTopContainerElement = filmDetailsPopupElement.querySelector(`.film-details__top-container`);
+const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film-details__bottom-container`);
+const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
 
-// renderElements(popupTopContainerElement, createFilmDetailsTemplate(), `beforeend`);
+renderElements(popupTopContainerElement, createFilmDetailsTemplate(films[0]), `beforeend`);
 // renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
 // renderElements(commentsContainerElement, createCommentsListTemplate(), `beforeend`);
 // renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');

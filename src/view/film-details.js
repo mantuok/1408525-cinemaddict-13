@@ -1,30 +1,28 @@
+const GenreTerm = {
+  SINGLE: `Genre`,
+  PLURAL: `Genres`
+}
+
+const renderGenreTerm = (genres) => {
+  console.log(genres);
+  if (genres.length <= 1) {
+    return GenreTerm.SINGLE;
+  } else {
+    return GenreTerm.PLURAL;
+  }
+}
+
+const renderGenres = (genres) => {
+  const genreElements = [];
+  for (let genre of genres) {
+    const genreElement = `<span class="film-details__genre">${genre}</span>`
+    genreElements.push(genreElement);
+  };
+  return genreElements.join(``)
+}
+
 export const createFilmDetailsTemplate = (film) => {
-  const GenreTerm = {
-    SINGLE: `Genre`,
-    PLURAL: `Genres`
-  }
-
-  console.log(film);
-
   const genres = film.genre.split(", ");
-
-  const renderGenreTerm = () => {
-    console.log(genres);
-    if (genres.length <= 1) {
-      return GenreTerm.SINGLE;
-    } else {
-      return GenreTerm.PLURAL;
-    }
-  }
-
-  const renderGenres = () => {
-    const genreElements = [];
-    for (let genre of genres) {
-      const genreElement = `<span class="film-details__genre">${genre}</span>`
-      genreElements.push(genreElement);
-    };
-    return genreElements.join(``)
-  }
 
   return `<div class="film-details__info-wrap">
   <div class="film-details__poster">
@@ -71,8 +69,8 @@ export const createFilmDetailsTemplate = (film) => {
         <td class="film-details__cell">${film.country}</td>
       </tr>
       <tr class="film-details__row">
-        <td class="film-details__term">${renderGenreTerm()}</td>
-        <td class="film-details__cell">${renderGenres()}</td>
+        <td class="film-details__term">${renderGenreTerm(genres)}</td>
+        <td class="film-details__cell">${renderGenres(genres)}</td>
       </tr>
     </table>
     <p class="film-details__film-description">${film.description}</p>

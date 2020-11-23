@@ -1,3 +1,11 @@
+// const DESCRIPTION_MAX = 140;
+
+// const renderDescription = () => {
+//   if (description.length > DESCRIPTION_MAX) {
+//     const cutDescription =
+//   }
+// }
+
 export const createFilmCardTemplate = (film) => {
   const {poster, title, rating, year, duration, genre, description, comments} = film;
 

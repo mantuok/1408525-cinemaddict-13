@@ -4,7 +4,6 @@ const GenreTerm = {
 }
 
 const renderGenreTerm = (genres) => {
-  console.log(genres);
   if (genres.length <= 1) {
     return GenreTerm.SINGLE;
   } else {

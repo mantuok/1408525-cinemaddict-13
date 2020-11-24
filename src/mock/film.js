@@ -32,26 +32,11 @@ const genres = [
 ];
 
 const comments = [
-  {
-    id: 1,
-    text: `Fusce tristique felis at fermentum pharetra`
-  },
-  {
-    id: 2,
-    text: `Sed blandit, eros vel aliquam faucibus`
-  },
-  {
-    id: 3,
-    text: `Sed sed nisi sed augue convallis. Sed sed nisi sed augue convallis. Sed sed nisi sed augue convallis`
-  },
-  {
-    id: 4,
-    text: `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`
-  },
-  {
-    id: 5,
-    text: `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`
-  }
+  { id: 1 },
+  { id: 2 },
+  { id: 3 },
+  { id: 4 },
+  { id: 5 }
 ]
 
 const getFilmRating = () => getRandom(Rating.MIN, Rating.MAX);
@@ -60,6 +45,7 @@ const getYearFormat = (date) => dayjs(date).format(`YYYY`);
 const getFullDateFormat = (date) => dayjs(date).format(`DD MMMM YYYY`);
 const getGenre = () => getRandomFrom(genres);
 const getCommets = () => getRandomArray(comments);
+
 
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);

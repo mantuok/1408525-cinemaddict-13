@@ -1,6 +1,7 @@
 import {getRandom} from "../utils.js"
 import {getRandomFrom} from "../utils.js"
 import {getRandomArray} from "../utils.js"
+import {shuffleArray} from "../utils.js"
 import dayjs from "dayjs";
 
 const Rating = {
@@ -8,11 +9,17 @@ const Rating = {
   MAX: 10
 };
 
+const DescriptionLength = {
+  MIN: 1,
+  MAX: 5
+}
+
 const descriptions = [
-  `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
-  `Sed sed nisi sed augue convallis suscipit in sed felis.`,
-  `Aliquam id orci ut lectus varius viverra.`,
-  ``
+  `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
+  `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
+  `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,
+  `Fusce tristique felis at fermentum pharetra.`,
+  `Cras aliquet varius magna, non porta ligula feugiat eget.`,
 ];
 
 const dates = [
@@ -40,12 +47,13 @@ const comments = [
 ]
 
 const getFilmRating = () => getRandom(Rating.MIN, Rating.MAX);
-const getDescription = () => getRandomFrom(descriptions);
+const getDescription = () => shuffleArray(descriptions)
+  .slice(0, getRandom(DescriptionLength.MIN, DescriptionLength.MAX))
+  .join(` `);
 const getYearFormat = (date) => dayjs(date).format(`YYYY`);
 const getFullDateFormat = (date) => dayjs(date).format(`DD MMMM YYYY`);
 const getGenre = () => getRandomFrom(genres);
 const getCommets = () => getRandomArray(comments);
-
 
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);

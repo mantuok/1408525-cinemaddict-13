@@ -13,19 +13,26 @@ import {generateFilm} from "./mock/film.js"
 import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
 
+const TopFilmProperties = {
+  TOP_RATED: `rating`,
+  TOP_COMMENTED: `commentsCount`
+}
+
 const FilmCount = {
-  MAIN: 15,
+  MAIN: 17,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 }
 
 const COMMENT_COUNT = 5;
 
-const FilmCountRender = {
+const FilmRenderStep = {
   MAIN: 5,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 }
+
+let filmToRenderCursor = 0;
 
 const films = new Array(FilmCount.MAIN).fill().map(generateFilm);
 const comments = new Array(COMMENT_COUNT).fill().map(generateComment);
@@ -45,23 +52,45 @@ renderElements(mainElement, createSortingMenuTemplate(), `beforeend`);
 renderElements(mainElement, createFilmsListsContainerTemplate(), `beforeend`);
 renderElements(footerElement, createFilmsCountTemplate(), `beforeend`);
 
-
 const filmsListsContainerElement = mainElement.querySelector(`.films`);
 const mainFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:first-child > .films-list__container`);
 const topRatedFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:nth-child(2) > .films-list__container`);
 const topCommentedFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:nth-child(3) > .films-list__container`);
-const renderFilmCards = (filmCountRender, filmsList, films) => {
-  for (let i = 0; i < filmCountRender; i++) {
-    renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
+const showMoreElement = filmsListsContainerElement.querySelector(`.films-list__show-more`);
+const renderMainFilmsCards = (FilmRenderStep, filmsList, films) => {
+  if ((films.length - filmToRenderCursor) > FilmRenderStep) {
+    for (let i = filmToRenderCursor; i < (FilmRenderStep + filmToRenderCursor); i++) {
+      renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
+    }
+  } else {
+    for (let i = filmToRenderCursor; i < films.length; i++) {
+      renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
+      showMoreElement.removeEventListener(`click`, onShowMoreClick);
+      showMoreElement.classList.add(`visually-hidden`)
+    }
   }
+  filmToRenderCursor += FilmRenderStep
 };
 
+const renderTopFilmsCards = (FilmRenderStep, filmsList, films, property) => {
+  const sortedTopFilms = films.sort((a, b) => b[property] - a[property])
+  for (let i = 0; i < FilmRenderStep; i++) {
+    renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
+  }
+  console.log(sortedTopFilms);
+}
+
+const onShowMoreClick = () => {
+  renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListElement, films);
+}
+
+renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListElement, films);
+renderTopFilmsCards(FilmRenderStep.TOP_RATED, topRatedFilmsListElement, films, TopFilmProperties.TOP_RATED);
+renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListElement, films, TopFilmProperties.TOP_COMMENTED);
+
+showMoreElement.addEventListener(`click`, onShowMoreClick);
 
 
-
-renderFilmCards(FilmCountRender.MAIN, mainFilmsListElement, films);
-renderFilmCards(FilmCountRender.TOP_RATED, topRatedFilmsListElement, films);
-renderFilmCards(FilmCountRender.TOP_COMMENTED, topCommentedFilmsListElement, films);
 
 // renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
 

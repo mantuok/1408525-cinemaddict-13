@@ -59,6 +59,7 @@ const getCommets = () => getRandomArray(comments);
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);
   const commentsList = getCommets();
+  const getCommentsCount = () => commentsList.length;
   const getCommentsIds = () => commentsList.map(({id}) => id);
   return {
     poster: `./images/posters/popeye-meets-sinbad.png`,
@@ -76,6 +77,7 @@ export const generateFilm = () => {
     description: getDescription(),
     contentRating: `R`,
     comments: getCommentsIds(),
+    commentsCount: getCommentsCount(),
     isInWatchlist: getRandomBoolean(),
     isFavourite: getRandomBoolean(),
     isWatched: getRandomBoolean()

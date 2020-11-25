@@ -2,11 +2,11 @@ const DESCRIPTION_MAX = 140;
 
 const renderDescription = (text) => {
   if (text.length > DESCRIPTION_MAX) {
-    const cutText = text.slice(0, 139) + `...`
+    const cutText = text.slice(0, 139) + `...`;
     return cutText;
   }
   return text;
-}
+};
 
 export const createFilmCardTemplate = (film) => {
   const {poster, title, rating, year, duration, genre, description, commentsCount} = film;

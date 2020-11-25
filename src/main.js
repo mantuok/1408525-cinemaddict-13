@@ -77,7 +77,6 @@ const renderTopFilmsCards = (FilmRenderStep, filmsList, films, property) => {
   for (let i = 0; i < FilmRenderStep; i++) {
     renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
   }
-  console.log(sortedTopFilms);
 }
 
 const onShowMoreClick = () => {
@@ -90,18 +89,14 @@ renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListElement, 
 
 showMoreElement.addEventListener(`click`, onShowMoreClick);
 
+renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
 
+const filmDetailsPopupElement = mainElement.querySelector(`.film-details`);
+const popupTopContainerElement = filmDetailsPopupElement.querySelector(`.film-details__top-container`);
+const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film-details__bottom-container`);
+const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
 
-// renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
-
-// const filmDetailsPopupElement = mainElement.querySelector(`.film-details`);
-// const popupTopContainerElement = filmDetailsPopupElement.querySelector(`.film-details__top-container`);
-// const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film-details__bottom-container`);
-// const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
-
-// renderElements(popupTopContainerElement, createFilmDetailsTemplate(films[0]), `beforeend`);
-// renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
-// renderElements(commentsContainerElement, createCommentsListTemplate(films[0], comments), `beforeend`);
-// renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');
-
-
+renderElements(popupTopContainerElement, createFilmDetailsTemplate(films[0]), `beforeend`);
+renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
+renderElements(commentsContainerElement, createCommentsListTemplate(films[0], comments), `beforeend`);
+renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');

@@ -1,6 +1,4 @@
-import {getRandom} from "../utils.js"
-import {getRandomFrom} from "../utils.js"
-import {getRandomArray} from "../utils.js"
+import {getRandomFrom} from "../utils.js";
 import dayjs from "dayjs";
 
 const dates = [
@@ -8,13 +6,13 @@ const dates = [
   `2019-11-27 23:00`,
   `2020-12-15 21:30`,
   `2020-07-12 19:00`
-]
+];
 
 const texts = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`,
   `Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus.`
-]
+];
 
 const identifiers = [1, 2, 3, 4, 5];
 
@@ -29,5 +27,5 @@ export const generateComment = () => {
     emotion: `./images/emoji/smile.png`,
     author: `John Doe`,
     date: getCommentDate()
-  }
-}
+  };
+};

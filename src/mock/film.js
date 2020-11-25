@@ -1,8 +1,8 @@
-import {getRandom} from "../utils.js"
-import {getRandomFrom} from "../utils.js"
-import {getRandomArray} from "../utils.js"
-import {shuffleArray} from "../utils.js"
-import {getRandomBoolean} from "../utils.js"
+import {getRandom} from "../utils.js";
+import {getRandomFrom} from "../utils.js";
+import {getRandomArray} from "../utils.js";
+import {shuffleArray} from "../utils.js";
+import {getRandomBoolean} from "../utils.js";
 import dayjs from "dayjs";
 
 const Rating = {
@@ -13,7 +13,7 @@ const Rating = {
 const DescriptionLength = {
   MIN: 1,
   MAX: 5
-}
+};
 
 const descriptions = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
@@ -40,12 +40,12 @@ const genres = [
 ];
 
 const comments = [
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 }
-]
+  {id: 1},
+  {id: 2},
+  {id: 3},
+  {id: 4},
+  {id: 5}
+];
 
 const getFilmRating = () => getRandom(Rating.MIN, Rating.MAX);
 const getDescription = () => shuffleArray(descriptions)
@@ -81,5 +81,5 @@ export const generateFilm = () => {
     isInWatchlist: getRandomBoolean(),
     isFavourite: getRandomBoolean(),
     isWatched: getRandomBoolean()
-  }
-}
+  };
+};

@@ -1,13 +1,13 @@
-import {changeFirstCharToUppercase} from "../utils.js"
+import {changeFirstCharToUppercase} from "../utils.js";
 
 const renderFilters = (filters) => {
-  const filterELements= [];
+  const filterELements = [];
   for (let filter of filters) {
-    const filterElement = `<a href="#${filter.name}" class="main-navigation__item">${changeFirstCharToUppercase(filter.name)} <span class="main-navigation__item-count">${filter.count}</span></a>`
+    const filterElement = `<a href="#${filter.name}" class="main-navigation__item">${changeFirstCharToUppercase(filter.name)} <span class="main-navigation__item-count">${filter.count}</span></a>`;
     filterELements.push(filterElement);
   }
   return filterELements.join(` `);
-}
+};
 
 export const createMainNavigationTemplate = (filters) => {
   return `<nav class="main-navigation">

@@ -1,7 +1,7 @@
 const GenreTerm = {
   SINGLE: `Genre`,
   PLURAL: `Genres`
-}
+};
 
 const renderGenreTerm = (genres) => {
   if (genres.length <= 1) {
@@ -9,19 +9,19 @@ const renderGenreTerm = (genres) => {
   } else {
     return GenreTerm.PLURAL;
   }
-}
+};
 
 const renderGenres = (genres) => {
   const genreElements = [];
   for (let genre of genres) {
-    const genreElement = `<span class="film-details__genre">${genre}</span>`
+    const genreElement = `<span class="film-details__genre">${genre}</span>`;
     genreElements.push(genreElement);
-  };
-  return genreElements.join(``)
-}
+  }
+  return genreElements.join(``);
+};
 
 export const createFilmDetailsTemplate = (film) => {
-  const genres = film.genre.split(", ");
+  const genres = film.genre.split(`, `);
 
   return `<div class="film-details__info-wrap">
   <div class="film-details__poster">

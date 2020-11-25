@@ -1,10 +1,21 @@
-export const createMainNavigationTemplate = () => {
+import {changeFirstCharToUppercase} from "../utils.js"
+
+const renderFilters = (filters) => {
+  const filterELements= [];
+  for (let filter of filters) {
+    const filterElement = `<a href="#${filter.name}" class="main-navigation__item">${changeFirstCharToUppercase(filter.name)} <span class="main-navigation__item-count">${filter.count}</span></a>`
+    filterELements.push(filterElement);
+  }
+  return filterELements.join(` `);
+}
+
+export const createMainNavigationTemplate = (filters) => {
+  console.log(filters);
+
   return `<nav class="main-navigation">
   <div class="main-navigation__items">
     <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-    <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-    <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-    <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
+      ${renderFilters(filters)}
   </div>
   <a href="#stats" class="main-navigation__additional">Stats</a>
 </nav>`;

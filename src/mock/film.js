@@ -2,6 +2,7 @@ import {getRandom} from "../utils.js"
 import {getRandomFrom} from "../utils.js"
 import {getRandomArray} from "../utils.js"
 import {shuffleArray} from "../utils.js"
+import {getRandomBoolean} from "../utils.js"
 import dayjs from "dayjs";
 
 const Rating = {
@@ -74,6 +75,9 @@ export const generateFilm = () => {
     genre: getGenre(),
     description: getDescription(),
     contentRating: `R`,
-    comments: getCommentsIds()
+    comments: getCommentsIds(),
+    isInWatchlist: getRandomBoolean(),
+    isFavourite: getRandomBoolean(),
+    isWatched: getRandomBoolean()
   }
 }

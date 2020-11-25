@@ -11,6 +11,7 @@ import {createCommentsListTemplate} from "./view/comments-list.js";
 import {createNewCommentTemplate} from "./view/new-comment.js";
 import {generateFilm} from "./mock/film.js"
 import {generateComment} from "./mock/comments.js";
+import {generateFilter} from "./mock/filter.js";
 
 const FilmCount = {
   MAIN: 15,
@@ -26,6 +27,10 @@ const FilmCountRender = {
   TOP_COMMENTED: 2
 }
 
+const films = new Array(FilmCount.MAIN).fill().map(generateFilm);
+const comments = new Array(COMMENT_COUNT).fill().map(generateComment);
+const filters = generateFilter(films);
+
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
@@ -35,7 +40,7 @@ const renderElements = (container, template, position) => {
 }
 
 renderElements(headerElement, createUserProfileTemplate(), `beforeend`);
-renderElements(mainElement, createMainNavigationTemplate(), `beforeend`);
+renderElements(mainElement, createMainNavigationTemplate(filters), `beforeend`);
 renderElements(mainElement, createSortingMenuTemplate(), `beforeend`);
 renderElements(mainElement, createFilmsListsContainerTemplate(), `beforeend`);
 renderElements(footerElement, createFilmsCountTemplate(), `beforeend`);
@@ -51,8 +56,7 @@ const renderFilmCards = (filmCountRender, filmsList, films) => {
   }
 };
 
-const films = new Array(FilmCount.MAIN).fill().map(generateFilm);
-const comments = new Array(COMMENT_COUNT).fill().map(generateComment);
+
 
 
 renderFilmCards(FilmCountRender.MAIN, mainFilmsListElement, films);

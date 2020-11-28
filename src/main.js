@@ -13,11 +13,6 @@ import {generateFilm} from "./mock/film.js"
 import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
 
-const TopFilmProperties = {
-  TOP_RATED: `rating`,
-  TOP_COMMENTED: `commentsCount`
-}
-
 const FilmCount = {
   MAIN: 17,
   TOP_RATED: 2,
@@ -34,8 +29,14 @@ const FilmRenderStep = {
 
 let filmToRenderCursor = 0;
 
-const films = new Array(FilmCount.MAIN).fill().map(generateFilm);
-const comments = new Array(COMMENT_COUNT).fill().map(generateComment);
+const films = Array.from({length: FilmCount.MAIN}, generateFilm);
+const topCommentedFilms = [...films].sort((a, b) => b.comments.length - a.comments.length);
+const topRatedFilms = [...films].sort((a, b) => b.rating - a.rating);
+const watchedFilms = films.filter((film) => film.isWatched);
+const comments = Array.from({length: COMMENT_COUNT}, generateComment);
+
+console.log(watchedFilms)
+
 const filters = generateFilter(films);
 
 const headerElement = document.querySelector(`.header`);
@@ -46,48 +47,47 @@ const renderElements = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
 }
 
-renderElements(headerElement, createUserProfileTemplate(), `beforeend`);
+renderElements(headerElement, createUserProfileTemplate(watchedFilms), `beforeend`);
 renderElements(mainElement, createMainNavigationTemplate(filters), `beforeend`);
 renderElements(mainElement, createSortingMenuTemplate(), `beforeend`);
 renderElements(mainElement, createFilmsListsContainerTemplate(), `beforeend`);
-renderElements(footerElement, createFilmsCountTemplate(), `beforeend`);
+renderElements(footerElement, createFilmsCountTemplate(films.length), `beforeend`);
 
 const filmsListsContainerElement = mainElement.querySelector(`.films`);
 const mainFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:first-child > .films-list__container`);
 const topRatedFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:nth-child(2) > .films-list__container`);
 const topCommentedFilmsListElement = filmsListsContainerElement.querySelector(`.films-list:nth-child(3) > .films-list__container`);
-const showMoreElement = filmsListsContainerElement.querySelector(`.films-list__show-more`);
-const renderMainFilmsCards = (FilmRenderStep, filmsList, films) => {
+const showMoreButtonElement = filmsListsContainerElement.querySelector(`.films-list__show-more`);
+const renderMainFilmsCards = (FilmRenderStep, filmsListElement, films) => {
   if ((films.length - filmToRenderCursor) > FilmRenderStep) {
     for (let i = filmToRenderCursor; i < (FilmRenderStep + filmToRenderCursor); i++) {
-      renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
+      renderElements(filmsListElement, createFilmCardTemplate(films[i]), `beforeend`);
     }
   } else {
     for (let i = filmToRenderCursor; i < films.length; i++) {
-      renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
-      showMoreElement.removeEventListener(`click`, onShowMoreClick);
-      showMoreElement.classList.add(`visually-hidden`)
+      renderElements(filmsListElement, createFilmCardTemplate(films[i]), `beforeend`);
+      showMoreButtonElement.removeEventListener(`click`, onShowMoreElementClick);
+      showMoreButtonElement.classList.add(`visually-hidden`)
     }
   }
   filmToRenderCursor += FilmRenderStep
 };
 
-const renderTopFilmsCards = (FilmRenderStep, filmsList, films, property) => {
-  const sortedTopFilms = films.sort((a, b) => b[property] - a[property])
+const renderTopFilmsCards = (FilmRenderStep, filmsListElement, films) => {
   for (let i = 0; i < FilmRenderStep; i++) {
-    renderElements(filmsList, createFilmCardTemplate(films[i]), `beforeend`);
+    renderElements(filmsListElement, createFilmCardTemplate(films[i]), `beforeend`);
   }
 }
 
-const onShowMoreClick = () => {
+const onShowMoreElementClick = () => {
   renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListElement, films);
 }
 
 renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListElement, films);
-renderTopFilmsCards(FilmRenderStep.TOP_RATED, topRatedFilmsListElement, films, TopFilmProperties.TOP_RATED);
-renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListElement, films, TopFilmProperties.TOP_COMMENTED);
+renderTopFilmsCards(FilmRenderStep.TOP_RATED, topRatedFilmsListElement, topRatedFilms);
+renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListElement, topCommentedFilms);
 
-showMoreElement.addEventListener(`click`, onShowMoreClick);
+showMoreButtonElement.addEventListener(`click`, onShowMoreElementClick);
 
 renderElements(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
 
@@ -97,6 +97,6 @@ const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film
 const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
 
 renderElements(popupTopContainerElement, createFilmDetailsTemplate(films[0]), `beforeend`);
-renderElements(popupTopContainerElement, createFilmControlsTemplate(), `beforeend`);
+renderElements(popupTopContainerElement, createFilmControlsTemplate(films[0]), `beforeend`);
 renderElements(commentsContainerElement, createCommentsListTemplate(films[0], comments), `beforeend`);
 renderElements(commentsContainerElement, createNewCommentTemplate(), 'beforeend');

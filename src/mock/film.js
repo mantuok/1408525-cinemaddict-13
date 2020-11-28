@@ -1,9 +1,8 @@
-import {getRandom} from "../utils.js";
-import {getRandomFrom} from "../utils.js";
-import {getRandomArray} from "../utils.js";
-import {shuffleArray} from "../utils.js";
-import {getRandomBoolean} from "../utils.js";
-import dayjs from "dayjs";
+import {getRandom} from "./random.js";
+import {getRandomFrom} from "./random.js";
+import {getRandomArray} from "./random.js";
+import {shuffleArray} from "./random.js";
+import {getRandomBoolean} from "./random.js";
 
 const Rating = {
   MIN: 0,
@@ -24,19 +23,21 @@ const descriptions = [
 ];
 
 const dates = [
-  `1939-02-10`,
-  `1936-11-27`,
-  `1933-12-15`,
-  `1986-07-12`,
-  `1900-01-01`,
-  `1945-01-14`,
-  `1955-12-14`
+  new Date(1939, 1, 10),
+  new Date(1936, 10, 27),
+  new Date(1933, 11, 15),
+  new Date(1986, 6, 12),
+  new Date(1900, 0, 1),
+  new Date(1945, 0, 14),
+  new Date(1955, 11, 14)
 ];
 
+const watchDate = new Date(2020, 10, 25);
+
 const genres = [
-  `drama`,
-  `comedy, drama`,
-  `thriller, comedy, drama`
+  [`drama`],
+  [`comedy`, `drama`],
+  [`thriller`, `comedy`, `drama`]
 ];
 
 const comments = [
@@ -51,15 +52,13 @@ const getFilmRating = () => getRandom(Rating.MIN, Rating.MAX);
 const getDescription = () => shuffleArray(descriptions)
   .slice(0, getRandom(DescriptionLength.MIN, DescriptionLength.MAX))
   .join(` `);
-const getYearFormat = (date) => dayjs(date).format(`YYYY`);
-const getFullDateFormat = (date) => dayjs(date).format(`DD MMMM YYYY`);
-const getGenre = () => getRandomFrom(genres);
+const getGenres = () => getRandomFrom(genres);
 const getCommets = () => getRandomArray(comments);
+const getWatchDate = (isWatched) => isWatched ? watchDate : null;
 
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);
   const commentsList = getCommets();
-  const getCommentsCount = () => commentsList.length;
   const getCommentsIds = () => commentsList.map(({id}) => id);
   return {
     poster: `./images/posters/popeye-meets-sinbad.png`,
@@ -67,19 +66,20 @@ export const generateFilm = () => {
     titleOriginal: `Popeye meets sindbad`,
     rating: getFilmRating(),
     director: `Dave Fleischer`,
-    writer: `Willard Bowsky`,
-    actors: `Jack Mercer, Mae Questel, Gus Wickie`,
-    year: getYearFormat(filmDate),
-    date: getFullDateFormat(filmDate),
-    duration: `1h 30m`,
+    writers: [`Willard Bowsky`],
+    actors: [`Jack Mercer`, `Mae Questel`, `Gus Wickie`],
+    date: filmDate,
+    duration: 90,
     country: `USA`,
-    genre: getGenre(),
+    genres: getGenres(),
     description: getDescription(),
     contentRating: `R`,
     comments: getCommentsIds(),
-    commentsCount: getCommentsCount(),
     isInWatchlist: getRandomBoolean(),
     isFavourite: getRandomBoolean(),
-    isWatched: getRandomBoolean()
+    isWatched: getRandomBoolean(),
+    get watchDate() {
+      return getWatchDate(this.isWatched);
+    }
   };
 };

@@ -1,4 +1,4 @@
-import {getRandomFrom} from "../utils.js";
+import {getRandomFrom} from "./random.js";
 import dayjs from "dayjs";
 
 const dates = [
@@ -6,6 +6,13 @@ const dates = [
   `2019-11-27 23:00`,
   `2020-12-15 21:30`,
   `2020-07-12 19:00`
+];
+
+const emotions = [
+  `smile`,
+  `sleeping`,
+  `puke`,
+  `angry`
 ];
 
 const texts = [
@@ -19,12 +26,13 @@ const identifiers = [1, 2, 3, 4, 5];
 const getCommentDate = () => dayjs(getRandomFrom(dates)).format(`YYYY/MM/DD HH:MM`);
 const getCommentText = () => getRandomFrom(texts);
 const getCommentID = () => identifiers.shift();
+const getEmotion = () => getRandomFrom(emotions);
 
 export const generateComment = () => {
   return {
     id: getCommentID(),
     text: getCommentText(),
-    emotion: `./images/emoji/smile.png`,
+    emotion: getEmotion(),
     author: `John Doe`,
     date: getCommentDate()
   };

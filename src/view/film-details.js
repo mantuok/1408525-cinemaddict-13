@@ -1,4 +1,4 @@
-import {getFullDateFormat} from "../utils/day.js"
+import {getFullDateFormat} from "../utils/day.js";
 
 const GenreTerm = {
   SINGLE: `Genre`,

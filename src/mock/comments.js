@@ -1,5 +1,5 @@
 import {getRandomFrom} from "./random.js";
-import {getDateTimeFormat} from "../utils/day.js"
+import {getDateTimeFormat} from "../utils/day.js";
 
 const dates = [
   `2020-02-10 22:00`,

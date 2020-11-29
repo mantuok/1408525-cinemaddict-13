@@ -1,4 +1,4 @@
-import {getYearFormat} from "../utils/day.js"
+import {getYearFormat} from "../utils/day.js";
 import {getHourMinuteFormat} from "../utils/utils.js";
 import {getTruncatedText} from "../utils/utils.js";
 

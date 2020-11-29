@@ -1,8 +1,8 @@
 const Emoji = {
-  smile: `smile`,
-  sleeping: `sleeping`,
-  puke: `puke`,
-  angry: `angry`
+  SMILE: `smile`,
+  SLEEPING: `sleeping`,
+  PUKE: `puke`,
+  ANGRY: `angry`
 };
 
 const createEmojiItemTemplate = (emoji) => {
@@ -19,10 +19,10 @@ export const createNewCommentTemplate = () => {
     <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
   </label>
   <div class="film-details__emoji-list">
-  ${createEmojiItemTemplate(Emoji.smile)}
-  ${createEmojiItemTemplate(Emoji.sleeping)}
-  ${createEmojiItemTemplate(Emoji.puke)}
-  ${createEmojiItemTemplate(Emoji.angry)}
+  ${createEmojiItemTemplate(Emoji.SMILE)}
+  ${createEmojiItemTemplate(Emoji.SLEEPING)}
+  ${createEmojiItemTemplate(Emoji.PUKE)}
+  ${createEmojiItemTemplate(Emoji.ANGRY)}
   </div>
 </div>`;
 };

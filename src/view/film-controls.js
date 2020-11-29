@@ -1,30 +1,31 @@
-const createControlTemplate = (isInFilterList, labelName, name) => {
-  return `<input type="checkbox" class="film-details__control-input visually-hidden" id="${name}" name="${name}"
-  ${isInFilterList ? `checked` : ``}>
-  <label for="${name}" class="film-details__control-label film-details__control-label--${name}">${labelName}</label>`;
+const createControlTemplate = (name, label, isChecked = false) => {
+  return `<input
+  class="film-details__control-input visually-hidden"
+  id="${name}"
+  name="${name}"
+  type="checkbox"
+  ${isChecked ? `checked` : ``}>
+  <label for="${name}" class="film-details__control-label film-details__control-label--${name}">${label}</label>`;
 };
 
 export const createFilmControlsTemplate = (film) => {
   const {isInWatchlist, isFavourite, isWatched} = film;
-  const Watchlist = {
-    IS_IN: isInWatchlist,
-    LABEL: `Add to watchlist`,
-    NAME: `watchlist`
+
+  const ControlName = {
+    WATCHLIST: `watchlist`,
+    FAVORITE: `favorite`,
+    WATCHED: `watched`,
   };
-  const Favourite = {
-    IS_IN: isFavourite,
-    LABEL: `Add to favorites`,
-    NAME: `favorite`
-  };
-  const History = {
-    IS_IN: isWatched,
-    LABEL: `Already watched`,
-    NAME: `watched`
+
+  const ControlNameLabel = {
+    [ControlName.WATCHLIST]: `Add to watchlist`,
+    [ControlName.FAVORITE]: `Add to favorites`,
+    [ControlName.WATCHED]: `Already watched`,
   };
 
   return `<section class="film-details__controls">
-    ${createControlTemplate(Watchlist.IS_IN, Watchlist.LABEL, Watchlist.NAME)}
-    ${createControlTemplate(History.IS_IN, History.LABEL, History.NAME)}
-    ${createControlTemplate(Favourite.IS_IN, Favourite.LABEL, Favourite.NAME)}
+    ${createControlTemplate(ControlName.WATCHLIST, ControlNameLabel[ControlName.WATCHLIST], isInWatchlist)}
+    ${createControlTemplate(ControlName.WATCHED, ControlNameLabel[ControlName.WATCHED], isWatched)}
+    ${createControlTemplate(ControlName.FAVORITE, ControlNameLabel[ControlName.FAVORITE], isFavourite)}
   </section>`;
 };

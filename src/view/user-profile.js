@@ -5,25 +5,27 @@ const ProfileRating = {
   MOVIE_BUFF: `Movie Buff`
 };
 
-const RatingStep = {
+const ProfileRatingStep = {
   NONE: 0,
   NOVICE: 10,
   FAN: 20,
   MOVIE_BUFF: 21
 };
 
-const getProfileRating = (wathcedFilms) => {
-  if (wathcedFilms === RatingStep.NONE) {
-    return ProfileRating.NONE;
-  } else if (wathcedFilms <= RatingStep.NOVICE) {
-    return ProfileRating.NOVICE;
-  } else if (wathcedFilms <= RatingStep.FAN) {
-    return ProfileRating.FAN;
-  } else if (wathcedFilms >= RatingStep.MOVIE_BUFF) {
-    return ProfileRating.MOVIE_BUFF;
-  } else {
+const getProfileRating = (watchedFilms) => {
+  if (watchedFilms === ProfileRatingStep.NONE) {
     return ProfileRating.NONE;
   }
+  if (watchedFilms <= ProfileRatingStep.NOVICE) {
+    return ProfileRating.NOVICE;
+  }
+  if (watchedFilms <= ProfileRatingStep.FAN) {
+    return ProfileRating.FAN;
+  }
+  if (watchedFilms >= ProfileRatingStep.MOVIE_BUFF) {
+    return ProfileRating.MOVIE_BUFF;
+  }
+  return ProfileRating.NONE;
 };
 
 export const createUserProfileTemplate = (watchedFilms) => {

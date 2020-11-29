@@ -69,7 +69,7 @@ export const generateFilm = () => {
     writers: [`Willard Bowsky`],
     actors: [`Jack Mercer`, `Mae Questel`, `Gus Wickie`],
     date: filmDate,
-    duration: 90,
+    duration: 130,
     country: `USA`,
     genres: getGenres(),
     description: getDescription(),

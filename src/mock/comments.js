@@ -1,5 +1,5 @@
 import {getRandomFrom} from "./random.js";
-import dayjs from "dayjs";
+import {getDateTimeFormat} from "../utils/day.js"
 
 const dates = [
   `2020-02-10 22:00`,
@@ -23,7 +23,7 @@ const texts = [
 
 const identifiers = [1, 2, 3, 4, 5];
 
-const getCommentDate = () => dayjs(getRandomFrom(dates)).format(`YYYY/MM/DD HH:MM`);
+const getCommentDate = () => getDateTimeFormat(getRandomFrom(dates));
 const getCommentText = () => getRandomFrom(texts);
 const getCommentID = () => identifiers.shift();
 const getEmotion = () => getRandomFrom(emotions);

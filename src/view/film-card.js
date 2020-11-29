@@ -1,17 +1,10 @@
-import dayjs from "dayjs";
+import {getYearFormat} from "../utils/day.js"
+import {getHourMinuteFormat} from "../utils/utils.js";
+import {getTruncatedText} from "../utils/utils.js";
 
-const DescriptionLength = {
-  MIN: 0,
-  MAX: 140,
-  LIMIT: 139
-};
+const DESCRIPTION_MAX_LENGTH = 140;
+const getFilterStatus = (isActive) => isActive ? `film-card__controls-item--active` : ``;
 
-const getDescription = (text) => text.length > DescriptionLength.MAX
-  ? `${text.slice(DescriptionLength.MIN, DescriptionLength.LIMIT)}...`
-  : text;
-const getYearFormat = (date) => dayjs(date).format(`YYYY`);
-const getHourMinuteFormat = (duration) => `${Math.floor(duration / 60)}h ${duration % 60}m`;
-const getFilterStatus = (filter) => filter ? `film-card__controls-item--active` : ``;
 
 export const createFilmCardTemplate = (film) => {
   const {poster, title, rating, date, duration, genres, description, comments, isInWatchlist, isFavourite, isWatched} = film;
@@ -25,7 +18,7 @@ export const createFilmCardTemplate = (film) => {
     <span class="film-card__genre">${genres[0]}</span>
   </p>
   <img src="${poster}" alt="${title}" class="film-card__poster">
-  <p class="film-card__description">${getDescription(description)}</p>
+  <p class="film-card__description">${getTruncatedText(description, DESCRIPTION_MAX_LENGTH)}</p>
   <a class="film-card__comments">${comments.length} comments</a>
   <div class="film-card__controls">
     <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${getFilterStatus(isInWatchlist)}" type="button">Add to watchlist</button>

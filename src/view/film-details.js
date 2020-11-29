@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import {getFullDateFormat} from "../utils/day.js"
 
 const GenreTerm = {
   SINGLE: `Genre`,
@@ -14,18 +14,16 @@ const Term = {
   COUNTRY: `Country`
 };
 
-const getGenreTerm = (genres) => genres.length <= 1 ? GenreTerm.SINGLE : GenreTerm.PLURAL;
+const getGenreTerm = (genres) => genres.length > 1 ? GenreTerm.PLURAL : GenreTerm.SINGLE;
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
-const getFullDateFormat = (date) => dayjs(date).format(`DD MMMM YYYY`);
 const getHourMinuteFormat = (duration) => `${Math.floor(duration / 60)}h ${duration % 60}m`;
 
-const createFilmDetailTemplate = (term, value) => {
-  return `<tr class="film-details__row">
+const createFilmDetailTemplate = (term, value) => (
+  `<tr class="film-details__row">
     <td class="film-details__term">${term}</td>
     <td class="film-details__cell">${value}</td>
-  </tr>`;
-};
-
+  </tr>`
+);
 export const createFilmDetailsTemplate = (film) => {
   return `<div class="film-details__info-wrap">
   <div class="film-details__poster">

@@ -1,5 +1,5 @@
-export const createFilmsCountTemplate = (filmCount) => {
-  return `<section class="footer__statistics">
+export const createFilmsCountTemplate = (filmCount) => (
+  `<section class="footer__statistics">
   <p>${filmCount} movies inside</p>
-</section>`;
-};
+</section>`
+);

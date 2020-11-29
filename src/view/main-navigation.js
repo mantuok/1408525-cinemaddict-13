@@ -1,10 +1,14 @@
-export const createMainNavigationTemplate = () => {
+import {changeFirstCharToUppercase} from "../utils/utils.js";
+
+const createFilterTemplate = (filters) => filters.map((filter) =>
+  `<a href="#${filter.name}" class="main-navigation__item">
+  ${changeFirstCharToUppercase(filter.name)} <span class="main-navigation__item-count">${filter.count}</span></a>`);
+
+export const createMainNavigationTemplate = (filters) => {
   return `<nav class="main-navigation">
   <div class="main-navigation__items">
     <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-    <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-    <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-    <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
+      ${createFilterTemplate(filters).join(``)}
   </div>
   <a href="#stats" class="main-navigation__additional">Stats</a>
 </nav>`;

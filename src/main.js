@@ -2,14 +2,17 @@ import {createUserProfileTemplate} from "./view/user-profile.js";
 import {createMainNavigationTemplate} from "./view/main-navigation.js";
 import SortingMenuView from "./view/sorting-menu.js"
 // import {createSortingMenuTemplate} from "./view/sorting-menu.js";
-import {createFilmsListsContainerTemplate} from "./view/films-lists-container.js";
+import FilmsListsContainerView from "./view/films-lists-container.js"
+// import {createFilmsListsContainerTemplate} from "./view/films-lists-container.js";
 import {createFilmCardTemplate} from "./view/film-card.js";
 import {createFilmsCountTemplate} from "./view/films-count.js";
-import {createFilmDetailsPopupTemplate} from "./view/film-details-popup.js";
+import FilmDetailsPopupView from "./view/film-details-popup.js"
+// import {createFilmDetailsPopupTemplate} from "./view/film-details-popup.js";
 import {createFilmDetailsTemplate} from "./view/film-details.js";
 import {createFilmControlsTemplate} from "./view/film-controls.js";
 import {createCommentsListTemplate} from "./view/comments-list.js";
-import {createNewCommentTemplate} from "./view/new-comment.js";
+// import {createNewCommentTemplate} from "./view/new-comment.js";
+import newCommentView from "./view/new-comment.js"
 import {generateFilm} from "./mock/film.js"
 import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
@@ -48,7 +51,8 @@ renderTemplate(headerElement, createUserProfileTemplate(watchedFilms), `beforeen
 renderTemplate(mainElement, createMainNavigationTemplate(filters), `beforeend`);
 // renderTemplate(mainElement, createSortingMenuTemplate(), `beforeend`);
 renderElement(mainElement, new SortingMenuView().getElement(), Position.BEFOREEND);
-renderTemplate(mainElement, createFilmsListsContainerTemplate(), `beforeend`);
+// renderTemplate(mainElement, createFilmsListsContainerTemplate(), `beforeend`);
+renderElement(mainElement, new FilmsListsContainerView().getElement(), Position.BEFOREEND);
 renderTemplate(footerElement, createFilmsCountTemplate(films.length), `beforeend`);
 
 const filmsListsContainerElement = mainElement.querySelector(`.films`);
@@ -88,13 +92,15 @@ renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListElement, 
 showMoreButtonElement.addEventListener(`click`, onShowMoreButtonElementClick);
 
 // renderTemplate(mainElement, createFilmDetailsPopupTemplate(), `beforeend`);
+renderElement(mainElement, new FilmDetailsPopupView().getElement(), Position.BEFOREEND);
 
-// const filmDetailsPopupElement = mainElement.querySelector(`.film-details`);
-// const popupTopContainerElement = filmDetailsPopupElement.querySelector(`.film-details__top-container`);
-// const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film-details__bottom-container`);
-// const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
+const filmDetailsPopupElement = mainElement.querySelector(`.film-details`);
+const popupTopContainerElement = filmDetailsPopupElement.querySelector(`.film-details__top-container`);
+const popupBottomContainerElement = filmDetailsPopupElement.querySelector(`.film-details__bottom-container`);
+const commentsContainerElement = popupBottomContainerElement.querySelector(`.film-details__comments-wrap`);
 
-// renderTemplate(popupTopContainerElement, createFilmDetailsTemplate(films[0]), `beforeend`);
-// renderTemplate(popupTopContainerElement, createFilmControlsTemplate(films[0]), `beforeend`);
-// renderTemplate(commentsContainerElement, createCommentsListTemplate(films[0], comments), `beforeend`);
+renderTemplate(popupTopContainerElement, createFilmDetailsTemplate(films[0]), `beforeend`);
+renderTemplate(popupTopContainerElement, createFilmControlsTemplate(films[0]), `beforeend`);
+renderTemplate(commentsContainerElement, createCommentsListTemplate(films[0], comments), `beforeend`);
 // renderTemplate(commentsContainerElement, createNewCommentTemplate(), 'beforeend');
+renderElement(commentsContainerElement, new newCommentView().getElement(), Position.BEFOREEND);

@@ -24,6 +24,7 @@ const createFilmDetailTemplate = (term, value) => (
     <td class="film-details__cell">${value}</td>
   </tr>`
 );
+
 export const createFilmDetailsTemplate = (film) => {
   return `<div class="film-details__info-wrap">
   <div class="film-details__poster">

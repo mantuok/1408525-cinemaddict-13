@@ -1,4 +1,5 @@
 import {changeFirstCharToUppercase} from "../utils/utils.js";
+import { createElement } from "../utils/render.js";
 
 const createFilterTemplate = (filters) => filters.map((filter) =>
   `<a href="#${filter.name}" class="main-navigation__item">

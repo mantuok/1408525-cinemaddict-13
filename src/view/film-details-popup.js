@@ -13,3 +13,9 @@ export const createFilmDetailsPopupTemplate = () => {
     </form>
   </section>`;
 };
+
+// export default class FilmDetailsPopup {
+//   constructor () {
+
+//   }
+// }

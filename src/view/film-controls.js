@@ -1,3 +1,5 @@
+import {createElement} from "../utils/render.js"
+
 const createControlTemplate = (name, label, isChecked = false) => {
   return `<input
   class="film-details__control-input visually-hidden"
@@ -8,7 +10,7 @@ const createControlTemplate = (name, label, isChecked = false) => {
   <label for="${name}" class="film-details__control-label film-details__control-label--${name}">${label}</label>`;
 };
 
-export const createFilmControlsTemplate = (film) => {
+const createFilmControlsTemplate = (film) => {
   const {isInWatchlist, isFavourite, isWatched} = film;
 
   const ControlName = {
@@ -29,3 +31,25 @@ export const createFilmControlsTemplate = (film) => {
     ${createControlTemplate(ControlName.FAVORITE, ControlNameLabel[ControlName.FAVORITE], isFavourite)}
   </section>`;
 };
+
+export default class FilmControls {
+  constructor (film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate () {
+    return createFilmControlsTemplate(this._film);
+  }
+
+  getElement () {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement () {
+    this._element = null;
+  }
+}

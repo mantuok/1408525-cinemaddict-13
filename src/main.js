@@ -70,13 +70,14 @@ renderElement(footerElement, new FilmsCountView(films.length).getElement(), Posi
 const renderMainFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
   if ((films.length - filmToRenderCursor) > FilmRenderStep) {
     for (let i = filmToRenderCursor; i < (FilmRenderStep + filmToRenderCursor); i++) {
-      renderElement(filmsListComponent.querySelector(`div`), new FilmCardView(films[i]).getElement(), Position.AFTERBEGIN);
+      renderElement(filmsListComponent.querySelector(`div`), new FilmCardView(films[i]).getElement(), Position.BEFOREEND);
     }
   } else {
+    console.log(`else`)
     for (let i = filmToRenderCursor; i < films.length; i++) {
-      renderElement(filmsListComponent.querySelector(`div`), new FilmCardView(films[i]).getElement(), Position.AFTERBEGIN);
-      showMoreButtonElement.removeEventListener(`click`, onShowMoreElementClick);
-      showMoreButtonElement.classList.add(`visually-hidden`)
+      renderElement(filmsListComponent.querySelector(`div`), new FilmCardView(films[i]).getElement(), Position.BEFOREEND);
+      showMoreButtonComponent.getElement().removeEventListener(`click`, onShowMoreButtonComponentClick);
+      showMoreButtonComponent.getElement().classList.add(`visually-hidden`)
     }
   }
   filmToRenderCursor += FilmRenderStep;
@@ -89,6 +90,7 @@ const renderTopFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
 };
 
 const onShowMoreButtonComponentClick = () => {
+  console.log(films);
   renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListComponent.getElement(), films);
 };
 
@@ -96,32 +98,32 @@ renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListComponent.getElement(), f
 renderTopFilmsCards(FilmRenderStep.TOP_RATED, topRatedFilmsListComponent.getElement(), topRatedFilms);
 renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListComponent.getElement(), topCommentedFilms);
 
-// showMoreButtonComponent.addEventListener(`click`, onShowMoreButtonComponentClick);
+showMoreButtonComponent.getElement().addEventListener(`click`, onShowMoreButtonComponentClick);
 
-const filmDetailsPopupComponent = new FilmDetailsPopupView();
-const popupTopContainerComponent = new PopupTopContainerView();
-const popupBottomContainerComponent = new PopupBottomContainerView();
+// const filmDetailsPopupComponent = new FilmDetailsPopupView();
+// const popupTopContainerComponent = new PopupTopContainerView();
+// const popupBottomContainerComponent = new PopupBottomContainerView();
 
-renderElement(mainElement, filmDetailsPopupComponent.getElement(), Position.BEFOREEND);
-renderElement(
-  filmDetailsPopupComponent.getElement().querySelector(`form`),
-  popupTopContainerComponent.getElement(),
-  Position.BEFOREEND
-);
-renderElement(
-  filmDetailsPopupComponent.getElement().querySelector(`form`),
-  popupBottomContainerComponent.getElement(),
-  Position.BEFOREEND
-);
-renderElement(popupTopContainerComponent.getElement(), new FilmDetailsView(films[0]).getElement(), Position.BEFOREEND);
-renderElement(popupTopContainerComponent.getElement(), new FilmControlsView(films[0]).getElement(), Position.BEFOREEND);
-renderElement(
-  popupBottomContainerComponent.getElement(),
-  new CommentsListView(films[0], comments).getElement(),
-  Position.AFTERBEGIN
-  );
-renderElement(
-  popupBottomContainerComponent.getElement().querySelector(`.film-details__comments-wrap`),
-  new NewCommentView().getElement(),
-  Position.BEFOREEND
-);
+// renderElement(mainElement, filmDetailsPopupComponent.getElement(), Position.BEFOREEND);
+// renderElement(
+//   filmDetailsPopupComponent.getElement().querySelector(`form`),
+//   popupTopContainerComponent.getElement(),
+//   Position.BEFOREEND
+// );
+// renderElement(
+//   filmDetailsPopupComponent.getElement().querySelector(`form`),
+//   popupBottomContainerComponent.getElement(),
+//   Position.BEFOREEND
+// );
+// renderElement(popupTopContainerComponent.getElement(), new FilmDetailsView(films[0]).getElement(), Position.BEFOREEND);
+// renderElement(popupTopContainerComponent.getElement(), new FilmControlsView(films[0]).getElement(), Position.BEFOREEND);
+// renderElement(
+//   popupBottomContainerComponent.getElement(),
+//   new CommentsListView(films[0], comments).getElement(),
+//   Position.AFTERBEGIN
+//   );
+// renderElement(
+//   popupBottomContainerComponent.getElement().querySelector(`.film-details__comments-wrap`),
+//   new NewCommentView().getElement(),
+//   Position.BEFOREEND
+// );

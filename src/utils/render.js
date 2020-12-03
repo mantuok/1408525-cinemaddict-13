@@ -6,6 +6,7 @@ export const Position = {
 export const renderTemplate = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
 }
+
 export const renderElement = (container, element, position) => {
   switch (position) {
     case Position.AFTERBEGIN:

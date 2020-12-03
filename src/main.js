@@ -70,12 +70,23 @@ renderElement(footerElement, new FilmsCountView(films.length).getElement(), Posi
 const renderMainFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
   if ((films.length - filmToRenderCursor) > FilmRenderStep) {
     for (let i = filmToRenderCursor; i < (FilmRenderStep + filmToRenderCursor); i++) {
-      renderElement(filmsListComponent.querySelector(`div`), new FilmCardView(films[i]).getElement(), Position.BEFOREEND);
+      const filmCardComponent = new FilmCardView(films[i]);
+      renderElement(filmsListComponent.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
+      Array.from(filmCardComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
+        .forEach((element) => element.addEventListener(`click`, (evt) => {
+          evt.preventDefault();
+          renderFilmDetailsPopup(films[i]);
+        }))
     }
   } else {
-    console.log(`else`)
     for (let i = filmToRenderCursor; i < films.length; i++) {
-      renderElement(filmsListComponent.querySelector(`div`), new FilmCardView(films[i]).getElement(), Position.BEFOREEND);
+      const filmCardComponent = new FilmCardView(films[i]);
+      renderElement(filmsListComponent.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
+      Array.from(filmCardComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
+      .forEach((element) => element.addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        renderFilmDetailsPopup(films[i]);
+      }))
       showMoreButtonComponent.getElement().removeEventListener(`click`, onShowMoreButtonComponentClick);
       showMoreButtonComponent.getElement().classList.add(`visually-hidden`)
     }
@@ -85,12 +96,17 @@ const renderMainFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
 
 const renderTopFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
   for (let i = 0; i < FilmRenderStep; i++) {
-    renderElement(filmsListComponent.querySelector(`div`), new FilmCardView(films[i]).getElement(), Position.BEFOREEND);
+    const filmCardComponent = new FilmCardView(films[i])
+    renderElement(filmsListComponent.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
+    Array.from(filmCardComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
+    .forEach((element) => element.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      renderFilmDetailsPopup(films[i]);
+    }))
   }
 };
 
 const onShowMoreButtonComponentClick = () => {
-  console.log(films);
   renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListComponent.getElement(), films);
 };
 
@@ -100,30 +116,58 @@ renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListComponent
 
 showMoreButtonComponent.getElement().addEventListener(`click`, onShowMoreButtonComponentClick);
 
-// const filmDetailsPopupComponent = new FilmDetailsPopupView();
-// const popupTopContainerComponent = new PopupTopContainerView();
-// const popupBottomContainerComponent = new PopupBottomContainerView();
+const renderFilmDetailsPopup = (film) => {
+  const filmDetailsPopupComponent = new FilmDetailsPopupView();
+  const popupTopContainerComponent = new PopupTopContainerView();
+  const popupBottomContainerComponent = new PopupBottomContainerView();
+  const closePopupButton = popupTopContainerComponent.getElement().querySelector(`.film-details__close-btn`);
+  const bodyElement = document.querySelector(`body`);
 
-// renderElement(mainElement, filmDetailsPopupComponent.getElement(), Position.BEFOREEND);
-// renderElement(
-//   filmDetailsPopupComponent.getElement().querySelector(`form`),
-//   popupTopContainerComponent.getElement(),
-//   Position.BEFOREEND
-// );
-// renderElement(
-//   filmDetailsPopupComponent.getElement().querySelector(`form`),
-//   popupBottomContainerComponent.getElement(),
-//   Position.BEFOREEND
-// );
-// renderElement(popupTopContainerComponent.getElement(), new FilmDetailsView(films[0]).getElement(), Position.BEFOREEND);
-// renderElement(popupTopContainerComponent.getElement(), new FilmControlsView(films[0]).getElement(), Position.BEFOREEND);
-// renderElement(
-//   popupBottomContainerComponent.getElement(),
-//   new CommentsListView(films[0], comments).getElement(),
-//   Position.AFTERBEGIN
-//   );
-// renderElement(
-//   popupBottomContainerComponent.getElement().querySelector(`.film-details__comments-wrap`),
-//   new NewCommentView().getElement(),
-//   Position.BEFOREEND
-// );
+  bodyElement.classList.add(`hide-overflow`);
+
+  const closeFilmDetailsPopup = () => {
+    filmDetailsPopupComponent.getElement().remove();
+    filmDetailsPopupComponent.removeElement();
+    bodyElement.classList.remove(`hide-overflow`)
+  }
+
+  const onEscapeKeydown = (evt) => {
+    if (evt.key === `Escape`) {
+      evt.preventDefault();
+      closeFilmDetailsPopup();
+      document.removeEventListener(`keydown`, onEscapeKeydown);
+    }
+  }
+
+  const onClosePopupButtonClick = () => {
+    closeFilmDetailsPopup();
+    document.removeEventListener(`keydown`, onEscapeKeydown);
+  }
+
+  renderElement(mainElement, filmDetailsPopupComponent.getElement(), Position.BEFOREEND);
+  renderElement(
+    filmDetailsPopupComponent.getElement().querySelector(`form`),
+    popupTopContainerComponent.getElement(),
+    Position.BEFOREEND
+  );
+  renderElement(
+    filmDetailsPopupComponent.getElement().querySelector(`form`),
+    popupBottomContainerComponent.getElement(),
+    Position.BEFOREEND
+  );
+  renderElement(popupTopContainerComponent.getElement(), new FilmDetailsView(film).getElement(), Position.BEFOREEND);
+  renderElement(popupTopContainerComponent.getElement(), new FilmControlsView(film).getElement(), Position.BEFOREEND);
+  renderElement(
+    popupBottomContainerComponent.getElement(),
+    new CommentsListView(film, comments).getElement(),
+    Position.AFTERBEGIN
+    );
+  renderElement(
+    popupBottomContainerComponent.getElement().querySelector(`.film-details__comments-wrap`),
+    new NewCommentView().getElement(),
+    Position.BEFOREEND
+  );
+
+  closePopupButton.addEventListener(`click`, onClosePopupButtonClick);
+  document.addEventListener(`keydown`, onEscapeKeydown);
+};

@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js"
+import {createElement} from "../utils/render.js";
 
 const createControlTemplate = (name, label, isChecked = false) => {
   return `<input
@@ -33,23 +33,23 @@ const createFilmControlsTemplate = (film) => {
 };
 
 export default class FilmControls {
-  constructor (film) {
+  constructor(film) {
     this._film = film;
     this._element = null;
   }
 
-  getTemplate () {
+  getTemplate() {
     return createFilmControlsTemplate(this._film);
   }
 
-  getElement () {
+  getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
     return this._element;
   }
 
-  removeElement () {
+  removeElement() {
     this._element = null;
   }
 }

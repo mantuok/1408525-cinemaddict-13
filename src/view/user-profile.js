@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js"
+import {createElement} from "../utils/render.js";
 
 const ProfileRating = {
   NONE: ``,
@@ -38,23 +38,23 @@ const createUserProfileTemplate = (watchedFilms) => {
 };
 
 export default class UserProfile {
-  constructor (watchedFilms) {
+  constructor(watchedFilms) {
     this._watchedFilms = watchedFilms;
     this._element = null;
   }
 
-  getTemplate () {
+  getTemplate() {
     return createUserProfileTemplate(this._watchedFilms);
   }
 
-  getElement () {
+  getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
     return this._element;
   }
 
-  removeElement () {
+  removeElement() {
     this._element = null;
   }
 }

@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js"
+import {createElement} from "../utils/render.js";
 
 const Emoji = {
   SMILE: `smile`,
@@ -40,7 +40,7 @@ export default class newComment {
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate())
+      this._element = createElement(this.getTemplate());
     }
     return this._element;
   }

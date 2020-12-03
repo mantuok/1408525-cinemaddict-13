@@ -1,5 +1,5 @@
 import {getFullDateFormat} from "../utils/day.js";
-import {createElement} from "../utils/render.js"
+import {createElement} from "../utils/render.js";
 
 const GenreTerm = {
   SINGLE: `Genre`,
@@ -57,23 +57,23 @@ const createFilmDetailsTemplate = (film) => {
 };
 
 export default class FilmDetails {
-  constructor (film) {
+  constructor(film) {
     this._film = film;
     this._element = null;
   }
 
-  getTemplate () {
+  getTemplate() {
     return createFilmDetailsTemplate(this._film);
   }
 
-  getElement () {
+  getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
     return this._element;
   }
 
-  removeElement () {
+  removeElement() {
     this._element = null;
   }
 }

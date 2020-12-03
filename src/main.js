@@ -45,7 +45,6 @@ const topCommentedFilms = [...films].sort((a, b) => b.comments.length - a.commen
 const topRatedFilms = [...films].sort((a, b) => b.rating - a.rating);
 const watchedFilms = films.filter((film) => film.isWatched);
 const comments = Array.from({length: COMMENT_COUNT}, generateComment);
-
 const filters = generateFilter(films);
 
 const headerElement = document.querySelector(`.header`);

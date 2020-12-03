@@ -1,7 +1,7 @@
 import {getYearFormat} from "../utils/day.js";
 import {getHourMinuteFormat} from "../utils/utils.js";
 import {getTruncatedText} from "../utils/utils.js";
-import {createElement} from "../utils/render.js"
+import {createElement} from "../utils/render.js";
 
 const DESCRIPTION_MAX_LENGTH = 140;
 const getFilterStatus = (isActive) => isActive ? `film-card__controls-item--active` : ``;
@@ -29,23 +29,23 @@ const createFilmCardTemplate = (film) => {
 };
 
 export default class FilmCard {
-  constructor (film) {
+  constructor(film) {
     this._film = film;
     this._element = null;
   }
 
-  getTemplate () {
+  getTemplate() {
     return createFilmCardTemplate(this._film);
   }
 
-  getElement () {
+  getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
     return this._element;
   }
 
-  removeElement () {
+  removeElement() {
     this._element = null;
   }
 }

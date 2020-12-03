@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js"
+import {createElement} from "../utils/render.js";
 
 const createPopupTopConainerTemplate = () => {
   return `<div class="film-details__top-container">
@@ -19,7 +19,7 @@ export default class PopupTopConainer {
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate())
+      this._element = createElement(this.getTemplate());
     }
     return this._element;
   }

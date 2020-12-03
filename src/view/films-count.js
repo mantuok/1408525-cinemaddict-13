@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js"
+import {createElement} from "../utils/render.js";
 
 const createFilmsCountTemplate = (filmCount) => (
   `<section class="footer__statistics">
@@ -7,23 +7,23 @@ const createFilmsCountTemplate = (filmCount) => (
 );
 
 export default class FilmsCount {
-  constructor (filmCount) {
+  constructor(filmCount) {
     this._filmCount = filmCount;
     this._element = null;
-  };
+  }
 
   getTemplate() {
     return createFilmsCountTemplate(this._filmCount);
-  };
+  }
 
   getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
     return this._element;
-  };
+  }
 
   removeElement() {
     this._element = null;
-  };
-};
+  }
+}

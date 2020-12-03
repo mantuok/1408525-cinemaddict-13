@@ -67,26 +67,24 @@ renderElement(filmsListsContainerComponent.getElement(), topCommentedFilmsListCo
 renderElement(mainFilmsListComponent.getElement(), showMoreButtonComponent.getElement(), Position.BEFOREEND);
 renderElement(footerElement, new FilmsCountView(films.length).getElement(), Position.BEFOREEND);
 
+const renderFilmCard = (film, filmsListComponent) => {
+  const filmCardComponent = new FilmCardView(film);
+  renderElement(filmsListComponent.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
+  Array.from(filmCardComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
+    .forEach((element) => element.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      renderFilmDetailsPopup(film);
+    }))
+}
+
 const renderMainFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
   if ((films.length - filmToRenderCursor) > FilmRenderStep) {
     for (let i = filmToRenderCursor; i < (FilmRenderStep + filmToRenderCursor); i++) {
-      const filmCardComponent = new FilmCardView(films[i]);
-      renderElement(filmsListComponent.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
-      Array.from(filmCardComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
-        .forEach((element) => element.addEventListener(`click`, (evt) => {
-          evt.preventDefault();
-          renderFilmDetailsPopup(films[i]);
-        }))
+      renderFilmCard(films[i], filmsListComponent);
     }
   } else {
     for (let i = filmToRenderCursor; i < films.length; i++) {
-      const filmCardComponent = new FilmCardView(films[i]);
-      renderElement(filmsListComponent.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
-      Array.from(filmCardComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
-      .forEach((element) => element.addEventListener(`click`, (evt) => {
-        evt.preventDefault();
-        renderFilmDetailsPopup(films[i]);
-      }))
+      renderFilmCard(films[i], filmsListComponent);
       showMoreButtonComponent.getElement().removeEventListener(`click`, onShowMoreButtonComponentClick);
       showMoreButtonComponent.getElement().classList.add(`visually-hidden`)
     }
@@ -96,13 +94,7 @@ const renderMainFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
 
 const renderTopFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
   for (let i = 0; i < FilmRenderStep; i++) {
-    const filmCardComponent = new FilmCardView(films[i])
-    renderElement(filmsListComponent.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
-    Array.from(filmCardComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
-    .forEach((element) => element.addEventListener(`click`, (evt) => {
-      evt.preventDefault();
-      renderFilmDetailsPopup(films[i]);
-    }))
+    renderFilmCard(films[i], filmsListComponent);
   }
 };
 

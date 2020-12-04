@@ -1,19 +1,24 @@
 import {createElement} from "../utils/render.js";
 
-const FilmsListName = {
+export const FilmsListType = {
   MAIN: `All movies. Upcoming`,
   TOP_RATED: `Top rated`,
-  TOM_COMMENTED: `Most commented`
+  TOP_COMMENTED: `Most commented`
 };
 
-const TOP_LIST = `films-list--extra`;
+const FilmListClass = {
+  [FilmsListType.MAIN]: `films-list`,
+  [FilmsListType.TOP_RATED]: `films-list films-list--extra`,
+  [FilmsListType.TOP_COMMENTED]: `films-list films-list--extra`
+};
+
 
 const createFilmsListTemplate = (filmsListType) => {
-  return `<section class="films-list ${filmsListType !== FilmsListName.MAIN ? TOP_LIST : ``}">
+  return `<section class="${FilmListClass[filmsListType]}">
     <h2 class="films-list__title visually-hidden">${filmsListType}</h2>
     <div class="films-list__container">
   </div>
-    </section>`;
+  </section>`;
 };
 
 export default class FilmsList {

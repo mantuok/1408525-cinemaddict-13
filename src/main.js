@@ -3,7 +3,7 @@ import MainNavigationView from "./view/main-navigation.js";
 import SortingMenuView from "./view/sorting-menu.js";
 import FilmsListsContainerView from "./view/films-lists-container.js";
 import FilmsListView from "./view/films-list.js";
-import ShowMoreButtonView from "./view/show-more.js";
+import ShowMoreButtonView from "./view/show-more-button.js";
 import FilmCardView from "./view/film-card.js";
 import FilmsCountView from "./view/films-count.js";
 import FilmDetailsPopupView from "./view/film-details-popup.js";
@@ -17,6 +17,8 @@ import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
 import {renderElement, Position} from "./utils/render.js";
+import {isEscapeKey} from "./utils/utils.js";
+import {FilmsListType} from  "./view/films-list.js"
 
 const FilmCount = {
   MAIN: 17,
@@ -32,12 +34,6 @@ const FilmRenderStep = {
   TOP_COMMENTED: 2
 };
 
-const FilmsListType = {
-  MAIN: `All movies. Upcoming`,
-  TOP_RATED: `Top rated`,
-  TOP_COMMENTED: `Most commented`
-};
-
 let filmToRenderCursor = 0;
 
 const films = Array.from({length: FilmCount.MAIN}, generateFilm);
@@ -47,6 +43,7 @@ const watchedFilms = films.filter((film) => film.isWatched);
 const comments = Array.from({length: COMMENT_COUNT}, generateComment);
 const filters = generateFilter(films);
 
+const bodyElement = document.querySelector(`body`);
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
@@ -66,9 +63,9 @@ renderElement(filmsListsContainerComponent.getElement(), topCommentedFilmsListCo
 renderElement(mainFilmsListComponent.getElement(), showMoreButtonComponent.getElement(), Position.BEFOREEND);
 renderElement(footerElement, new FilmsCountView(films.length).getElement(), Position.BEFOREEND);
 
-const renderFilmCard = (film, filmsListComponent) => {
+const renderFilmCard = (film, filmsListElement) => {
   const filmCardComponent = new FilmCardView(film);
-  renderElement(filmsListComponent.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
+  renderElement(filmsListElement.querySelector(`div`), filmCardComponent.getElement(), Position.BEFOREEND);
   Array.from(filmCardComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
     .forEach((element) => element.addEventListener(`click`, (evt) => {
       evt.preventDefault();
@@ -76,14 +73,14 @@ const renderFilmCard = (film, filmsListComponent) => {
     }))
 }
 
-const renderMainFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
+const renderMainFilmsCards = (FilmRenderStep, filmsListElement, films) => {
   if ((films.length - filmToRenderCursor) > FilmRenderStep) {
     for (let i = filmToRenderCursor; i < (FilmRenderStep + filmToRenderCursor); i++) {
-      renderFilmCard(films[i], filmsListComponent);
+      renderFilmCard(films[i], filmsListElement);
     }
   } else {
     for (let i = filmToRenderCursor; i < films.length; i++) {
-      renderFilmCard(films[i], filmsListComponent);
+      renderFilmCard(films[i], filmsListElement);
       showMoreButtonComponent.getElement().removeEventListener(`click`, onShowMoreButtonComponentClick);
       showMoreButtonComponent.getElement().classList.add(`visually-hidden`)
     }
@@ -91,9 +88,9 @@ const renderMainFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
   filmToRenderCursor += FilmRenderStep;
 };
 
-const renderTopFilmsCards = (FilmRenderStep, filmsListComponent, films) => {
+const renderTopFilmsCards = (FilmRenderStep, filmsListElement, films) => {
   for (let i = 0; i < FilmRenderStep; i++) {
-    renderFilmCard(films[i], filmsListComponent);
+    renderFilmCard(films[i], filmsListElement);
   }
 };
 
@@ -109,56 +106,47 @@ showMoreButtonComponent.getElement().addEventListener(`click`, onShowMoreButtonC
 
 const renderFilmDetailsPopup = (film) => {
   const filmDetailsPopupComponent = new FilmDetailsPopupView();
+  const filmDetailsPopupElement = filmDetailsPopupComponent.getElement();
+  const filmDetailsFormElement = filmDetailsPopupElement.querySelector(`form`);
   const popupTopContainerComponent = new PopupTopContainerView();
+  const popupTopContainerElement = popupTopContainerComponent.getElement();
   const popupBottomContainerComponent = new PopupBottomContainerView();
-  const closePopupButton = popupTopContainerComponent.getElement().querySelector(`.film-details__close-btn`);
-  const bodyElement = document.querySelector(`body`);
+  const popupBottomContainerElement = popupBottomContainerComponent.getElement();
+  const closePopupButtonElement = popupTopContainerComponent.getElement().querySelector(`.film-details__close-btn`);
 
   bodyElement.classList.add(`hide-overflow`);
 
   const closeFilmDetailsPopup = () => {
-    filmDetailsPopupComponent.getElement().remove();
+    filmDetailsPopupElement.remove();
     filmDetailsPopupComponent.removeElement();
     bodyElement.classList.remove(`hide-overflow`)
   }
 
   const onEscapeKeydown = (evt) => {
-    if (evt.key === `Escape`) {
+    if (isEscapeKey(evt.key)) {
       evt.preventDefault();
       closeFilmDetailsPopup();
       document.removeEventListener(`keydown`, onEscapeKeydown);
     }
   }
 
-  const onClosePopupButtonClick = () => {
+  const onClosePopupButtonElementClick = () => {
     closeFilmDetailsPopup();
     document.removeEventListener(`keydown`, onEscapeKeydown);
   }
 
-  renderElement(mainElement, filmDetailsPopupComponent.getElement(), Position.BEFOREEND);
+  renderElement(mainElement, filmDetailsPopupElement, Position.BEFOREEND);
+  renderElement(filmDetailsFormElement, popupTopContainerElement, Position.BEFOREEND);
+  renderElement(filmDetailsFormElement, popupBottomContainerElement, Position.BEFOREEND);
+  renderElement(popupTopContainerElement, new FilmDetailsView(film).getElement(), Position.BEFOREEND);
+  renderElement(popupTopContainerElement, new FilmControlsView(film).getElement(), Position.BEFOREEND);
+  renderElement(popupBottomContainerElement, new CommentsListView(film, comments).getElement(), Position.AFTERBEGIN);
   renderElement(
-    filmDetailsPopupComponent.getElement().querySelector(`form`),
-    popupTopContainerComponent.getElement(),
-    Position.BEFOREEND
-  );
-  renderElement(
-    filmDetailsPopupComponent.getElement().querySelector(`form`),
-    popupBottomContainerComponent.getElement(),
-    Position.BEFOREEND
-  );
-  renderElement(popupTopContainerComponent.getElement(), new FilmDetailsView(film).getElement(), Position.BEFOREEND);
-  renderElement(popupTopContainerComponent.getElement(), new FilmControlsView(film).getElement(), Position.BEFOREEND);
-  renderElement(
-    popupBottomContainerComponent.getElement(),
-    new CommentsListView(film, comments).getElement(),
-    Position.AFTERBEGIN
-    );
-  renderElement(
-    popupBottomContainerComponent.getElement().querySelector(`.film-details__comments-wrap`),
+    popupBottomContainerElement.querySelector(`.film-details__comments-wrap`),
     new NewCommentView().getElement(),
     Position.BEFOREEND
   );
 
-  closePopupButton.addEventListener(`click`, onClosePopupButtonClick);
+  closePopupButtonElement.addEventListener(`click`, onClosePopupButtonElementClick);
   document.addEventListener(`keydown`, onEscapeKeydown);
 };

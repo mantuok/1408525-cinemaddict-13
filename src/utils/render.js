@@ -3,11 +3,7 @@ export const Position = {
   BEFOREEND: `beforeend`
 };
 
-export const renderTemplate = (container, template, position) => {
-  container.insertAdjacentHTML(position, template);
-};
-
-export const renderElement = (container, element, position) => {
+export const renderElement = (container, element, position = Position.BEFOREEND) => {
   switch (position) {
     case Position.AFTERBEGIN:
       container.prepend(element);
@@ -15,6 +11,8 @@ export const renderElement = (container, element, position) => {
     case Position.BEFOREEND:
       container.append(element);
       break;
+    default:
+      throw new Error(`Unknown render position ${position}`);
   }
 };
 

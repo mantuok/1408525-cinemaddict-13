@@ -18,7 +18,7 @@ import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
 import {renderElement, Position} from "./utils/render.js";
 import {isEscapeKey} from "./utils/utils.js";
-import {FilmsListType} from  "./view/films-list.js"
+import {FilmsListType} from "./utils/const.js";
 
 const FilmCount = {
   MAIN: 17,

@@ -9,4 +9,4 @@ export const getTruncatedText = (text, maxLength) =>
   text.length > maxLength
     ? `${text.slice(0, maxLength - 1)}...`
     : text;
-export const isEscapeKey = (key) => key === KeyboardKey.ESCAPE ? true : false;
+export const isEscapeKey = (key) => key === KeyboardKey.ESCAPE;

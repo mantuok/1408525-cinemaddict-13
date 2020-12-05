@@ -1,17 +1,11 @@
 import {createElement} from "../utils/render.js";
-
-export const FilmsListType = {
-  MAIN: `All movies. Upcoming`,
-  TOP_RATED: `Top rated`,
-  TOP_COMMENTED: `Most commented`
-};
+import {FilmsListType} from "../utils/const.js";
 
 const FilmListClass = {
   [FilmsListType.MAIN]: `films-list`,
   [FilmsListType.TOP_RATED]: `films-list films-list--extra`,
   [FilmsListType.TOP_COMMENTED]: `films-list films-list--extra`
 };
-
 
 const createFilmsListTemplate = (filmsListType) => {
   return `<section class="${FilmListClass[filmsListType]}">
@@ -22,13 +16,13 @@ const createFilmsListTemplate = (filmsListType) => {
 };
 
 export default class FilmsList {
-  constructor(filmsListType) {
-    this._filmsListType = filmsListType;
+  constructor(type) {
+    this._type = type;
     this._element = null;
   }
 
   getTemplate() {
-    return createFilmsListTemplate(this._filmsListType);
+    return createFilmsListTemplate(this._type);
   }
 
   getElement() {

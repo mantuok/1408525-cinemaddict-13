@@ -7,13 +7,13 @@ const createFilmsCountTemplate = (filmCount) => (
 );
 
 export default class FilmsCount {
-  constructor(filmCount) {
-    this._filmCount = filmCount;
+  constructor(value) {
+    this._value = value;
     this._element = null;
   }
 
   getTemplate() {
-    return createFilmsCountTemplate(this._filmCount);
+    return createFilmsCountTemplate(this._value);
   }
 
   getElement() {

@@ -1,4 +1,5 @@
 import {getFullDateFormat} from "../utils/day.js";
+import {createElement} from "../utils/render.js";
 
 const GenreTerm = {
   SINGLE: `Genre`,
@@ -24,7 +25,8 @@ const createFilmDetailTemplate = (term, value) => (
     <td class="film-details__cell">${value}</td>
   </tr>`
 );
-export const createFilmDetailsTemplate = (film) => {
+
+const createFilmDetailsTemplate = (film) => {
   return `<div class="film-details__info-wrap">
   <div class="film-details__poster">
     <img class="film-details__poster-img" src="${film.poster}" alt="">
@@ -53,3 +55,25 @@ export const createFilmDetailsTemplate = (film) => {
   </div>
 </div>`;
 };
+
+export default class FilmDetails {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,17 +1,17 @@
 import {createElement} from "../utils/render.js";
 
-const createFilmsListsContainerTemplate = () => {
-  return `<section class="films">
-  </section>`;
+const createPopupBottomConainerTemplate = () => {
+  return `<div class="film-details__bottom-container">
+</div>`;
 };
 
-export default class FilmsListsContainer {
+export default class PopupBottomConainer {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createFilmsListsContainerTemplate();
+    return createPopupBottomConainerTemplate();
   }
 
   getElement() {

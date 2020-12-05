@@ -1,17 +1,16 @@
 import {createElement} from "../utils/render.js";
 
-const createFilmsListsContainerTemplate = () => {
-  return `<section class="films">
-  </section>`;
+const createShowMoreButtonTemplate = () => {
+  return `<button class="films-list__show-more">Show more</button>`;
 };
 
-export default class FilmsListsContainer {
+export default class ShowMoreButton {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createFilmsListsContainerTemplate();
+    return createShowMoreButtonTemplate();
   }
 
   getElement() {

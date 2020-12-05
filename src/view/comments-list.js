@@ -1,3 +1,5 @@
+import {createElement} from "../utils/render.js";
+
 const createFilmCommentTemplate = (film, comments) => {
   const filmComments = comments.filter((comment) => film.comments.includes(comment.id));
   return filmComments.map((comment) =>
@@ -17,9 +19,32 @@ const createFilmCommentTemplate = (film, comments) => {
     .join(``);
 };
 
-export const createCommentsListTemplate = (film, comments) => {
-  return `<h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film.comments.length}</span></h3>
-  <ul class="film-details__comments-list">
-  ${createFilmCommentTemplate(film, comments)}
-  </ul>`;
+const createCommentsListTemplate = (film, comments) => {
+  return `<section class="film-details__comments-wrap">
+  <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film.comments.length}</span>
+  </h3><ul class="film-details__comments-list">${createFilmCommentTemplate(film, comments)}</ul>
+  </section>`;
 };
+
+export default class CommentsList {
+  constructor(film, comments) {
+    this._film = film;
+    this._comments = comments;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCommentsListTemplate(this._film, this._comments);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

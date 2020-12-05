@@ -1,3 +1,5 @@
+import {createElement} from "../utils/render.js";
+
 const Emoji = {
   SMILE: `smile`,
   SLEEPING: `sleeping`,
@@ -12,7 +14,7 @@ const createEmojiItemTemplate = (emoji) => {
     </label>`;
 };
 
-export const createNewCommentTemplate = () => {
+const createNewCommentTemplate = () => {
   return `<div class="film-details__new-comment">
   <div class="film-details__add-emoji-label"></div>
   <label class="film-details__comment-label">
@@ -26,3 +28,24 @@ export const createNewCommentTemplate = () => {
   </div>
 </div>`;
 };
+
+export default class newComment {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createNewCommentTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

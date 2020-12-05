@@ -1,4 +1,5 @@
 const MINUTE_IN_HOUR = 60;
+const EMPTY_LIST_COUNT = 0;
 const KeyboardKey = {
   ESCAPE: `Escape`
 };
@@ -10,3 +11,4 @@ export const getTruncatedText = (text, maxLength) =>
     ? `${text.slice(0, maxLength - 1)}...`
     : text;
 export const isEscapeKey = (key) => key === KeyboardKey.ESCAPE;
+export const isEmptyList = (list) => list.length === EMPTY_LIST_COUNT;

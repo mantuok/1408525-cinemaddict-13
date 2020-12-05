@@ -13,15 +13,17 @@ import FilmDetailsView from "./view/film-details.js";
 import FilmControlsView from "./view/film-controls.js";
 import CommentsListView from "./view/comments-list.js";
 import NewCommentView from "./view/new-comment.js";
+import EmptyFilmsListView from "./view/epmty-films-list.js";
 import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
 import {renderElement, Position} from "./utils/render.js";
 import {isEscapeKey} from "./utils/utils.js";
 import {FilmsListType} from "./utils/const.js";
+import {isEmptyList} from "./utils/utils.js";
 
 const FilmCount = {
-  MAIN: 17,
+  MAIN: 19,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 };
@@ -48,20 +50,11 @@ const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 const filmsListsContainerComponent = new FilmsListsContainerView();
+const filmsListsContainerElement = filmsListsContainerComponent.getElement()
 const mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
 const topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
 const topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
 const showMoreButtonComponent = new ShowMoreButtonView();
-
-renderElement(headerElement, new UserProfileView(watchedFilms).getElement(), Position.BEFOREEND);
-renderElement(mainElement, new MainNavigationView(filters).getElement(), Position.BEFOREEND);
-renderElement(mainElement, new SortingMenuView().getElement(), Position.BEFOREEND);
-renderElement(mainElement, filmsListsContainerComponent.getElement(), Position.BEFOREEND);
-renderElement(filmsListsContainerComponent.getElement(), mainFilmsListComponent.getElement(), Position.BEFOREEND);
-renderElement(filmsListsContainerComponent.getElement(), topRatedFilmsListComponent.getElement(), Position.BEFOREEND);
-renderElement(filmsListsContainerComponent.getElement(), topCommentedFilmsListComponent.getElement(), Position.BEFOREEND);
-renderElement(mainFilmsListComponent.getElement(), showMoreButtonComponent.getElement(), Position.BEFOREEND);
-renderElement(footerElement, new FilmsCountView(films.length).getElement(), Position.BEFOREEND);
 
 const renderFilmCard = (film, filmsListElement) => {
   const filmCardComponent = new FilmCardView(film);
@@ -97,12 +90,6 @@ const renderTopFilmsCards = (FilmRenderStep, filmsListElement, films) => {
 const onShowMoreButtonComponentClick = () => {
   renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListComponent.getElement(), films);
 };
-
-renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListComponent.getElement(), films);
-renderTopFilmsCards(FilmRenderStep.TOP_RATED, topRatedFilmsListComponent.getElement(), topRatedFilms);
-renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListComponent.getElement(), topCommentedFilms);
-
-showMoreButtonComponent.getElement().addEventListener(`click`, onShowMoreButtonComponentClick);
 
 const renderFilmDetailsPopup = (film) => {
   const filmDetailsPopupComponent = new FilmDetailsPopupView();
@@ -150,3 +137,21 @@ const renderFilmDetailsPopup = (film) => {
   closePopupButtonElement.addEventListener(`click`, onClosePopupButtonElementClick);
   document.addEventListener(`keydown`, onEscapeKeydown);
 };
+
+renderElement(headerElement, new UserProfileView(watchedFilms).getElement(), Position.BEFOREEND);
+renderElement(mainElement, new MainNavigationView(filters).getElement(), Position.BEFOREEND);
+renderElement(mainElement, new SortingMenuView().getElement(), Position.BEFOREEND);
+renderElement(mainElement, filmsListsContainerComponent.getElement(), Position.BEFOREEND);
+renderElement(footerElement, new FilmsCountView(films.length).getElement(), Position.BEFOREEND);
+if (isEmptyList(films)) {
+  renderElement(filmsListsContainerElement, new EmptyFilmsListView().getElement(), Position.BEFOREEND);
+} else {
+  renderElement(filmsListsContainerElement, mainFilmsListComponent.getElement(), Position.BEFOREEND);
+  renderElement(filmsListsContainerElement, topRatedFilmsListComponent.getElement(), Position.BEFOREEND);
+  renderElement(filmsListsContainerElement, topCommentedFilmsListComponent.getElement(), Position.BEFOREEND);
+  renderElement(mainFilmsListComponent.getElement(), showMoreButtonComponent.getElement(), Position.BEFOREEND);
+  renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListComponent.getElement(), films);
+  renderTopFilmsCards(FilmRenderStep.TOP_RATED, topRatedFilmsListComponent.getElement(), topRatedFilms);
+  renderTopFilmsCards(FilmRenderStep.TOP_COMMENTED, topCommentedFilmsListComponent.getElement(), topCommentedFilms);
+  showMoreButtonComponent.getElement().addEventListener(`click`, onShowMoreButtonComponentClick);
+}

@@ -18,9 +18,11 @@ import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
 import {renderElement, Position} from "./utils/render.js";
-import {isEscapeKey} from "./utils/utils.js";
+import {
+  isEscapeKey,
+  isEmptyList
+} from "./utils/utils.js";
 import {FilmsListType} from "./utils/const.js";
-import {isEmptyList} from "./utils/utils.js";
 
 const FilmCount = {
   MAIN: 19,
@@ -54,6 +56,7 @@ const filmsListsContainerElement = filmsListsContainerComponent.getElement()
 const mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
 const topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
 const topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
+const emptyFilmsListComponent = new FilmsListView(FilmsListType.EMPTY);
 const showMoreButtonComponent = new ShowMoreButtonView();
 
 const renderFilmCard = (film, filmsListElement) => {
@@ -143,7 +146,7 @@ renderElement(mainElement, new SortingMenuView().getElement());
 renderElement(mainElement, filmsListsContainerComponent.getElement());
 renderElement(footerElement, new FilmsCountView(films.length).getElement());
 if (isEmptyList(films)) {
-  renderElement(filmsListsContainerElement, new EmptyFilmsListView().getElement());
+  renderElement(filmsListsContainerElement, emptyFilmsListComponent.getElement());
 } else {
   renderElement(filmsListsContainerElement, mainFilmsListComponent.getElement());
   renderElement(filmsListsContainerElement, topRatedFilmsListComponent.getElement());

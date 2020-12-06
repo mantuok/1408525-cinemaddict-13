@@ -13,7 +13,6 @@ import FilmDetailsView from "./view/film-details.js";
 import FilmControlsView from "./view/film-controls.js";
 import CommentsListView from "./view/comments-list.js";
 import NewCommentView from "./view/new-comment.js";
-import EmptyFilmsListView from "./view/epmty-films-list.js";
 import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";

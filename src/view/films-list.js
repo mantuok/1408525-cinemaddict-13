@@ -1,5 +1,5 @@
-import {createElement} from "../utils/render.js";
 import {FilmsListType} from "../utils/const.js";
+import AbstractView from "./abstract.js";
 
 const createFilmsListTemplate = (filmsListType) => {
   return `<section class="films-list ${filmsListType.isExtra ? `films-list--extra` : ``}">
@@ -8,24 +8,13 @@ const createFilmsListTemplate = (filmsListType) => {
   </section>`;
 };
 
-export default class FilmsList {
+export default class FilmsList extends AbstractView {
   constructor(type) {
+    super();
     this._type = type;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmsListTemplate(this._type);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

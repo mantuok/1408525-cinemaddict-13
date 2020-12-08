@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js";
+import AbstractView from "./abstract.js"
 
 const createControlTemplate = (name, label, isChecked = false) => {
   return `<input
@@ -32,24 +32,13 @@ const createFilmControlsTemplate = (film) => {
   </section>`;
 };
 
-export default class FilmControls {
+export default class FilmControls extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmControlsTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

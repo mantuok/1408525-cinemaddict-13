@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js";
+import AbstractView from "./abstract.js"
 
 const createSortingMenuTemplate = () => {
   return `<ul class="sort">
@@ -8,23 +8,8 @@ const createSortingMenuTemplate = () => {
 </ul>`;
 };
 
-export default class SortingMenu {
-  constructor() {
-    this._element = null;
-  }
-
+export default class SortingMenu extends AbstractView {
   getTemplate() {
     return createSortingMenuTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

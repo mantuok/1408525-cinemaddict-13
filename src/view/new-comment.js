@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js";
+import AbstractView from "./abstract.js"
 
 const Emoji = {
   SMILE: `smile`,
@@ -29,23 +29,8 @@ const createNewCommentTemplate = () => {
 </div>`;
 };
 
-export default class newComment {
-  constructor() {
-    this._element = null;
-  }
-
+export default class newComment extends AbstractView {
   getTemplate() {
     return createNewCommentTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

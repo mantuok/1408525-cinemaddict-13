@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js"
+import AbstractView from "./abstract.js";
 
 const createFilmDetailsPopupTemplate = () => {
   return `<section class="film-details">
@@ -10,5 +10,9 @@ const createFilmDetailsPopupTemplate = () => {
 export default class FilmDetailsPopup extends AbstractView {
   getTemplate() {
     return createFilmDetailsPopupTemplate();
+  }
+
+  getFormElement() {
+    return this.getElement().querySelector(`form`);
   }
 }

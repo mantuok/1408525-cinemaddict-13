@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js"
+import AbstractView from "./abstract.js";
 
 const createFilmCommentTemplate = (film, comments) => {
   const filmComments = comments.filter((comment) => film.comments.includes(comment.id));
@@ -20,10 +20,7 @@ const createFilmCommentTemplate = (film, comments) => {
 };
 
 const createCommentsListTemplate = (film, comments) => {
-  return `<section class="film-details__comments-wrap">
-  <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film.comments.length}</span>
-  </h3><ul class="film-details__comments-list">${createFilmCommentTemplate(film, comments)}</ul>
-  </section>`;
+  return `<ul class="film-details__comments-list">${createFilmCommentTemplate(film, comments)}</ul>`;
 };
 
 export default class CommentsList extends AbstractView {

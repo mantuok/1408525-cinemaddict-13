@@ -1,7 +1,7 @@
 import {getYearFormat} from "../utils/day.js";
 import {getHourMinuteFormat} from "../utils/utils.js";
 import {getTruncatedText} from "../utils/utils.js";
-import AbstractView from "./abstract.js"
+import AbstractView from "./abstract.js";
 
 const DESCRIPTION_MAX_LENGTH = 140;
 const getFilterStatus = (isActive) => isActive ? `film-card__controls-item--active` : ``;
@@ -32,9 +32,25 @@ export default class FilmCard extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
+    this._clickHandler = this._clickHandler.bind(this);
   }
-  
+
   getTemplate() {
     return createFilmCardTemplate(this._film);
+  }
+
+  _clickHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
+  }
+
+  setClickHandler(callback) {
+    this._callback.click = callback;
+    Array.from(
+        this.getElement()
+        .querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`))
+    .forEach((element) => {
+      element.addEventListener(`click`, this._clickHandler);
+    });
   }
 }

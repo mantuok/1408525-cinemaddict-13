@@ -11,22 +11,22 @@ const createPopupTopConainerTemplate = () => {
 export default class PopupTopConainer extends AbstractView {
   constructor() {
     super();
-    this._clickHandler = this._clickHandler.bind(this);
+    this._closeButtonClickHandler = this._closeButtonClickHandler.bind(this);
   }
 
   getTemplate() {
     return createPopupTopConainerTemplate();
   }
 
-  _clickHandler(evt) {
-    evt.preventDefault();
-    this._callback.click();
-  }
-
-  setClosePopupButtonClickHandler(callback) {
+  setCloseButtonClickHandler(callback) {
     this._callback.click = callback;
     this.getElement()
       .querySelector(`.film-details__close-btn`)
-      .addEventListener(`click`, this._clickHandler);
+      .addEventListener(`click`, this._closeButtonClickHandler);
+  }
+
+  _closeButtonClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
   }
 }

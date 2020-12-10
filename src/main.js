@@ -77,7 +77,7 @@ const renderMainFilmsCards = (FilmRenderStep, filmsListContainerElement, films) 
     for (let i = filmToRenderCursor; i < films.length; i++) {
       renderFilmCard(films[i], filmsListContainerElement);
       showMoreButtonComponent.removeClickHandler();
-      showMoreButtonComponent.setVisuallyHidden();
+      showMoreButtonComponent.hide();
     }
   }
   filmToRenderCursor += FilmRenderStep;
@@ -90,7 +90,7 @@ const renderTopFilmsCards = (FilmRenderStep, filmsListContainerElement, films) =
 };
 
 const onShowMoreButtonComponentClick = () => {
-  renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListComponent.getElement(), films);
+  renderMainFilmsCards(FilmRenderStep.MAIN, mainFilmsListComponent.getContainerElement(), films);
 };
 
 const renderFilmDetailsPopup = (film) => {
@@ -111,17 +111,17 @@ const renderFilmDetailsPopup = (film) => {
     bodyElement.classList.remove(`hide-overflow`)
   }
 
-  const onEscapeKeydown = (evt) => {
+  const escapeKeydownHandler = (evt) => {
     if (isEscapeKey(evt.key)) {
       evt.preventDefault();
       closeFilmDetailsPopup();
-      document.removeEventListener(`keydown`, onEscapeKeydown);
+      document.removeEventListener(`keydown`, escapeKeydownHandler);
     }
   }
 
-  const onClosePopupButtonClick = () => {
+  const closePopupButtonClickHandler = () => {
     closeFilmDetailsPopup();
-    document.removeEventListener(`keydown`, onEscapeKeydown);
+    document.removeEventListener(`keydown`, escapeKeydownHandler);
   }
 
   renderElement(mainElement, filmDetailsPopupElement);
@@ -132,9 +132,9 @@ const renderFilmDetailsPopup = (film) => {
   renderElement(commentsContainerElement, new CommentsTitleView(film).getElement());
   renderElement(commentsContainerElement, new CommentsListView(film, comments).getElement());
   renderElement(commentsContainerElement, new NewCommentView().getElement());
-  
-  popupTopContainerComponent.setClosePopupButtonClickHandler(onClosePopupButtonClick);
-  document.addEventListener(`keydown`, onEscapeKeydown);
+
+  popupTopContainerComponent.setCloseButtonClickHandler(closePopupButtonClickHandler);
+  document.addEventListener(`keydown`, escapeKeydownHandler);
 };
 
 renderElement(headerElement, new UserProfileView(watchedFilms).getElement());
@@ -151,17 +151,17 @@ if (isEmptyList(films)) {
   renderElement(mainFilmsListComponent.getElement(), showMoreButtonComponent.getElement());
   renderMainFilmsCards(
     FilmRenderStep.MAIN,
-    mainFilmsListComponent.getFilmsListContainerElement(),
+    mainFilmsListComponent.getContainerElement(),
     films
   );
   renderTopFilmsCards(
     FilmRenderStep.TOP_RATED,
-    topRatedFilmsListComponent.getFilmsListContainerElement(),
+    topRatedFilmsListComponent.getContainerElement(),
     topRatedFilms
   );
   renderTopFilmsCards(
     FilmRenderStep.TOP_COMMENTED,
-    topCommentedFilmsListComponent.getFilmsListContainerElement(),
+    topCommentedFilmsListComponent.getContainerElement(),
     topCommentedFilms
   );
   showMoreButtonComponent.setClickHandler(onShowMoreButtonComponentClick);

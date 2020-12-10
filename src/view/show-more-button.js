@@ -14,9 +14,8 @@ export default class ShowMoreButton extends AbstractView {
     return createShowMoreButtonTemplate();
   }
 
-  _clickHandler(evt) {
-    evt.preventDefault();
-    this._callback.click();
+  hide() {
+    this.getElement().classList.add(`visually-hidden`);
   }
 
   setClickHandler(callback) {
@@ -28,7 +27,8 @@ export default class ShowMoreButton extends AbstractView {
     this.getElement().removeEventListener(`click`, this._clickHandler);
   }
 
-  setVisuallyHidden() {
-    this.getElement().classList.add(`visually-hidden`);
+  _clickHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
   }
 }

@@ -1,5 +1,5 @@
 import {changeFirstCharToUppercase} from "../utils/utils.js";
-import {createElement} from "../utils/render.js";
+import AbstractView from "./abstract.js";
 
 const createFilterTemplate = (filters) => filters.map((filter) =>
   `<a href="#${filter.name}" class="main-navigation__item">
@@ -15,25 +15,14 @@ const createMainNavigationTemplate = (filters) => {
 </nav>`;
 };
 
-export default class MainNavigation {
+export default class MainNavigation extends AbstractView {
   constructor(filters) {
+    super();
     this._filters = filters;
-    this._element = null;
   }
 
   getTemplate() {
     return createMainNavigationTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

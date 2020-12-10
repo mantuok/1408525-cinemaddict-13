@@ -1,4 +1,16 @@
-import {createElement} from "../utils/render.js";
+import AbstractView from "./abstract.js";
+
+const ControlName = {
+  WATCHLIST: `watchlist`,
+  FAVORITE: `favorite`,
+  WATCHED: `watched`,
+};
+
+const ControlNameLabel = {
+  [ControlName.WATCHLIST]: `Add to watchlist`,
+  [ControlName.FAVORITE]: `Add to favorites`,
+  [ControlName.WATCHED]: `Already watched`,
+};
 
 const createControlTemplate = (name, label, isChecked = false) => {
   return `<input
@@ -13,18 +25,6 @@ const createControlTemplate = (name, label, isChecked = false) => {
 const createFilmControlsTemplate = (film) => {
   const {isInWatchlist, isFavourite, isWatched} = film;
 
-  const ControlName = {
-    WATCHLIST: `watchlist`,
-    FAVORITE: `favorite`,
-    WATCHED: `watched`,
-  };
-
-  const ControlNameLabel = {
-    [ControlName.WATCHLIST]: `Add to watchlist`,
-    [ControlName.FAVORITE]: `Add to favorites`,
-    [ControlName.WATCHED]: `Already watched`,
-  };
-
   return `<section class="film-details__controls">
     ${createControlTemplate(ControlName.WATCHLIST, ControlNameLabel[ControlName.WATCHLIST], isInWatchlist)}
     ${createControlTemplate(ControlName.WATCHED, ControlNameLabel[ControlName.WATCHED], isWatched)}
@@ -32,24 +32,13 @@ const createFilmControlsTemplate = (film) => {
   </section>`;
 };
 
-export default class FilmControls {
+export default class FilmControls extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmControlsTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render.js";
+import AbstractView from "./abstract.js";
 
 const createPopupTopConainerTemplate = () => {
   return `<div class="film-details__top-container">
@@ -8,23 +8,25 @@ const createPopupTopConainerTemplate = () => {
 </div>`;
 };
 
-export default class PopupTopConainer {
+export default class PopupTopConainer extends AbstractView {
   constructor() {
-    this._element = null;
+    super();
+    this._closeButtonClickHandler = this._closeButtonClickHandler.bind(this);
   }
 
   getTemplate() {
     return createPopupTopConainerTemplate();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  setCloseButtonClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement()
+      .querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, this._closeButtonClickHandler);
   }
 
-  removeElement() {
-    this._element = null;
+  _closeButtonClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
   }
 }

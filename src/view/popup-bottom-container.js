@@ -1,27 +1,18 @@
-import {createElement} from "../utils/render.js";
+import AbstractView from "./abstract.js";
 
 const createPopupBottomConainerTemplate = () => {
   return `<div class="film-details__bottom-container">
+  <section class="film-details__comments-wrap">
+  </section>
 </div>`;
 };
 
-export default class PopupBottomConainer {
-  constructor() {
-    this._element = null;
-  }
-
+export default class PopupBottomConainer extends AbstractView {
   getTemplate() {
     return createPopupBottomConainerTemplate();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  getCommetsContainer() {
+    return this.getElement().querySelector(`.film-details__comments-wrap`);
   }
 }

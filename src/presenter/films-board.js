@@ -1,3 +1,4 @@
+import UserProfileView from "../view/user-profile.js";
 import MainNavigationView from "../view/main-navigation.js";
 import SortingMenuView from "../view/sorting-menu.js";
 import FilmsListsContainerView from "../view/films-lists-container.js";
@@ -11,33 +12,45 @@ import {
   FilmsListType,
   FilmRenderStep
 } from "../utils/const.js";
-import {
-  isEscapeKey,
-  isEmptyList
-} from "../utils/utils.js";
+import {isEmptyList} from "../utils/utils.js";
 
 export default class FilmsBoard {
-  constructor(mainElement, bodyElement) {
+  constructor(mainElement, bodyElement, headerElement, footerElement) {
     this._mainElement = mainElement;
-    this._bodyElement = bodyElement
+    this._bodyElement = bodyElement;
+    this._headerElement = headerElement;
+    this._footerElement = footerElement;
 
     this._filmsListsContainerComponent = new FilmsListsContainerView();
-    this._filmsListsContainerElement = this._filmsListsContainerComponent.getElement()
+    this._filmsListsContainerElement = this._filmsListsContainerComponent.getElement();
     this._mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
     this._topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
     this._topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
     this._emptyFilmsListComponent = new FilmsListView(FilmsListType.EMPTY);
     this._showMoreButtonComponent = new ShowMoreButtonView();
+
+    this._filmToRenderCursor = 0;
+
+    this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 
-  init(films, comments, topCommentedFilms, topRatedFilms, filters) {
+  init(films, watchedFilms, comments, topCommentedFilms, topRatedFilms, filters) {
     this._films = films.slice();
+    this._watchedFilms = watchedFilms.slice();
     this._comments = comments.slice();
     this._topCommentedFilms = topCommentedFilms.slice();
     this._topRatedFilms = topRatedFilms.slice();
     this._filters = filters.slice();
 
     this._renderFilmsBoard()
+  }
+
+  _renderUserProfile() {
+    renderElement(this._headerElement, new UserProfileView(this._watchedFilms).getElement());
+  }
+
+  _renderFilmsCount() {
+    renderElement(this._footerElement, new FilmsCountView(this._films.length).getElement());
   }
 
   _renderMainNavigation(filters) {
@@ -56,8 +69,11 @@ export default class FilmsBoard {
     renderElement(this._filmsListsContainerElement, this._mainFilmsListComponent.getElement());
   }
 
-  _renderTopFilmsLists() {
+  _renderTopRatedFilmsList() {
     renderElement(this._filmsListsContainerElement, this._topRatedFilmsListComponent.getElement());
+  }
+
+  _renderTopCommentedFilmsList() {
     renderElement(this._filmsListsContainerElement, this._topCommentedFilmsListComponent.getElement());
   }
 
@@ -65,13 +81,17 @@ export default class FilmsBoard {
     renderElement(this._filmsListsContainerElement, this._emptyFilmsListComponent.getElement());
   }
 
-  _onShowMoreButtonComponentClick() {
-    this._renderMainFilmsCards(FilmRenderStep.MAIN, this._mainFilmsListComponent.getContainerElement(), this._films);
+  _handleShowMoreButtonClick() {
+    this._renderMainFilmsCards(
+      FilmRenderStep.MAIN,
+      this._mainFilmsListComponent.getContainerElement(),
+      this._films
+    );
   };
 
   _renderShowMoreButton() {
     renderElement(this._mainFilmsListComponent.getElement(), this._showMoreButtonComponent.getElement());
-    this._showMoreButtonComponent.setClickHandler(this._onShowMoreButtonComponentClick);
+    this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 
   _renderFilmCard(film, filmsListElement) {
@@ -84,19 +104,18 @@ export default class FilmsBoard {
   }
 
   _renderMainFilmsCards(FilmRenderStep, filmsListContainerElement, films) {
-    let filmToRenderCursor = 0;
-    if ((films.length - filmToRenderCursor) > FilmRenderStep) {
-      for (let i = filmToRenderCursor; i < (FilmRenderStep + filmToRenderCursor); i++) {
+    if ((films.length - this._filmToRenderCursor) > FilmRenderStep) {
+      for (let i = this._filmToRenderCursor; i < (FilmRenderStep + this._filmToRenderCursor); i++) {
         this._renderFilmCard(films[i], filmsListContainerElement);
       }
     } else {
-      for (let i = filmToRenderCursor; i < films.length; i++) {
+      for (let i = this._filmToRenderCursor; i < films.length; i++) {
         this._renderFilmCard(films[i], filmsListContainerElement);
-        // showMoreButtonComponent.removeClickHandler();
-        // showMoreButtonComponent.hide();
+        this._showMoreButtonComponent.removeClickHandler();
+        this._showMoreButtonComponent.hide();
       }
     }
-    filmToRenderCursor += FilmRenderStep;
+    this._filmToRenderCursor += FilmRenderStep;
   }
 
   _renderTopFilmsCards(FilmRenderStep, filmsListContainerElement, films) {
@@ -106,15 +125,18 @@ export default class FilmsBoard {
   }
 
   _renderFilmsBoard() {
+    this._renderUserProfile();
     this._renderMainNavigation(this._filters);
     this._renderSortingMenu();
+    this._renderFilmsCount();
     this._renderListsContainer();
 
     if (isEmptyList(this._films)) {
       this._renderEmptyList();
     } else {
       this._renderMainFilmsList();
-      this._renderTopFilmsLists();
+      this._renderTopRatedFilmsList();
+      this._renderTopCommentedFilmsList();
       this._renderShowMoreButton();
       this._renderMainFilmsCards(
         FilmRenderStep.MAIN,

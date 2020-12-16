@@ -7,11 +7,7 @@ import CommentsListView from "../view/comments-list.js";
 import CommentsTitleView from "../view/comments-title.js";
 import NewCommentView from "../view/new-comment.js";
 import {renderElement} from "../utils/render.js";
-import {FilmsListType} from "../utils/const.js";
-import {
-  isEscapeKey,
-  isEmptyList
-} from "../utils/utils.js";
+import {isEscapeKey} from "../utils/utils.js";
 
 export default class FilmPopup {
   constructor(mainElement, bodyElement) {
@@ -26,6 +22,9 @@ export default class FilmPopup {
     this._popupBottomContainerComponent = new PopupBottomContainerView();
     this._popupBottomContainerElement = this._popupBottomContainerComponent.getElement();
     this._commentsContainerElement = this._popupBottomContainerComponent.getCommetsContainer();
+
+    this._handleClosePopupButtonClick = this._handleClosePopupButtonClick.bind(this);
+    this._escapeKeydownHandler = this._escapeKeydownHandler.bind(this);
   }
 
   init(film, comments) {
@@ -35,6 +34,10 @@ export default class FilmPopup {
     renderElement(this._mainElement, this._filmDetailsPopupElement);
     renderElement(this._filmDetailsFormElement, this._popupTopContainerElement);
     renderElement(this._filmDetailsFormElement, this._popupBottomContainerElement);
+
+    this._bodyElement.classList.add(`hide-overflow`);
+    this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick)
+    document.addEventListener(`keydown`, this._escapeKeydownHandler);
 
     this._renderFilmPopup();
   }
@@ -60,22 +63,22 @@ export default class FilmPopup {
   }
 
   _closeFilmDetailsPopup() {
-    filmDetailsPopupElement.remove();
-    filmDetailsPopupComponent.removeElement();
-    bodyElement.classList.remove(`hide-overflow`)
+    this._filmDetailsPopupElement.remove();
+    this._filmDetailsPopupComponent.removeElement();
+    this._bodyElement.classList.remove(`hide-overflow`);
   }
 
   _escapeKeydownHandler(evt) {
     if (isEscapeKey(evt.key)) {
       evt.preventDefault();
-      closeFilmDetailsPopup();
-      document.removeEventListener(`keydown`, escapeKeydownHandler);
+      this._closeFilmDetailsPopup();
+      document.removeEventListener(`keydown`, this._escapeKeydownHandler);
     }
   }
 
-  _closePopupButtonClickHandler() {
-    closeFilmDetailsPopup();
-    document.removeEventListener(`keydown`, escapeKeydownHandler);
+  _handleClosePopupButtonClick() {
+    this._closeFilmDetailsPopup();
+    document.removeEventListener(`keydown`, this._escapeKeydownHandler);
   }
 
   _renderFilmPopup() {
@@ -85,7 +88,4 @@ export default class FilmPopup {
     this._renderCommentsList();
     this._renderNewComment();
   }
-
-  // popupTopContainerComponent.setCloseButtonClickHandler(closePopupButtonClickHandler);
-  // document.addEventListener(`keydown`, escapeKeydownHandler);
 }

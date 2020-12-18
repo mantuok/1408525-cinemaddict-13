@@ -4,6 +4,8 @@ import {getRandomArray} from "./random.js";
 import {shuffleArray} from "./random.js";
 import {getRandomBoolean} from "./random.js";
 
+const getFilmId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 const Rating = {
   MIN: 0,
   MAX: 10
@@ -61,6 +63,7 @@ export const generateFilm = () => {
   const commentsList = getCommets();
   const getCommentsIds = () => commentsList.map(({id}) => id);
   return {
+    id: getFilmId(),
     poster: `./images/posters/popeye-meets-sinbad.png`,
     title: `Popeye meets sindbad`,
     titleOriginal: `Popeye meets sindbad`,

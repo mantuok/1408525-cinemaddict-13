@@ -1,6 +1,6 @@
 import {getYearFormat} from "../utils/day.js";
-import {getHourMinuteFormat} from "../utils/utils.js";
-import {getTruncatedText} from "../utils/utils.js";
+import {getHourMinuteFormat} from "../utils/common.js";
+import {getTruncatedText} from "../utils/common.js";
 import AbstractView from "./abstract.js";
 
 const DESCRIPTION_MAX_LENGTH = 140;

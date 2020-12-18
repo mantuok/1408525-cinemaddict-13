@@ -1,9 +1,11 @@
+import Abstract from "../view/abstract";
+
 export const Position = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
 
-export const renderElement = (container, element, position = Position.BEFOREEND) => {
+export const render = (container, element, position = Position.BEFOREEND) => {
   switch (position) {
     case Position.AFTERBEGIN:
       container.prepend(element);
@@ -21,3 +23,30 @@ export const createElement = (template) => {
   newElement.innerHTML = template;
   return newElement.firstChild;
 };
+
+export const replace = (oldChild, newChild) => {
+  if (oldChild instanceof Abstract) {
+    oldChild = oldChild.getElement();
+  }
+  if (newChild instanceof Abstract) {
+    newChild = newChild.getElement();
+  }
+
+  const parent = oldChild.parentElement;
+
+  if (parent === null || oldChild === null || newChild === null) {
+    throw new Error(`Can't replace unexisting element`)
+  }
+
+  parent.replaceChild(newChild, oldChild)
+}
+
+export const remove = (component) => {
+
+  if (!(component instanceof Abstract)) {
+    throw new Error(`Can remove only components`)
+  }
+
+  component.getElement().remove();
+  component.removeElement();
+}

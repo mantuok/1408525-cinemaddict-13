@@ -6,8 +6,11 @@ import FilmControlsView from "../view/film-controls.js";
 import CommentsListView from "../view/comments-list.js";
 import CommentsTitleView from "../view/comments-title.js";
 import NewCommentView from "../view/new-comment.js";
-import {renderElement} from "../utils/render.js";
-import {isEscapeKey} from "../utils/utils.js";
+import {
+  render,
+  remove
+} from "../utils/render.js";
+import {isEscapeKey} from "../utils/common.js";
 
 export default class FilmPopup {
   constructor(mainElement, bodyElement) {
@@ -31,9 +34,9 @@ export default class FilmPopup {
     this._film = film;
     this._comments = comments.slice();
 
-    renderElement(this._mainElement, this._filmDetailsPopupElement);
-    renderElement(this._filmDetailsFormElement, this._popupTopContainerElement);
-    renderElement(this._filmDetailsFormElement, this._popupBottomContainerElement);
+    render(this._mainElement, this._filmDetailsPopupElement);
+    render(this._filmDetailsFormElement, this._popupTopContainerElement);
+    render(this._filmDetailsFormElement, this._popupBottomContainerElement);
 
     this._bodyElement.classList.add(`hide-overflow`);
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick)
@@ -43,28 +46,27 @@ export default class FilmPopup {
   }
 
   _renderFilmDetails() {
-    renderElement(this._popupTopContainerElement, new FilmDetailsView(this._film).getElement());
+    render(this._popupTopContainerElement, new FilmDetailsView(this._film).getElement());
   }
 
   _renderFilmControls() {
-    renderElement(this._popupTopContainerElement, new FilmControlsView(this._film).getElement());
+    render(this._popupTopContainerElement, new FilmControlsView(this._film).getElement());
   }
 
   _renderCommentsTitle() {
-    renderElement(this._commentsContainerElement, new CommentsTitleView(this._film).getElement());
+    render(this._commentsContainerElement, new CommentsTitleView(this._film).getElement());
   }
 
   _renderCommentsList() {
-    renderElement(this._commentsContainerElement, new CommentsListView(this._film, this._comments).getElement());
+    render(this._commentsContainerElement, new CommentsListView(this._film, this._comments).getElement());
   }
 
   _renderNewComment() {
-    renderElement(this._commentsContainerElement, new NewCommentView().getElement());
+    render(this._commentsContainerElement, new NewCommentView().getElement());
   }
 
   _closeFilmDetailsPopup() {
-    this._filmDetailsPopupElement.remove();
-    this._filmDetailsPopupComponent.removeElement();
+    remove(this._filmDetailsPopupComponent);
     this._bodyElement.classList.remove(`hide-overflow`);
   }
 

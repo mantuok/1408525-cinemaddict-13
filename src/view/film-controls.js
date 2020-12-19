@@ -36,9 +36,48 @@ export default class FilmControls extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmControlsTemplate(this._film);
+  }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchlistClick = callback;
+    this.getElement()
+      .querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, this._watchlistClickHandler);
+  }
+
+  setWatchedClickHandler(callback) {
+    this._callback.watchedClick = callback;
+    this.getElement()
+      .querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, this._watchedClickHandler);
+  }
+
+  setFavouriteClickHandler(callback) {
+    this._callback.favouriteClick = callback;
+    this.getElement()
+      .querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, this._favouriteClickHandler);
+  }
+
+  _watchlistClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchlistClick();
+  }
+
+  _watchedClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchedClick();
+  }
+
+  _favouriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favouriteClick();
   }
 }

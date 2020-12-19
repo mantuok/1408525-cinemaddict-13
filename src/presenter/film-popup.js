@@ -13,9 +13,10 @@ import {
 import {isEscapeKey} from "../utils/common.js";
 
 export default class FilmPopup {
-  constructor(mainElement, bodyElement) {
+  constructor(mainElement, bodyElement, changeData) {
     this._bodyElement = bodyElement;
     this._mainElement = mainElement;
+    this._changeData = changeData;
 
     this._filmDetailsPopupComponent = new FilmDetailsPopupView();
     this._filmDetailsPopupElement = this._filmDetailsPopupComponent.getElement();
@@ -28,6 +29,10 @@ export default class FilmPopup {
 
     this._handleClosePopupButtonClick = this._handleClosePopupButtonClick.bind(this);
     this._escapeKeydownHandler = this._escapeKeydownHandler.bind(this);
+
+    this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
+    this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._handleFavouriteClick = this._handleFavouriteClick.bind(this);
   }
 
   init(film, comments) {
@@ -42,6 +47,12 @@ export default class FilmPopup {
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick)
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
 
+    this._filmControlsComponent = new FilmControlsView(this._film);
+    this._filmControlsElement = this._filmControlsComponent.getElement();
+    this._filmControlsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._filmControlsComponent.setWatchedClickHandler(this._handleWatchedClick);
+    this._filmControlsComponent.setFavouriteClickHandler(this._handleFavouriteClick);
+
     this._renderFilmPopup();
   }
 
@@ -50,7 +61,7 @@ export default class FilmPopup {
   }
 
   _renderFilmControls() {
-    render(this._popupTopContainerElement, new FilmControlsView(this._film).getElement());
+    render(this._popupTopContainerElement, this._filmControlsElement);
   }
 
   _renderCommentsTitle() {
@@ -81,6 +92,42 @@ export default class FilmPopup {
   _handleClosePopupButtonClick() {
     this._closeFilmDetailsPopup();
     document.removeEventListener(`keydown`, this._escapeKeydownHandler);
+  }
+
+  _handleWatchlistClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._film,
+        {
+          isInWatchlist: !this._film.isInWatchlist
+        }
+      )
+    )
+  }
+
+  _handleWatchedClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._film,
+        {
+          isWatched: !this._film.isWatched
+        }
+      )
+    )
+  }
+
+  _handleFavouriteClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._film,
+        {
+          isFavourite: !this._film.isFavourite
+        }
+      )
+    )
   }
 
   _renderFilmPopup() {

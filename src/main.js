@@ -1,8 +1,11 @@
-import FilmsBoardPresenter from "./presenter/films-board.js"
+import FilmsBoardPresenter from "./presenter/films-board.js";
+import UserProfilePresenter from "./presenter/user-profile.js";
+import MainNavigationPresenter from "./presenter/main-navigation.js";
+import SortingMenuPresenter from "./presenter/sorting-menu.js";
+import FilmsCountPresenter from "./presenter/films-count.js"
 import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
-import UserProfilePresenter from "./presenter/user-profile.js";
 
 const FilmCount = {
   MAIN: 19,
@@ -25,7 +28,13 @@ const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 
 const userProfilePresenter = new UserProfilePresenter(headerElement);
-userProfilePresenter.init(films);
+const mainNavigationPresenter = new MainNavigationPresenter(mainElement);
+const sortingMenuPresenter = new SortingMenuPresenter(mainElement);
+const filmsBoardPresenter = new FilmsBoardPresenter(mainElement, bodyElement);
+const filmsCountPresenter = new FilmsCountPresenter(footerElement);
 
-const filmsBoardPresenter = new FilmsBoardPresenter(mainElement, bodyElement, headerElement, footerElement);
+userProfilePresenter.init(films);
+mainNavigationPresenter.init(filters);
+sortingMenuPresenter.init();
 filmsBoardPresenter.init(films, watchedFilms, comments, topCommentedFilms, topRatedFilms, filters);
+filmsCountPresenter.init(films);

@@ -1,11 +1,7 @@
-// import UserProfileView from "../view/user-profile.js";
-import MainNavigationView from "../view/main-navigation.js";
-import SortingMenuView from "../view/sorting-menu.js";
 import FilmsListsContainerView from "../view/films-lists-container.js";
 import FilmsListView from "../view/films-list.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
 import FilmCardView from "../view/film-card.js";
-import FilmsCountView from "../view/films-count.js";
 import FilmCardPresenter from "../presenter/film-card.js"
 import FilmPopupPresenter from "../presenter/film-popup.js";
 import {render, remove} from "../utils/render.js";
@@ -19,11 +15,9 @@ import {
 } from "../utils/common.js";
 
 export default class FilmsBoard {
-  constructor(mainElement, bodyElement, headerElement, footerElement) {
+  constructor(mainElement, bodyElement) {
     this._mainElement = mainElement;
     this._bodyElement = bodyElement;
-    // this._headerElement = headerElement;
-    this._footerElement = footerElement;
     this._filmCardPresenter = {};
 
     this._filmsListsContainerComponent = new FilmsListsContainerView();
@@ -50,22 +44,6 @@ export default class FilmsBoard {
 
     this._renderFilmsBoard();
     console.log(this._films)
-  }
-
-  // _renderUserProfile() {
-  //   render(this._headerElement, new UserProfileView(this._watchedFilms).getElement());
-  // }
-
-  _renderFilmsCount() {
-    render(this._footerElement, new FilmsCountView(this._films.length).getElement());
-  }
-
-  _renderMainNavigation(filters) {
-    render(this._mainElement, new MainNavigationView(filters).getElement());
-  }
-
-  _renderSortingMenu() {
-    render(this._mainElement, new SortingMenuView().getElement());
   }
 
   _renderListsContainer() {
@@ -157,10 +135,6 @@ export default class FilmsBoard {
   }
 
   _renderFilmsBoard() {
-    // this._renderUserProfile();
-    this._renderMainNavigation(this._filters);
-    this._renderSortingMenu();
-    this._renderFilmsCount();
     this._renderListsContainer();
 
     if (isEmptyList(this._films)) {

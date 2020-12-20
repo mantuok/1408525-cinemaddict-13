@@ -1,4 +1,4 @@
-import UserProfileView from "../view/user-profile.js";
+// import UserProfileView from "../view/user-profile.js";
 import MainNavigationView from "../view/main-navigation.js";
 import SortingMenuView from "../view/sorting-menu.js";
 import FilmsListsContainerView from "../view/films-lists-container.js";
@@ -22,7 +22,7 @@ export default class FilmsBoard {
   constructor(mainElement, bodyElement, headerElement, footerElement) {
     this._mainElement = mainElement;
     this._bodyElement = bodyElement;
-    this._headerElement = headerElement;
+    // this._headerElement = headerElement;
     this._footerElement = footerElement;
     this._filmCardPresenter = {};
 
@@ -52,9 +52,9 @@ export default class FilmsBoard {
     console.log(this._films)
   }
 
-  _renderUserProfile() {
-    render(this._headerElement, new UserProfileView(this._watchedFilms).getElement());
-  }
+  // _renderUserProfile() {
+  //   render(this._headerElement, new UserProfileView(this._watchedFilms).getElement());
+  // }
 
   _renderFilmsCount() {
     render(this._footerElement, new FilmsCountView(this._films.length).getElement());
@@ -157,7 +157,7 @@ export default class FilmsBoard {
   }
 
   _renderFilmsBoard() {
-    this._renderUserProfile();
+    // this._renderUserProfile();
     this._renderMainNavigation(this._filters);
     this._renderSortingMenu();
     this._renderFilmsCount();

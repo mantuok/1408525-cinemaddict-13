@@ -8,7 +8,9 @@ export default class MainNavigation {
   }
 
   init(filters) {
-    this._view = new MainNavigationView(filters);
+    this._filters = filters.slice();
+
+    this._view = new MainNavigationView(this._filters);
     render(this._containerELement, this._view.getElement());
   }
 }

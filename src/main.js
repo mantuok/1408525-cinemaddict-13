@@ -18,7 +18,6 @@ const COMMENT_COUNT = 5;
 const films = Array.from({length: FilmCount.MAIN}, generateFilm);
 const topCommentedFilms = [...films].sort((a, b) => b.comments.length - a.comments.length);
 const topRatedFilms = [...films].sort((a, b) => b.rating - a.rating);
-const watchedFilms = films.filter((film) => film.isWatched);
 const comments = Array.from({length: COMMENT_COUNT}, generateComment);
 const filters = generateFilter(films);
 
@@ -36,5 +35,5 @@ const filmsCountPresenter = new FilmsCountPresenter(footerElement);
 userProfilePresenter.init(films);
 mainNavigationPresenter.init(filters);
 sortingMenuPresenter.init();
-filmsBoardPresenter.init(films, watchedFilms, comments, topCommentedFilms, topRatedFilms, filters);
+filmsBoardPresenter.init(films, comments, topCommentedFilms, topRatedFilms);
 filmsCountPresenter.init(films);

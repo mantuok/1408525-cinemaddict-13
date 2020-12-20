@@ -18,7 +18,7 @@ export const isEscapeKey = (key) => key === KeyboardKey.ESCAPE;
 
 export const isEmptyList = (items) => items.length === 0;
 
-export const updateItem = (items, update) => {
+export const updateItemById = (items, update) => {
   const index = items.findIndex((item) => item.id === update.id)
 
   if (index === -1) {

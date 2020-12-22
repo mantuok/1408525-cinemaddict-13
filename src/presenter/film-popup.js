@@ -23,10 +23,9 @@ export default class FilmPopup {
 
     this._handleClosePopupButtonClick = this._handleClosePopupButtonClick.bind(this);
     this._escapeKeydownHandler = this._escapeKeydownHandler.bind(this);
-
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
-    this._handleFavouriteClick = this._handleFavouriteClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   init(film, comments) {
@@ -36,28 +35,23 @@ export default class FilmPopup {
     const prevFilmDetailsPopupComponent = this._filmDetailsPopupComponent;
 
     this._filmDetailsPopupComponent = new FilmDetailsPopupView();
-
-    this._filmDetailsPopupElement = this._filmDetailsPopupComponent.getElement();
     this._filmDetailsFormElement = this._filmDetailsPopupComponent.getFormElement();
     this._popupTopContainerComponent = new PopupTopContainerView();
-    this._popupTopContainerElement = this._popupTopContainerComponent.getElement();
     this._popupBottomContainerComponent = new PopupBottomContainerView();
-    this._popupBottomContainerElement = this._popupBottomContainerComponent.getElement();
     this._commentsContainerElement = this._popupBottomContainerComponent.getCommetsContainer();
 
-    render(this._mainElement, this._filmDetailsPopupElement);
-    render(this._filmDetailsFormElement, this._popupTopContainerElement);
-    render(this._filmDetailsFormElement, this._popupBottomContainerElement);
+    render(this._mainElement, this._filmDetailsPopupComponent);
+    render(this._filmDetailsFormElement, this._popupTopContainerComponent);
+    render(this._filmDetailsFormElement, this._popupBottomContainerComponent);
 
     this._bodyElement.classList.add(`hide-overflow`);
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick);
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
 
     this._filmControlsComponent = new FilmControlsView(this._film);
-    this._filmControlsElement = this._filmControlsComponent.getElement();
     this._filmControlsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._filmControlsComponent.setWatchedClickHandler(this._handleWatchedClick);
-    this._filmControlsComponent.setFavouriteClickHandler(this._handleFavouriteClick);
+    this._filmControlsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevFilmDetailsPopupComponent === null) {
       this._renderFilmPopup();
@@ -76,23 +70,23 @@ export default class FilmPopup {
   }
 
   _renderFilmDetails() {
-    render(this._popupTopContainerElement, new FilmDetailsView(this._film).getElement());
+    render(this._popupTopContainerComponent, new FilmDetailsView(this._film));
   }
 
   _renderFilmControls() {
-    render(this._popupTopContainerElement, this._filmControlsElement);
+    render(this._popupTopContainerComponent, this._filmControlsComponent);
   }
 
   _renderCommentsTitle() {
-    render(this._commentsContainerElement, new CommentsTitleView(this._film).getElement());
+    render(this._commentsContainerElement, new CommentsTitleView(this._film));
   }
 
   _renderCommentsList() {
-    render(this._commentsContainerElement, new CommentsListView(this._film, this._comments).getElement());
+    render(this._commentsContainerElement, new CommentsListView(this._film, this._comments));
   }
 
   _renderNewComment() {
-    render(this._commentsContainerElement, new NewCommentView().getElement());
+    render(this._commentsContainerElement, new NewCommentView());
   }
 
   _closeFilmDetailsPopup() {
@@ -145,13 +139,13 @@ export default class FilmPopup {
     );
   }
 
-  _handleFavouriteClick() {
+  _handleFavoriteClick() {
     this._changeData(
         Object.assign(
             {},
             this._film,
             {
-              isFavourite: !this._film.isFavourite
+              isFavorite: !this._film.isFavorite
             }
         )
     );

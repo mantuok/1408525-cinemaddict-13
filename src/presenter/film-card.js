@@ -1,4 +1,3 @@
-
 import FilmCardView from "../view/film-card.js";
 import FilmPopupPresenter from "../presenter/film-popup.js";
 import {
@@ -20,7 +19,7 @@ export default class FilmCard {
 
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
-    this._handleFavouriteClick = this._handleFavouriteClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   init(film, comments) {
@@ -49,7 +48,7 @@ export default class FilmCard {
 
     this._filmCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._filmCardComponent.setWatchedClickHandler(this._handleWatchedClick);
-    this._filmCardComponent.setFavouriteClickHandler(this._handleFavouriteClick);
+    this._filmCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevFilmCardComponent === null) {
       this._renderFilmCard();
@@ -77,7 +76,7 @@ export default class FilmCard {
   }
 
   _renderFilmCard() {
-    render(this._filmsListElement, this._filmCardComponent.getElement());
+    render(this._filmsListElement, this._filmCardComponent);
   }
 
   _handleWatchlistClick() {
@@ -104,13 +103,13 @@ export default class FilmCard {
     );
   }
 
-  _handleFavouriteClick() {
+  _handleFavoriteClick() {
     this._changeData(
         Object.assign(
             {},
             this._film,
             {
-              isFavourite: !this._film.isFavourite
+              isFavorite: !this._film.isFavorite
             }
         )
     );

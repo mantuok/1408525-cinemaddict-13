@@ -13,6 +13,6 @@ export default class FilmsCount {
     const count = countFilms(films);
     this._view = new FilmsCountView(count);
 
-    render(this._containerElement, this._view.getElement());
+    render(this._containerElement, this._view);
   }
 }

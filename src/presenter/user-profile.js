@@ -27,6 +27,6 @@ export default class UserProfile {
 
     this._view = new UserProfileView(title);
 
-    render(this._containerElement, this._view.getElement());
+    render(this._containerElement, this._view);
   }
 }

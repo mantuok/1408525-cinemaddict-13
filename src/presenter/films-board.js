@@ -19,7 +19,6 @@ export default class FilmsBoard {
     this._filmCardPresenter = {};
 
     this._filmsListsContainerComponent = new FilmsListsContainerView();
-    this._filmsListsContainerElement = this._filmsListsContainerComponent.getElement();
     this._mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
     this._topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
     this._topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
@@ -43,23 +42,23 @@ export default class FilmsBoard {
   }
 
   _renderListsContainer() {
-    render(this._mainElement, this._filmsListsContainerElement);
+    render(this._mainElement, this._filmsListsContainerComponent);
   }
 
   _renderMainFilmsList() {
-    render(this._filmsListsContainerElement, this._mainFilmsListComponent.getElement());
+    render(this._filmsListsContainerComponent, this._mainFilmsListComponent);
   }
 
   _renderTopRatedFilmsList() {
-    render(this._filmsListsContainerElement, this._topRatedFilmsListComponent.getElement());
+    render(this._filmsListsContainerComponent, this._topRatedFilmsListComponent);
   }
 
   _renderTopCommentedFilmsList() {
-    render(this._filmsListsContainerElement, this._topCommentedFilmsListComponent.getElement());
+    render(this._filmsListsContainerComponent, this._topCommentedFilmsListComponent);
   }
 
   _renderEmptyList() {
-    render(this._filmsListsContainerElement, this._emptyFilmsListComponent.getElement());
+    render(this._filmsListsContainerComponent, this._emptyFilmsListComponent);
   }
 
   _handleShowMoreButtonClick() {
@@ -71,7 +70,7 @@ export default class FilmsBoard {
   }
 
   _renderShowMoreButton() {
-    render(this._mainFilmsListComponent.getElement(), this._showMoreButtonComponent.getElement());
+    render(this._mainFilmsListComponent, this._showMoreButtonComponent);
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 

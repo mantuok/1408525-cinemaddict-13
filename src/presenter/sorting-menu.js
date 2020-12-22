@@ -9,6 +9,6 @@ export default class SortingMenu {
 
   init() {
     this._view = new SortingMenuView();
-    render(this._containerElement, this._view.getElement());
+    render(this._containerElement, this._view);
   }
 }

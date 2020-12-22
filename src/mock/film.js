@@ -79,7 +79,7 @@ export const generateFilm = () => {
     contentRating: `R`,
     comments: getCommentsIds(),
     isInWatchlist: getRandomBoolean(),
-    isFavourite: getRandomBoolean(),
+    isFavorite: getRandomBoolean(),
     isWatched: getRandomBoolean(),
     get watchDate() {
       return getWatchDate(this.isWatched);

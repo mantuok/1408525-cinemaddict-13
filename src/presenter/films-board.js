@@ -22,7 +22,6 @@ export default class FilmsBoard {
     this._mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
     this._topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
     this._topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
-    this._emptyFilmsListComponent = new FilmsListView(FilmsListType.EMPTY);
     this._showMoreButtonComponent = new ShowMoreButtonView();
 
     this._filmToRenderCursor = 0;
@@ -38,7 +37,7 @@ export default class FilmsBoard {
     this._topCommentedFilms = topCommentedFilms.slice();
     this._topRatedFilms = topRatedFilms.slice();
 
-    this._renderFilmsBoard();
+    this._render();
   }
 
   _renderListsContainer() {
@@ -58,7 +57,7 @@ export default class FilmsBoard {
   }
 
   _renderEmptyList() {
-    render(this._filmsListsContainerComponent, this._emptyFilmsListComponent);
+    render(this._filmsListsContainerComponent, new FilmsListView(FilmsListType.EMPTY));
   }
 
   _handleShowMoreButtonClick() {
@@ -130,7 +129,7 @@ export default class FilmsBoard {
       .forEach((presenter) => presenter.resetPopup());
   }
 
-  _renderFilmsBoard() {
+  _render() {
     this._renderListsContainer();
 
     if (isEmptyList(this._films)) {

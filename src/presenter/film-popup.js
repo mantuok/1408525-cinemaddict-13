@@ -23,8 +23,8 @@ export default class FilmPopup {
 
     this._handleClosePopupButtonClick = this._handleClosePopupButtonClick.bind(this);
     this._escapeKeydownHandler = this._escapeKeydownHandler.bind(this);
-    this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
-    this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._handleAddToWatchlistClick = this._handleAddToWatchlistClick.bind(this);
+    this._handleMarkAsWatchedClick = this._handleMarkAsWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
@@ -49,12 +49,12 @@ export default class FilmPopup {
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
 
     this._filmControlsComponent = new FilmControlsView(this._film);
-    this._filmControlsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-    this._filmControlsComponent.setWatchedClickHandler(this._handleWatchedClick);
+    this._filmControlsComponent.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
+    this._filmControlsComponent.setMarkAsWatchedClickHandler(this._handleMarkAsWatchedClick);
     this._filmControlsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevFilmDetailsPopupComponent === null) {
-      this._renderFilmPopup();
+      this._render();
       return;
     }
 
@@ -94,7 +94,7 @@ export default class FilmPopup {
     this._bodyElement.classList.remove(`hide-overflow`);
   }
 
-  _renderFilmPopup() {
+  _render() {
     this._renderFilmDetails();
     this._renderFilmControls();
     this._renderCommentsTitle();
@@ -115,7 +115,7 @@ export default class FilmPopup {
     document.removeEventListener(`keydown`, this._escapeKeydownHandler);
   }
 
-  _handleWatchlistClick() {
+  _handleAddToWatchlistClick() {
     this._changeData(
         Object.assign(
             {},
@@ -127,13 +127,13 @@ export default class FilmPopup {
     );
   }
 
-  _handleWatchedClick() {
+  _handleMarkAsWatchedClick() {
     this._changeData(
         Object.assign(
             {},
             this._film,
             {
-              isWatched: !this._film.isWatched
+              isWatched: !this._film.isMarkedAsWatched
             }
         )
     );

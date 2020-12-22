@@ -14,11 +14,11 @@ export default class FilmCard {
     this._changeData = changeData;
     this._closePopup = closePopup;
 
-    this._filmCardComponent = null;
+    this._component = null;
     this._isFilmPopupOpen = false;
 
-    this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
-    this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._handleAddToWatchlistClick = this._handleAddToWatchlistClick.bind(this);
+    this._handleMarkAsWatchedClick = this._handleMarkAsWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
@@ -26,15 +26,15 @@ export default class FilmCard {
     this._film = film;
     this._comments = comments;
 
-    const prevFilmCardComponent = this._filmCardComponent;
+    const prevFilmCardComponent = this._component;
 
-    this._filmCardComponent = new FilmCardView(this._film);
+    this._component = new FilmCardView(this._film);
     this._filmPopupPresenter = new FilmPopupPresenter(
         this._mainElement,
         this._bodyElement,
         this._changeData);
 
-    this._filmCardComponent.setClickHandler(() => {
+    this._component.setClickHandler(() => {
       if (this._isFilmPopupOpen) {
         this._closePopup();
         this._filmPopupPresenter = new FilmPopupPresenter(
@@ -46,17 +46,17 @@ export default class FilmCard {
       this._isFilmPopupOpen = true;
     });
 
-    this._filmCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-    this._filmCardComponent.setWatchedClickHandler(this._handleWatchedClick);
-    this._filmCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._component.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
+    this._component.setMarkAsWatchedClickHandler(this._handleMarkAsWatchedClick);
+    this._component.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevFilmCardComponent === null) {
-      this._renderFilmCard();
+      this._render();
       return;
     }
 
     if (this._filmsListElement.contains(prevFilmCardComponent.getElement())) {
-      replace(this._filmCardComponent, prevFilmCardComponent);
+      replace(this._component, prevFilmCardComponent);
       if (this._isFilmPopupOpen) {
         this._filmPopupPresenter.init(this._film, this._comments);
       }
@@ -66,7 +66,7 @@ export default class FilmCard {
   }
 
   destroy() {
-    remove(this._filmCardComponent);
+    remove(this._component);
   }
 
   resetPopup() {
@@ -75,11 +75,11 @@ export default class FilmCard {
     }
   }
 
-  _renderFilmCard() {
-    render(this._filmsListElement, this._filmCardComponent);
+  _render() {
+    render(this._filmsListElement, this._component);
   }
 
-  _handleWatchlistClick() {
+  _handleAddToWatchlistClick() {
     this._changeData(
         Object.assign(
             {},
@@ -91,13 +91,13 @@ export default class FilmCard {
     );
   }
 
-  _handleWatchedClick() {
+  _handleMarkAsWatchedClick() {
     this._changeData(
         Object.assign(
             {},
             this._film,
             {
-              isWatched: !this._film.isWatched
+              isWatched: !this._film.isMarkedAsWatched
             }
         )
     );

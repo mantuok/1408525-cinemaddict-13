@@ -36,18 +36,18 @@ export const replace = (newChild, oldChild) => {
   const parent = oldChild.parentElement;
 
   if (parent === null || oldChild === null || newChild === null) {
-    throw new Error(`Can't replace unexisting element`)
+    throw new Error(`Can't replace unexisting element`);
   }
 
-  parent.replaceChild(newChild, oldChild)
-}
+  parent.replaceChild(newChild, oldChild);
+};
 
 export const remove = (component) => {
 
   if (!(component instanceof Abstract)) {
-    throw new Error(`Can remove only components`)
+    throw new Error(`Can remove only components`);
   }
 
   component.getElement().remove();
   component.removeElement();
-}
+};

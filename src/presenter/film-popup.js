@@ -8,7 +8,8 @@ import CommentsTitleView from "../view/comments-title.js";
 import NewCommentView from "../view/new-comment.js";
 import {
   render,
-  remove
+  remove,
+  replace
 } from "../utils/render.js";
 import {isEscapeKey} from "../utils/common.js";
 
@@ -18,14 +19,7 @@ export default class FilmPopup {
     this._mainElement = mainElement;
     this._changeData = changeData;
 
-    this._filmDetailsPopupComponent = new FilmDetailsPopupView();
-    this._filmDetailsPopupElement = this._filmDetailsPopupComponent.getElement();
-    this._filmDetailsFormElement = this._filmDetailsPopupComponent.getFormElement();
-    this._popupTopContainerComponent = new PopupTopContainerView();
-    this._popupTopContainerElement = this._popupTopContainerComponent.getElement();
-    this._popupBottomContainerComponent = new PopupBottomContainerView();
-    this._popupBottomContainerElement = this._popupBottomContainerComponent.getElement();
-    this._commentsContainerElement = this._popupBottomContainerComponent.getCommetsContainer();
+    this._filmDetailsPopupComponent = null;
 
     this._handleClosePopupButtonClick = this._handleClosePopupButtonClick.bind(this);
     this._escapeKeydownHandler = this._escapeKeydownHandler.bind(this);
@@ -39,12 +33,24 @@ export default class FilmPopup {
     this._film = film;
     this._comments = comments.slice();
 
+    const prevFilmDetailsPopupComponent = this._filmDetailsPopupComponent;
+
+    this._filmDetailsPopupComponent = new FilmDetailsPopupView();
+
+    this._filmDetailsPopupElement = this._filmDetailsPopupComponent.getElement();
+    this._filmDetailsFormElement = this._filmDetailsPopupComponent.getFormElement();
+    this._popupTopContainerComponent = new PopupTopContainerView();
+    this._popupTopContainerElement = this._popupTopContainerComponent.getElement();
+    this._popupBottomContainerComponent = new PopupBottomContainerView();
+    this._popupBottomContainerElement = this._popupBottomContainerComponent.getElement();
+    this._commentsContainerElement = this._popupBottomContainerComponent.getCommetsContainer();
+
     render(this._mainElement, this._filmDetailsPopupElement);
     render(this._filmDetailsFormElement, this._popupTopContainerElement);
     render(this._filmDetailsFormElement, this._popupBottomContainerElement);
 
     this._bodyElement.classList.add(`hide-overflow`);
-    this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick)
+    this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick);
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
 
     this._filmControlsComponent = new FilmControlsView(this._film);
@@ -53,7 +59,20 @@ export default class FilmPopup {
     this._filmControlsComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._filmControlsComponent.setFavouriteClickHandler(this._handleFavouriteClick);
 
-    this._renderFilmPopup();
+    if (prevFilmDetailsPopupComponent === null) {
+      this._renderFilmPopup();
+      return;
+    }
+
+    if (this._mainElement.contains(prevFilmDetailsPopupComponent.getElement())) {
+      replace(this._filmDetailsPopupComponent, prevFilmDetailsPopupComponent);
+    }
+
+    remove(prevFilmDetailsPopupComponent);
+  }
+
+  destroy() {
+    this._closeFilmDetailsPopup();
   }
 
   _renderFilmDetails() {
@@ -81,6 +100,14 @@ export default class FilmPopup {
     this._bodyElement.classList.remove(`hide-overflow`);
   }
 
+  _renderFilmPopup() {
+    this._renderFilmDetails();
+    this._renderFilmControls();
+    this._renderCommentsTitle();
+    this._renderCommentsList();
+    this._renderNewComment();
+  }
+
   _escapeKeydownHandler(evt) {
     if (isEscapeKey(evt.key)) {
       evt.preventDefault();
@@ -96,45 +123,37 @@ export default class FilmPopup {
 
   _handleWatchlistClick() {
     this._changeData(
-      Object.assign(
-        {},
-        this._film,
-        {
-          isInWatchlist: !this._film.isInWatchlist
-        }
-      )
-    )
+        Object.assign(
+            {},
+            this._film,
+            {
+              isInWatchlist: !this._film.isInWatchlist
+            }
+        )
+    );
   }
 
   _handleWatchedClick() {
     this._changeData(
-      Object.assign(
-        {},
-        this._film,
-        {
-          isWatched: !this._film.isWatched
-        }
-      )
-    )
+        Object.assign(
+            {},
+            this._film,
+            {
+              isWatched: !this._film.isWatched
+            }
+        )
+    );
   }
 
   _handleFavouriteClick() {
     this._changeData(
-      Object.assign(
-        {},
-        this._film,
-        {
-          isFavourite: !this._film.isFavourite
-        }
-      )
-    )
-  }
-
-  _renderFilmPopup() {
-    this._renderFilmDetails();
-    this._renderFilmControls();
-    this._renderCommentsTitle();
-    this._renderCommentsList();
-    this._renderNewComment();
+        Object.assign(
+            {},
+            this._film,
+            {
+              isFavourite: !this._film.isFavourite
+            }
+        )
+    );
   }
 }

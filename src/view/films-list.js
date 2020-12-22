@@ -23,6 +23,6 @@ export default class FilmsList extends AbstractView {
   }
 
   isExtraList() {
-    return this.getElement().classList.contains(`films-list--extra`)
+    return this.getElement().classList.contains(`films-list--extra`);
   }
 }

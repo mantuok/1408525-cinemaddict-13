@@ -134,7 +134,7 @@ export default class FilmPopup {
             {},
             this._film,
             {
-              isWatched: !this._film.isMarkedAsWatched
+              isMarkedAsWatched: !this._film.isMarkedAsWatched
             }
         )
     );

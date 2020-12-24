@@ -89,7 +89,7 @@ export default class FilmCard {
             {},
             this._film,
             {
-              isWatched: !this._film.isMarkedAsWatched
+              isMarkedAsWatched: !this._film.isMarkedAsWatched
             }
         )
     );

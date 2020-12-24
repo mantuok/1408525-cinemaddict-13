@@ -21,6 +21,8 @@ const topRatedFilms = [...films].sort((a, b) => b.rating - a.rating);
 const comments = Array.from({length: COMMENT_COUNT}, generateComment);
 const filters = generateFilter(films);
 
+console.log(filters)
+
 const bodyElement = document.querySelector(`body`);
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);

@@ -24,15 +24,16 @@ export default class FilmCard {
 
   init(film, comments) {
     this._film = film;
+    console.log(this._film)
     this._comments = comments;
 
     const prevFilmCardComponent = this._component;
 
     this._component = new FilmCardView(this._film);
-    this._filmPopupPresenter = new FilmPopupPresenter(
-        this._mainElement,
-        this._bodyElement,
-        this._changeData);
+    // this._filmPopupPresenter = new FilmPopupPresenter(
+    //     this._mainElement,
+    //     this._bodyElement,
+    //     this._changeData);
 
     this._component.setClickHandler(() => {
       this._closePopup();
@@ -55,9 +56,6 @@ export default class FilmCard {
 
     if (this._filmsListElement.contains(prevFilmCardComponent.getElement())) {
       replace(this._component, prevFilmCardComponent);
-      if (this._isFilmPopupOpen) {
-        this._filmPopupPresenter.init(this._film, this._comments);
-      }
     }
 
     remove(prevFilmCardComponent);

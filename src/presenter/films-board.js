@@ -121,8 +121,13 @@ export default class FilmsBoard {
   }
 
   _handleFilmChange(updatedFilm) {
+    console.log(updatedFilm)
     this._films = updateItemById(this._films, updatedFilm);
     this._filmCardPresenter[updatedFilm.id].init(updatedFilm, this._comments);
+    if (Object.keys(this._filmPopupPresenter).length !== 0) {
+      // this._filmPopupPresenter[updatedFilm.id].init(updatedFilm, this._comments);
+      this._filmPopupPresenter[updatedFilm.id].updateControls(updatedFilm, this._comments);
+    }
   }
 
   _handlePopupClosure() {

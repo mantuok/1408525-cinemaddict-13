@@ -21,7 +21,6 @@ const topRatedFilms = [...films].sort((a, b) => b.rating - a.rating);
 const comments = Array.from({length: COMMENT_COUNT}, generateComment);
 const filters = generateFilter(films);
 
-const bodyElement = document.querySelector(`body`);
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
@@ -29,7 +28,7 @@ const footerElement = document.querySelector(`.footer`);
 const userProfilePresenter = new UserProfilePresenter(headerElement);
 const mainNavigationPresenter = new MainNavigationPresenter(mainElement);
 const sortingMenuPresenter = new SortingMenuPresenter(mainElement);
-const filmsBoardPresenter = new FilmsBoardPresenter(mainElement, bodyElement);
+const filmsBoardPresenter = new FilmsBoardPresenter(mainElement);
 const filmsCountPresenter = new FilmsCountPresenter(footerElement);
 
 userProfilePresenter.init(films);

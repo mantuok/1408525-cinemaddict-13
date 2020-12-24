@@ -14,8 +14,7 @@ import {
 import {isEscapeKey} from "../utils/common.js";
 
 export default class FilmPopup {
-  constructor(mainElement, bodyElement, changeData) {
-    this._bodyElement = bodyElement;
+  constructor(mainElement, changeData) {
     this._mainElement = mainElement;
     this._changeData = changeData;
 
@@ -43,7 +42,7 @@ export default class FilmPopup {
     render(this._filmDetailsFormElement, this._popupTopContainerComponent);
     render(this._filmDetailsFormElement, this._popupBottomContainerComponent);
 
-    this._bodyElement.classList.add(`hide-overflow`);
+    document.body.classList.add(`hide-overflow`);
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick);
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
 
@@ -92,7 +91,7 @@ export default class FilmPopup {
 
   _closeFilmDetailsPopup() {
     remove(this._filmDetailsPopupComponent);
-    this._bodyElement.classList.remove(`hide-overflow`);
+    document.body.classList.remove(`hide-overflow`);
   }
 
   _render() {

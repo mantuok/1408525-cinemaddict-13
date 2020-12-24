@@ -13,9 +13,8 @@ import {
 } from "../utils/common.js";
 
 export default class FilmsBoard {
-  constructor(mainElement, bodyElement) {
+  constructor(mainElement) {
     this._mainElement = mainElement;
-    this._bodyElement = bodyElement;
     this._filmCardPresenter = {};
     this._filmPopupPresenter = {};
 
@@ -78,7 +77,6 @@ export default class FilmsBoard {
     const filmCardPresenter = new FilmCardPresenter(
         listComponent.getContainerElement(),
         this._mainElement,
-        this._bodyElement,
         this._handleFilmChange,
         this._handlePopupClosure,
         this._filmPopupPresenter

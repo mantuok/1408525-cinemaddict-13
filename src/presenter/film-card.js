@@ -7,9 +7,8 @@ import {
 } from "../utils/render.js";
 
 export default class FilmCard {
-  constructor(filmListElement, mainElement, bodyElement, changeData, closePopup, popupPresenter) {
+  constructor(filmListElement, mainElement, changeData, closePopup, popupPresenter) {
     this._mainElement = mainElement;
-    this._bodyElement = bodyElement;
     this._filmsListElement = filmListElement;
     this._changeData = changeData;
     this._closePopup = closePopup;
@@ -34,7 +33,6 @@ export default class FilmCard {
       this._closePopup();
       this._filmPopupPresenter = new FilmPopupPresenter(
           this._mainElement,
-          this._bodyElement,
           this._changeData);
       this._popupPresenter[this._film.id] = this._filmPopupPresenter;
       this._filmPopupPresenter.init(this._film, this._comments);

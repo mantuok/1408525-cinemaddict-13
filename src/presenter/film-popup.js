@@ -12,7 +12,6 @@ import {
   replace
 } from "../utils/render.js";
 import {isEscapeKey} from "../utils/common.js";
-import {getRandom} from "../mock/random.js"
 
 export default class FilmPopup {
   constructor(mainElement, bodyElement, changeData) {
@@ -20,7 +19,6 @@ export default class FilmPopup {
     this._mainElement = mainElement;
     this._changeData = changeData;
 
-    // this._filmDetailsPopupComponent = null;
     this._filmControlsComponent = null;
 
     this._handleClosePopupButtonClick = this._handleClosePopupButtonClick.bind(this);
@@ -31,15 +29,8 @@ export default class FilmPopup {
   }
 
   init(film, comments) {
-    // debugger
     this._film = film;
-    console.log(this._film)
     this._comments = comments.slice();
-
-    // const prevFilmDetailsPopupComponent = this._filmDetailsPopupComponent;
-    // const prevFilmControlsComponent = this._filmControlsComponent;
-
-    // console.log(prevFilmDetailsPopupComponent)
 
     this._filmDetailsPopupComponent = new FilmDetailsPopupView();
     this._filmDetailsFormElement = this._filmDetailsPopupComponent.getFormElement();
@@ -50,40 +41,13 @@ export default class FilmPopup {
 
     render(this._mainElement, this._filmDetailsPopupComponent);
     render(this._filmDetailsFormElement, this._popupTopContainerComponent);
-    // render(this._popupTopContainerComponent, this._filmControlsComponent);
     render(this._filmDetailsFormElement, this._popupBottomContainerComponent);
 
     this._bodyElement.classList.add(`hide-overflow`);
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick);
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
 
-    this._filmControlsComponent.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
-    this._filmControlsComponent.setMarkAsWatchedClickHandler(this._handleMarkAsWatchedClick);
-    this._filmControlsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-
     this._render();
-
-    // if (prevFilmDetailsPopupComponent === null) {
-    //   this._render();
-    //   return;
-    // }
-
-    // if (prevFilmControlsComponent === null) {
-    //   this._render();
-    //   return;
-    // }
-
-    // if (this._mainElement.contains(prevFilmDetailsPopupComponent.getElement())) {
-    //   replace(this._filmDetailsPopupComponent, prevFilmDetailsPopupComponent);
-    // }
-
-    // if (this._popupTopContainerComponent.getElement().contains(prevFilmControlsComponent.getElement())) {
-    //   replace(this._filmControlsComponent, prevFilmControlsComponent);
-    // }
-
-    // remove(prevFilmControlsComponent)
-
-    // remove(prevFilmDetailsPopupComponent);
   }
 
   destroy() {
@@ -93,17 +57,11 @@ export default class FilmPopup {
 
   updateControls(updatedfilm) {
     this._film = updatedfilm;
-    console.log(this._film)
-    console.log(`update controls`)
     const prevFilmControlsComponent = this._filmControlsComponent;
     this._filmControlsComponent = new FilmControlsView(this._film);
     replace(this._filmControlsComponent, prevFilmControlsComponent);
     this._setControlClickHandlers();
-    // this._filmControlsComponent.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
-    // this._filmControlsComponent.setMarkAsWatchedClickHandler(this._handleMarkAsWatchedClick);
-    // this._filmControlsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    remove(prevFilmControlsComponent)
-    // console.log(film)
+    remove(prevFilmControlsComponent);
   }
 
   _setControlClickHandlers() {
@@ -117,13 +75,7 @@ export default class FilmPopup {
   }
 
   _renderFilmControls() {
-    // if (this._prevFilmControlsComponent === null) {
-      render(this._popupTopContainerComponent, this._filmControlsComponent);
-    //   return
-    // }
-    // if (this._popupTopContainerComponent.getElement().contains(this._prevFilmControlsComponent.getElement())) {
-    //   replace(this._filmControlsComponent, this._prevFilmControlsComponent);
-    // }
+    render(this._popupTopContainerComponent, this._filmControlsComponent);
   }
 
   _renderCommentsTitle() {
@@ -149,7 +101,7 @@ export default class FilmPopup {
     this._renderCommentsTitle();
     this._renderCommentsList();
     this._renderNewComment();
-
+    this._setControlClickHandlers();
   }
 
   _escapeKeydownHandler(evt) {
@@ -172,7 +124,6 @@ export default class FilmPopup {
             this._film,
             {
               isInWatchlist: !this._film.isInWatchlist,
-              duration: getRandom(1, 100)
             }
         )
     );

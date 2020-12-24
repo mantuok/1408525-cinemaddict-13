@@ -17,6 +17,7 @@ export default class FilmsBoard {
     this._mainElement = mainElement;
     this._bodyElement = bodyElement;
     this._filmCardPresenter = {};
+    this._filmPopupPresenter = {};
 
     this._filmsListsContainerComponent = new FilmsListsContainerView();
     this._mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
@@ -79,7 +80,8 @@ export default class FilmsBoard {
         this._mainElement,
         this._bodyElement,
         this._handleFilmChange,
-        this._handlePopupClosure
+        this._handlePopupClosure,
+        this._filmPopupPresenter
     );
     filmCardPresenter.init(film, this._comments);
     if (!listComponent.isExtraList()) {
@@ -125,8 +127,8 @@ export default class FilmsBoard {
 
   _handlePopupClosure() {
     Object
-      .values(this._filmCardPresenter)
-      .forEach((presenter) => presenter.resetPopup());
+      .values(this._filmPopupPresenter)
+      .forEach((presenter) => presenter.destroy());
   }
 
   _render() {

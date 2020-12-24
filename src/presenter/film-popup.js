@@ -67,6 +67,7 @@ export default class FilmPopup {
 
   destroy() {
     this._closeFilmDetailsPopup();
+    document.removeEventListener(`keydown`, this._escapeKeydownHandler);
   }
 
   _renderFilmDetails() {

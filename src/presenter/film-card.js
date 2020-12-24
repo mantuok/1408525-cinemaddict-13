@@ -7,15 +7,15 @@ import {
 } from "../utils/render.js";
 
 export default class FilmCard {
-  constructor(filmListElement, mainElement, bodyElement, changeData, closePopup) {
+  constructor(filmListElement, mainElement, bodyElement, changeData, closePopup, popupPresenter) {
     this._mainElement = mainElement;
     this._bodyElement = bodyElement;
     this._filmsListElement = filmListElement;
     this._changeData = changeData;
     this._closePopup = closePopup;
+    this._popupPresenter = popupPresenter;
 
     this._component = null;
-    this._isFilmPopupOpen = false;
 
     this._handleAddToWatchlistClick = this._handleAddToWatchlistClick.bind(this);
     this._handleMarkAsWatchedClick = this._handleMarkAsWatchedClick.bind(this);
@@ -35,15 +35,13 @@ export default class FilmCard {
         this._changeData);
 
     this._component.setClickHandler(() => {
-      if (this._isFilmPopupOpen) {
-        this._closePopup();
-        this._filmPopupPresenter = new FilmPopupPresenter(
-            this._mainElement,
-            this._bodyElement,
-            this._changeData);
-      }
+      this._closePopup();
+      this._filmPopupPresenter = new FilmPopupPresenter(
+          this._mainElement,
+          this._bodyElement,
+          this._changeData);
+      this._popupPresenter[this._film.id] = this._filmPopupPresenter;
       this._filmPopupPresenter.init(this._film, this._comments);
-      this._isFilmPopupOpen = true;
     });
 
     this._component.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
@@ -67,12 +65,6 @@ export default class FilmCard {
 
   destroy() {
     remove(this._component);
-  }
-
-  resetPopup() {
-    if (this._isFilmPopupOpen) {
-      this._filmPopupPresenter.destroy();
-    }
   }
 
   _render() {

@@ -1,4 +1,4 @@
-import {changeFirstCharToUppercase} from "../utils/utils.js";
+import {changeFirstCharToUppercase} from "../utils/common.js";
 import AbstractView from "./abstract.js";
 
 const createFilterTemplate = (filters) => filters.map((filter) =>

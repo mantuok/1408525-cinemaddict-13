@@ -20,3 +20,9 @@ export const FilmsListType = {
     isExtra: false
   }
 };
+
+export const FilmRenderStep = {
+  MAIN: 5,
+  TOP_RATED: 2,
+  TOP_COMMENTED: 2
+};

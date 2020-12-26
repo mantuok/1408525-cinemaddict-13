@@ -5,22 +5,15 @@ import {
   replace,
   remove
 } from "../utils/render.js";
-import {UserAction} from "../const.js"
-
-// const Mode = {
-//   DEFAULT: `DEFAULT`,
-//   OPENED_POPUP: `OPENED_POPUP`
-// }
+import {UserAction} from "../const.js";
 
 export default class FilmCard {
   constructor(filmListElement, mainElement, change) {
     this._mainElement = mainElement;
     this._filmsListElement = filmListElement;
     this._change = change;
-    // this._closePopup = closePopup;
     this._component = null;
     this._filmPopupPresenter = null;
-
 
     this._handleAddToWatchlistClick = this._handleAddToWatchlistClick.bind(this);
     this._handleMarkAsWatchedClick = this._handleMarkAsWatchedClick.bind(this);
@@ -36,13 +29,11 @@ export default class FilmCard {
     this._component = new FilmCardView(this._film);
 
     this._component.setClickHandler(() => {
-
-      this._change(UserAction.OPEN_POPUP, this.resetView)
-      // this._closePopup();
+      this._change(UserAction.OPEN_POPUP, this.resetView);
       this._filmPopupPresenter = new FilmPopupPresenter(
           this._mainElement,
           this._change
-        );
+      );
       this._filmPopupPresenter.init(this._film, this._comments);
     });
 
@@ -67,7 +58,6 @@ export default class FilmCard {
   }
 
   resetView() {
-    console.log(`reset`)
     if (this._filmPopupPresenter !== null) {
       this._filmPopupPresenter.destroy();
       this._filmPopupPresenter = null;

@@ -12,13 +12,11 @@ import {
   isEmptyList,
   updateItemById
 } from "../utils/common.js";
-// import UserProfile from "../view/user-profile.js";
 
 export default class FilmsBoard {
   constructor(mainElement) {
     this._mainElement = mainElement;
     this._filmCardPresenter = {};
-    // this._filmPopupPresenter = {};
 
     this._filmsListsContainerComponent = new FilmsListsContainerView();
     this._mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
@@ -30,8 +28,6 @@ export default class FilmsBoard {
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
-    // this._handleFilmChange = this._handleFilmChange.bind(this);
-    // this._handlePopupClosure = this._handlePopupClosure.bind(this);
   }
 
   init(films, comments, topCommentedFilms, topRatedFilms) {
@@ -80,10 +76,7 @@ export default class FilmsBoard {
     const filmCardPresenter = new FilmCardPresenter(
         listComponent.getContainerElement(),
         this._mainElement,
-        // this._handleFilmChange,
         this._handleViewAction
-        // this._handlePopupClosure
-        // this._filmPopupPresenter
     );
     filmCardPresenter.init(film, this._comments);
     if (!listComponent.isExtraList()) {

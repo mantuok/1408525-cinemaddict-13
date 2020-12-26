@@ -5,18 +5,20 @@ import FilmCardPresenter from "../presenter/film-card.js";
 import {render, remove} from "../utils/render.js";
 import {
   FilmsListType,
-  FilmRenderStep
-} from "../utils/const.js";
+  FilmRenderStep,
+  UserAction
+} from "../const.js";
 import {
   isEmptyList,
   updateItemById
 } from "../utils/common.js";
+// import UserProfile from "../view/user-profile.js";
 
 export default class FilmsBoard {
   constructor(mainElement) {
     this._mainElement = mainElement;
     this._filmCardPresenter = {};
-    this._filmPopupPresenter = {};
+    // this._filmPopupPresenter = {};
 
     this._filmsListsContainerComponent = new FilmsListsContainerView();
     this._mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
@@ -27,8 +29,9 @@ export default class FilmsBoard {
     this._filmToRenderCursor = 0;
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
-    this._handleFilmChange = this._handleFilmChange.bind(this);
-    this._handlePopupClosure = this._handlePopupClosure.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
+    // this._handleFilmChange = this._handleFilmChange.bind(this);
+    // this._handlePopupClosure = this._handlePopupClosure.bind(this);
   }
 
   init(films, comments, topCommentedFilms, topRatedFilms) {
@@ -77,9 +80,10 @@ export default class FilmsBoard {
     const filmCardPresenter = new FilmCardPresenter(
         listComponent.getContainerElement(),
         this._mainElement,
-        this._handleFilmChange,
-        this._handlePopupClosure,
-        this._filmPopupPresenter
+        // this._handleFilmChange,
+        this._handleViewAction
+        // this._handlePopupClosure
+        // this._filmPopupPresenter
     );
     filmCardPresenter.init(film, this._comments);
     if (!listComponent.isExtraList()) {
@@ -118,18 +122,19 @@ export default class FilmsBoard {
     remove(this._showMoreButtonComponent);
   }
 
-  _handleFilmChange(updatedFilm) {
-    this._films = updateItemById(this._films, updatedFilm);
-    this._filmCardPresenter[updatedFilm.id].init(updatedFilm, this._comments);
-    if (Object.keys(this._filmPopupPresenter).length !== 0) {
-      this._filmPopupPresenter[updatedFilm.id].updateControls(updatedFilm, this._comments);
+  _handleViewAction(actionType, update) {
+    switch (actionType) {
+      case UserAction.UPDATE_FILM:
+        this._films = updateItemById(this._films, update);
+        this._filmCardPresenter[update.id].init(update, this._comments);
+        this._filmCardPresenter[update.id].updatePopup(update);
+        break;
+      case UserAction.OPEN_POPUP:
+        Object
+            .values(this._filmCardPresenter)
+            .forEach((presenter) => presenter.resetView());
+        break;
     }
-  }
-
-  _handlePopupClosure() {
-    Object
-      .values(this._filmPopupPresenter)
-      .forEach((presenter) => presenter.destroy());
   }
 
   _render() {

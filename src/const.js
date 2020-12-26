@@ -26,3 +26,8 @@ export const FilmRenderStep = {
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 };
+
+export const UserAction = {
+  UPDATE_FILM: `UPDATE_FILM`,
+  OPEN_POPUP: `OPEN_POPUP`
+};

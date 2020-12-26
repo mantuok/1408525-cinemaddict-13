@@ -1,4 +1,4 @@
-import {FilmsListType} from "../utils/const.js";
+import {FilmsListType} from "../const.js";
 import AbstractView from "./abstract.js";
 
 const createFilmsListTemplate = (filmsListType) => {

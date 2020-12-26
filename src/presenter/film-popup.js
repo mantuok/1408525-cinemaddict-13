@@ -12,11 +12,12 @@ import {
   replace
 } from "../utils/render.js";
 import {isEscapeKey} from "../utils/common.js";
+import {UserAction} from "../const.js";
 
 export default class FilmPopup {
-  constructor(mainElement, changeData) {
+  constructor(mainElement, change) {
     this._mainElement = mainElement;
-    this._changeData = changeData;
+    this._change = change;
 
     this._filmControlsComponent = null;
 
@@ -117,7 +118,8 @@ export default class FilmPopup {
   }
 
   _handleAddToWatchlistClick() {
-    this._changeData(
+    this._change(
+        UserAction.UPDATE_FILM,
         Object.assign(
             {},
             this._film,
@@ -129,7 +131,8 @@ export default class FilmPopup {
   }
 
   _handleMarkAsWatchedClick() {
-    this._changeData(
+    this._change(
+        UserAction.UPDATE_FILM,
         Object.assign(
             {},
             this._film,
@@ -141,7 +144,8 @@ export default class FilmPopup {
   }
 
   _handleFavoriteClick() {
-    this._changeData(
+    this._change(
+        UserAction.UPDATE_FILM,
         Object.assign(
             {},
             this._film,

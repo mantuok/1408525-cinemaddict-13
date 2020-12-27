@@ -31,3 +31,9 @@ export const UserAction = {
   UPDATE_FILM: `UPDATE_FILM`,
   OPEN_POPUP: `OPEN_POPUP`
 };
+
+export const SortType = {
+  DEAFULT: `DEFAULT`,
+  BY_DATE: `BY_DATE`,
+  BY_RATING: `BY_RATING`
+}

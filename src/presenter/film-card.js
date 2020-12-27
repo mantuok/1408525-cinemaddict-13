@@ -8,10 +8,10 @@ import {
 import {UserAction} from "../const.js";
 
 export default class FilmCard {
-  constructor(filmListElement, mainElement, change) {
+  constructor(filmListElement, mainElement, changeWith) {
     this._mainElement = mainElement;
     this._filmsListElement = filmListElement;
-    this._change = change;
+    this._changeWith = changeWith;
     this._component = null;
     this._filmPopupPresenter = null;
 
@@ -75,7 +75,7 @@ export default class FilmCard {
   }
 
   _handleAddToWatchlistClick() {
-    this._change(
+    this._changeWith(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},
@@ -88,7 +88,7 @@ export default class FilmCard {
   }
 
   _handleMarkAsWatchedClick() {
-    this._change(
+    this._changeWith(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},
@@ -101,7 +101,7 @@ export default class FilmCard {
   }
 
   _handleFavoriteClick() {
-    this._change(
+    this._changeWith(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},

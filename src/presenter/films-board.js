@@ -12,6 +12,7 @@ import {
   isEmptyList,
   updateItemById
 } from "../utils/common.js";
+import SortingMenuPresenter from "../presenter/sorting-menu.js";
 
 export default class FilmsBoard {
   constructor(mainElement) {
@@ -23,11 +24,13 @@ export default class FilmsBoard {
     this._topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
     this._topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
     this._showMoreButtonComponent = new ShowMoreButtonView();
+    this._sortingMenuPresenter = new SortingMenuPresenter(this._mainElement)
 
     this._filmToRenderCursor = 0;
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleSortAction = this._handleSortAction.bind(this);
   }
 
   init(films, comments, topCommentedFilms, topRatedFilms) {
@@ -35,6 +38,8 @@ export default class FilmsBoard {
     this._comments = comments.slice();
     this._topCommentedFilms = topCommentedFilms.slice();
     this._topRatedFilms = topRatedFilms.slice();
+
+    this._sortingMenuPresenter.init(this._films, this._handleSortAction);
 
     this._render();
   }
@@ -128,6 +133,17 @@ export default class FilmsBoard {
             .forEach((presenter) => presenter.resetView());
         break;
     }
+  }
+
+  _handleSortAction(sortedFilms) {
+    this._films = sortedFilms;
+    this._clearFilmList();
+    this._renderMainFilmsCards(
+        FilmRenderStep.MAIN,
+        this._mainFilmsListComponent,
+        this._films
+    );
+    this._renderShowMoreButton();
   }
 
   _render() {

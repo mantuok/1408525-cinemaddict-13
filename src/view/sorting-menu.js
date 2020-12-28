@@ -15,6 +15,14 @@ export default class SortingMenu extends AbstractView {
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
 
+  // setActiveControl() {
+  //   this.getElement()
+  //     .querySelectorAll(`.sort__button`)
+  //     .forEach((element) => element
+  //         .classList.toggle(`sort__button--active`)
+  //     )
+  // }
+
   setActiveControl(sortType) {
     this.getElement()
       .querySelector(`[data-sort-type="${sortType}"]`)

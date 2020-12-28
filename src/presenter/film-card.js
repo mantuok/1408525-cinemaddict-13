@@ -29,10 +29,10 @@ export default class FilmCard {
     this._component = new FilmCardView(this._film);
 
     this._component.setClickHandler(() => {
-      this._change(UserAction.OPEN_POPUP, this.resetView);
+      this._changeWith(UserAction.OPEN_POPUP, this.resetView);
       this._filmPopupPresenter = new FilmPopupPresenter(
           this._mainElement,
-          this._change
+          this._changeWith
       );
       this._filmPopupPresenter.init(this._film, this._comments);
     });

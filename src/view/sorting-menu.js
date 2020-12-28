@@ -1,5 +1,5 @@
 import AbstractView from "./abstract.js";
-import {SortType} from "../const.js"
+import {SortType} from "../const.js";
 
 const createSortingMenuTemplate = () => {
   return `<ul class="sort">
@@ -18,7 +18,7 @@ export default class SortingMenu extends AbstractView {
   toggleActiveControl(sortType) {
     this.getElement()
       .querySelector(`[data-sort-type="${sortType}"]`)
-      .classList.toggle(`sort__button--active`)
+      .classList.toggle(`sort__button--active`);
   }
 
   getTemplate() {
@@ -27,7 +27,7 @@ export default class SortingMenu extends AbstractView {
 
   setSortTypeChangeHandler(callback) {
     this._callback.sortTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._sortTypeChangeHandler)
+    this.getElement().addEventListener(`click`, this._sortTypeChangeHandler);
   }
 
   _sortTypeChangeHandler(evt) {

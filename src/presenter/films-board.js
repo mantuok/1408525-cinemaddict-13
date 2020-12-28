@@ -24,7 +24,7 @@ export default class FilmsBoard {
     this._topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
     this._topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
     this._showMoreButtonComponent = new ShowMoreButtonView();
-    this._sortingMenuPresenter = new SortingMenuPresenter(this._mainElement)
+    this._sortingMenuPresenter = new SortingMenuPresenter(this._mainElement);
 
     this._filmToRenderCursor = 0;
 
@@ -113,8 +113,8 @@ export default class FilmsBoard {
 
   _clearFilmList() {
     Object
-      .values(this._filmCardPresenter)
-      .forEach((presenter) => presenter.destroy());
+        .values(this._filmCardPresenter)
+        .forEach((presenter) => presenter.destroy());
     this._filmCardPresenter = {};
     this._filmToRenderCursor = 0;
     remove(this._showMoreButtonComponent);

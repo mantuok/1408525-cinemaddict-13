@@ -3,7 +3,7 @@ import {render} from "../utils/render.js";
 import {SortType} from "../const.js";
 import {
   sortByDate
-} from "../utils/common.js"
+} from "../utils/common.js";
 
 
 export default class SortingMenu {
@@ -42,13 +42,13 @@ export default class SortingMenu {
         break;
       case SortType.BY_DATE:
         this._changeSortType(
-          this._films.sort(sortByDate)
+            this._films.sort(sortByDate)
         );
         break;
       case SortType.BY_RATING:
         this._changeSortType(
-          this._films.sort((a, b) => b.rating - a.rating)
-        )
+            this._films.sort((a, b) => b.rating - a.rating)
+        );
     }
 
     this._currentSortType = sortType;

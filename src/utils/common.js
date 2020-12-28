@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 const MINUTE_IN_HOUR = 60;
 const KeyboardKey = {
   ESCAPE: `Escape`
@@ -31,3 +33,5 @@ export const updateItemById = (items, update) => {
     ...items.slice(index + 1)
   ];
 };
+
+export const sortByDate = (itemA, itemB) => dayjs(itemB.date).diff(dayjs(itemA.date));

@@ -14,9 +14,9 @@ export default class SortingMenu {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
-  init(films, sort) {
+  init(films, changeSortType) {
     this._films = films.slice();
-    this._sort = sort;
+    this._changeSortType = changeSortType;
 
     this._initialFilms = this._films.slice();
 
@@ -24,7 +24,7 @@ export default class SortingMenu {
     render(this._containerElement, this._view);
 
     this._currentSortType = SortType.DEAFULT;
-    this._view.setActiveControl(SortType.DEAFULT);
+    this._view.toggleActiveControl(SortType.DEAFULT);
 
     this._view.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
@@ -34,24 +34,24 @@ export default class SortingMenu {
       return;
     }
 
-    this._view.setActiveControl(this._currentSortType);
+    this._view.toggleActiveControl(this._currentSortType);
 
     switch (sortType) {
       case SortType.DEAFULT:
-        this._sort(this._initialFilms);
+        this._changeSortType(this._initialFilms);
         break;
       case SortType.BY_DATE:
-        this._sort(
+        this._changeSortType(
           this._films.sort(sortByDate)
         );
         break;
       case SortType.BY_RATING:
-        this._sort(
+        this._changeSortType(
           this._films.sort((a, b) => b.rating - a.rating)
         )
     }
 
     this._currentSortType = sortType;
-    this._view.setActiveControl(sortType);
+    this._view.toggleActiveControl(sortType);
   }
 }

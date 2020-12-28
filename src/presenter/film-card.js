@@ -8,10 +8,10 @@ import {
 import {UserAction} from "../const.js";
 
 export default class FilmCard {
-  constructor(filmListElement, mainElement, changeWith) {
+  constructor(filmListElement, mainElement, changeView) {
     this._mainElement = mainElement;
     this._filmsListElement = filmListElement;
-    this._changeWith = changeWith;
+    this._changeView = changeView;
     this._component = null;
     this._filmPopupPresenter = null;
 
@@ -29,10 +29,10 @@ export default class FilmCard {
     this._component = new FilmCardView(this._film);
 
     this._component.setClickHandler(() => {
-      this._changeWith(UserAction.OPEN_POPUP, this.resetView);
+      this._changeView(UserAction.OPEN_POPUP, this.resetView);
       this._filmPopupPresenter = new FilmPopupPresenter(
           this._mainElement,
-          this._changeWith
+          this._changeView
       );
       this._filmPopupPresenter.init(this._film, this._comments);
     });
@@ -75,7 +75,7 @@ export default class FilmCard {
   }
 
   _handleAddToWatchlistClick() {
-    this._changeWith(
+    this._changeView(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},
@@ -88,7 +88,7 @@ export default class FilmCard {
   }
 
   _handleMarkAsWatchedClick() {
-    this._changeWith(
+    this._changeView(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},
@@ -101,7 +101,7 @@ export default class FilmCard {
   }
 
   _handleFavoriteClick() {
-    this._changeWith(
+    this._changeView(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},

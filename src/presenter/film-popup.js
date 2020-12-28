@@ -15,9 +15,9 @@ import {isEscapeKey} from "../utils/common.js";
 import {UserAction} from "../const.js";
 
 export default class FilmPopup {
-  constructor(mainElement, changeWith) {
+  constructor(mainElement, changeView) {
     this._mainElement = mainElement;
-    this._changeWith = changeWith;
+    this._changeView = changeView;
 
     this._filmControlsComponent = null;
 
@@ -118,7 +118,7 @@ export default class FilmPopup {
   }
 
   _handleAddToWatchlistClick() {
-    this._changeWith(
+    this._changeView(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},
@@ -131,7 +131,7 @@ export default class FilmPopup {
   }
 
   _handleMarkAsWatchedClick() {
-    this._changeWith(
+    this._changeView(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},
@@ -144,7 +144,7 @@ export default class FilmPopup {
   }
 
   _handleFavoriteClick() {
-    this._changeWith(
+    this._changeView(
         UserAction.UPDATE_FILM,
         Object.assign(
             {},

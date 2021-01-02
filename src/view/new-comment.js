@@ -7,8 +7,8 @@ const Emoji = {
   ANGRY: `angry`
 };
 
-const createEmojiItemTemplate = (emoji) => {
-  return `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}">
+const createEmojiItemTemplate = (emoji, isChecked) => {
+  return `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}" ${isChecked ? ` checked` : ``}>
     <label class="film-details__emoji-label" for="emoji-${emoji}">
       <img src="./images/emoji/${emoji}.png" width="30" height="30" alt="emoji">
     </label>`;
@@ -16,6 +16,8 @@ const createEmojiItemTemplate = (emoji) => {
 
 const createNewCommentTemplate = (message) => {
   const {emotion, text} = message;
+
+  const isChecked = (emoji) => emoji === emotion;
 
   const setEmotionTemplate = () =>
     emotion !== null ? `<img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">`
@@ -29,10 +31,10 @@ const createNewCommentTemplate = (message) => {
     <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${text}</textarea>
   </label>
   <div class="film-details__emoji-list">
-  ${createEmojiItemTemplate(Emoji.SMILE)}
-  ${createEmojiItemTemplate(Emoji.SLEEPING)}
-  ${createEmojiItemTemplate(Emoji.PUKE)}
-  ${createEmojiItemTemplate(Emoji.ANGRY)}
+  ${createEmojiItemTemplate(Emoji.SMILE, isChecked(Emoji.SMILE))}
+  ${createEmojiItemTemplate(Emoji.SLEEPING, isChecked(Emoji.SLEEPING))}
+  ${createEmojiItemTemplate(Emoji.PUKE, isChecked(Emoji.PUKE))}
+  ${createEmojiItemTemplate(Emoji.ANGRY, isChecked(Emoji.ANGRY))}
   </div>
 </div>`;
 };

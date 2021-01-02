@@ -33,6 +33,7 @@ export default class Smart extends AbstractView {
     parent.replaceChild(newElement, prevElement);
 
     this.restoreHandlers();
+    this.restoreState();
   }
 
   restoreHandlers() {

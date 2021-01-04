@@ -1,4 +1,5 @@
 import AbstractView from "./abstract.js";
+import {getHumanDateFormat} from "../utils/day.js";
 
 const createFilmCommentTemplate = (film, comments) => {
   const filmComments = comments.filter((comment) => film.comments.includes(comment.id));
@@ -11,7 +12,7 @@ const createFilmCommentTemplate = (film, comments) => {
         <p class="film-details__comment-text">${comment.text}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${comment.author}</span>
-          <span class="film-details__comment-day">${comment.date}</span>
+          <span class="film-details__comment-day">${getHumanDateFormat(comment.date)}</span>
           <button class="film-details__comment-delete">Delete</button>
         </p>
       </div>

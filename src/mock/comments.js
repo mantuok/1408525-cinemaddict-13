@@ -1,11 +1,10 @@
 import {getRandomFrom} from "./random.js";
-import {getDateTimeFormat} from "../utils/day.js";
 
 const dates = [
-  `2020-02-10 22:00`,
+  `2021-01-01 22:00`,
   `2019-11-27 23:00`,
   `2020-12-15 21:30`,
-  `2020-07-12 19:00`
+  `2021-01-05 00:50`
 ];
 
 const emotions = [
@@ -23,7 +22,7 @@ const texts = [
 
 const identifiers = [1, 2, 3, 4, 5];
 
-const getCommentDate = () => getDateTimeFormat(getRandomFrom(dates));
+const getCommentDate = () => getRandomFrom(dates);
 const getCommentText = () => getRandomFrom(texts);
 const getCommentID = () => identifiers.shift();
 const getEmotion = () => getRandomFrom(emotions);

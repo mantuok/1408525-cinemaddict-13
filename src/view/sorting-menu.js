@@ -12,7 +12,7 @@ const createSortingMenuTemplate = () => {
 export default class SortingMenu extends AbstractView {
   constructor() {
     super();
-    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
+    this._sortTypeClickHandler = this._sortTypeClickHandler.bind(this);
   }
 
   toggleActiveControl(sortType) {
@@ -27,10 +27,10 @@ export default class SortingMenu extends AbstractView {
 
   setSortTypeChangeHandler(callback) {
     this._callback.sortTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._sortTypeChangeHandler);
+    this.getElement().addEventListener(`click`, this._sortTypeClickHandler);
   }
 
-  _sortTypeChangeHandler(evt) {
+  _sortTypeClickHandler(evt) {
     if (evt.target.tagName !== `A`) {
       return;
     }

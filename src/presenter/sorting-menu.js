@@ -49,6 +49,7 @@ export default class SortingMenu {
         this._changeSortType(
             this._films.sort((a, b) => b.rating - a.rating)
         );
+        break;
     }
 
     this._currentSortType = sortType;

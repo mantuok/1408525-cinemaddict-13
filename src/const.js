@@ -2,22 +2,26 @@ export const FilmsListType = {
   MAIN: {
     title: `All movies. Upcoming`,
     isHidden: true,
-    isExtra: false
+    isExtra: false,
+    renderStep: 5
   },
   TOP_RATED: {
     title: `Top rated`,
     isHidden: false,
-    isExtra: true
+    isExtra: true,
+    renderStep: 2
   },
   TOP_COMMENTED: {
     title: `Most commented`,
     isHidden: false,
-    isExtra: true
+    isExtra: true,
+    renderStep: 2
   },
   EMPTY: {
     title: `There are no movies in our database`,
     isHidden: false,
-    isExtra: false
+    isExtra: false,
+    renderStep: 0
   }
 };
 

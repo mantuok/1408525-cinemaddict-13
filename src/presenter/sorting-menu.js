@@ -7,26 +7,27 @@ import {
 
 
 export default class SortingMenu {
-  constructor(containerElement) {
+  constructor(containerElement, filmsModel) {
     this._containerElement = containerElement;
+    this._filmsModel = filmsModel;
     this._view = null;
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
-  init(films, changeSortType) {
-    this._films = films.slice();
+  init(changeSortType) {
     this._changeSortType = changeSortType;
-
-    this._initialFilms = this._films.slice();
 
     this._view = new SortingMenuView();
     render(this._containerElement, this._view);
 
     this._currentSortType = SortType.DEAFULT;
     this._view.toggleActiveControl(SortType.DEAFULT);
-
     this._view.setSortTypeChangeHandler(this._handleSortTypeChange);
+  }
+
+  _getFilms() {
+    return this._filmsModel.getFilms().slice();
   }
 
   _handleSortTypeChange(sortType) {
@@ -34,20 +35,22 @@ export default class SortingMenu {
       return;
     }
 
+    const films = this._getFilms();
+
     this._view.toggleActiveControl(this._currentSortType);
 
     switch (sortType) {
       case SortType.DEAFULT:
-        this._changeSortType(this._initialFilms);
+        this._changeSortType(films);
         break;
       case SortType.BY_DATE:
         this._changeSortType(
-            this._films.sort(sortByDate)
+            films.sort(sortByDate)
         );
         break;
       case SortType.BY_RATING:
         this._changeSortType(
-            this._films.sort((a, b) => b.rating - a.rating)
+            films.sort((a, b) => b.rating - a.rating)
         );
         break;
     }

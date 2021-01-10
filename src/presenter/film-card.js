@@ -5,7 +5,10 @@ import {
   replace,
   remove
 } from "../utils/render.js";
-import {UserAction} from "../const.js";
+import {
+  UserAction,
+  UpdateType
+} from "../const.js";
 
 export default class FilmCard {
   constructor(filmListElement, mainElement, changeView) {
@@ -77,6 +80,7 @@ export default class FilmCard {
   _handleAddToWatchlistClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -90,6 +94,7 @@ export default class FilmCard {
   _handleMarkAsWatchedClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -103,6 +108,7 @@ export default class FilmCard {
   _handleFavoriteClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,

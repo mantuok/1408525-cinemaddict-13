@@ -5,8 +5,9 @@ import FilmCardPresenter from "../presenter/film-card.js";
 import {render, remove} from "../utils/render.js";
 import {
   FilmsListType,
-  FilmRenderStep,
-  UserAction
+  UserAction,
+  UpdateType,
+  SortType
 } from "../const.js";
 import {
   isEmptyList,
@@ -32,17 +33,14 @@ export default class FilmsBoard {
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleSortAction = this._handleSortAction.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
+
+    this._filmsModel.addObserver(this._handleModelEvent);
   }
 
-  // init(films, comments, topCommentedFilms, topRatedFilms) {
   init(comments) {
-    // this._films = films.slice();
     this._comments = comments.slice();
     this._sortedFilmsList = null;
-    // this._topCommentedFilms = topCommentedFilms.slice();
-    // this._topRatedFilms = topRatedFilms.slice();
-
-    // this._sortingMenuPresenter.init(this._films, this._handleSortAction);
 
     this._sortingMenuPresenter.init(this._handleSortAction);
 
@@ -54,7 +52,7 @@ export default class FilmsBoard {
 
     switch (filmsListType) {
       case FilmsListType.MAIN:
-        return films;
+        return this._sortingMenuPresenter.getSortedFilmsList();
       case FilmsListType.TOP_RATED:
         return films.sort((a, b) =>  b.rating - a.rating);
       case FilmsListType.TOP_COMMENTED:
@@ -97,7 +95,6 @@ export default class FilmsBoard {
     if (!listComponent.isExtraList()) {
       this._filmCardPresenter[film.id] = filmCardPresenter;
     }
-    console.log(this._filmCardPresenter)
   }
 
   _renderMainFilmsCards(listComponent, films = this._getFilms(FilmsListType.MAIN)) {
@@ -125,13 +122,18 @@ export default class FilmsBoard {
     }
   }
 
-  _clearFilmList() {
+  _clearFilmList({resetSortType = false} = {}) {
     Object
         .values(this._filmCardPresenter)
         .forEach((presenter) => presenter.destroy());
     this._filmCardPresenter = {};
     this._filmToRenderCursor = 0;
+
     remove(this._showMoreButtonComponent);
+
+    if (resetSortType) {
+      this._sortingMenuPresenter.currentSortType = SortType.DEAFULT;
+    }
   }
 
   _handleShowMoreButtonClick() {
@@ -142,17 +144,49 @@ export default class FilmsBoard {
     this._renderMainFilmsCards(this._mainFilmsListComponent);
   }
 
-  _handleViewAction(actionType, update) {
+  // _handleViewAction(actionType, update) {
+  //   switch (actionType) {
+  //     case UserAction.UPDATE_FILM:
+  //       this._films = updateItemById(this._films, update);
+  //       this._filmCardPresenter[update.id].init(update, this._comments);
+  //       this._filmCardPresenter[update.id].updatePopup(update);
+  //       break;
+  //     case UserAction.OPEN_POPUP:
+  //       Object
+  //           .values(this._filmCardPresenter)
+  //           .forEach((presenter) => presenter.resetView());
+  //       break;
+  //   }
+  // }
+
+  _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this._films = updateItemById(this._films, update);
-        this._filmCardPresenter[update.id].init(update, this._comments);
-        this._filmCardPresenter[update.id].updatePopup(update);
+        this._filmsModel.updateFilm(updateType, update)
         break;
       case UserAction.OPEN_POPUP:
         Object
             .values(this._filmCardPresenter)
             .forEach((presenter) => presenter.resetView());
+        break;
+    }
+  }
+
+  _handleModelEvent(updateType, data){
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this._filmCardPresenter[data.id].init(data, this._comments);
+        this._filmCardPresenter[data.id].updatePopup(data);
+        break;
+      case UpdateType.MINOR:
+        this._clearFilmList();
+        this._renderMainFilmsCards();
+        this._renderShowMoreButton();
+        break;
+      case UpdateType.MAJOR:
+        this._clearFilmList({resetSortType: true});
+        this._renderMainFilmsCards();
+        this._renderShowMoreButton();
         break;
     }
   }

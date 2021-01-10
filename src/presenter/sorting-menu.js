@@ -26,35 +26,39 @@ export default class SortingMenu {
     this._view.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
+  set currentSortType(value) {
+    this._currentSortType = value;
+  }
+
+  getSortedFilmsList() {
+    return this._sortFilms(this._currentSortType);
+  }
+
+  _sortFilms(sortType) {
+    const films = this._getFilms();
+
+    switch (sortType) {
+      case SortType.DEAFULT:
+        return films;
+      case SortType.BY_DATE:
+        return films.sort(sortByDate);
+      case SortType.BY_RATING:
+        return films.sort((a, b) => b.rating - a.rating);
+    }
+  }
+
   _getFilms() {
     return this._filmsModel.getFilms().slice();
   }
+
 
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
     }
 
-    const films = this._getFilms();
-
     this._view.toggleActiveControl(this._currentSortType);
-
-    switch (sortType) {
-      case SortType.DEAFULT:
-        this._changeSortType(films);
-        break;
-      case SortType.BY_DATE:
-        this._changeSortType(
-            films.sort(sortByDate)
-        );
-        break;
-      case SortType.BY_RATING:
-        this._changeSortType(
-            films.sort((a, b) => b.rating - a.rating)
-        );
-        break;
-    }
-
+    this._changeSortType(this._sortFilms(sortType));
     this._currentSortType = sortType;
     this._view.toggleActiveControl(sortType);
   }

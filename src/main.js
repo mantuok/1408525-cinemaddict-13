@@ -8,7 +8,7 @@ import {generateComment} from "./mock/comments.js";
 import {generateFilter} from "./mock/filter.js";
 
 const FilmCount = {
-  MAIN: 7,
+  MAIN: 9,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 };
@@ -35,5 +35,5 @@ const filmsCountPresenter = new FilmsCountPresenter(footerElement);
 
 userProfilePresenter.init(films);
 mainNavigationPresenter.init(filters);
-filmsBoardPresenter.init(films, comments, topCommentedFilms, topRatedFilms);
+filmsBoardPresenter.init(comments);
 filmsCountPresenter.init(films);

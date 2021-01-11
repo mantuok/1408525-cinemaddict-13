@@ -51,7 +51,6 @@ export default class SortingMenu {
     return this._filmsModel.getFilms().slice();
   }
 
-
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;

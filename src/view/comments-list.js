@@ -1,9 +1,8 @@
 import AbstractView from "./abstract.js";
 import {getHumanDateFormat} from "../utils/day.js";
 
-const createFilmCommentTemplate = (film, comments) => {
-  const filmComments = comments.filter((comment) => film.comments.includes(comment.id));
-  return filmComments.map((comment) =>
+const createFilmCommentTemplate = (comments) => {
+  return comments.map((comment) =>
     `<li class="film-details__comment">
       <span class="film-details__comment-emoji">
         <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">
@@ -20,18 +19,17 @@ const createFilmCommentTemplate = (film, comments) => {
     .join(``);
 };
 
-const createCommentsListTemplate = (film, comments) => {
-  return `<ul class="film-details__comments-list">${createFilmCommentTemplate(film, comments)}</ul>`;
+const createCommentsListTemplate = (comments) => {
+  return `<ul class="film-details__comments-list">${createFilmCommentTemplate(comments)}</ul>`;
 };
 
 export default class CommentsList extends AbstractView {
-  constructor(film, comments) {
+  constructor(comments) {
     super();
-    this._film = film;
     this._comments = comments;
   }
 
   getTemplate() {
-    return createCommentsListTemplate(this._film, this._comments);
+    return createCommentsListTemplate(this._comments);
   }
 }

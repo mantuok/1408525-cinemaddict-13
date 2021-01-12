@@ -6,13 +6,11 @@ export default class Films extends Observer {
      this._comments = [];
    }
 
-
   setComments(comments) {
     this._comments = comments.slice();
   }
 
-  getCmmentso() {
+  getComments() {
     return this._comments;
   }
-
  }

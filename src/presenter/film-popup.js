@@ -33,7 +33,7 @@ export default class FilmPopup {
 
   init(film, comments) {
     this._film = film;
-    this._comments = comments.slice();
+    this._comments = comments;
 
     this._filmDetailsPopupComponent = new FilmDetailsPopupView();
     this._filmDetailsFormElement = this._filmDetailsPopupComponent.getFormElement();
@@ -86,7 +86,7 @@ export default class FilmPopup {
   }
 
   _renderCommentsList() {
-    render(this._commentsContainerElement, new CommentsListView(this._film, this._comments));
+    render(this._commentsContainerElement, new CommentsListView(this._comments));
   }
 
   _renderNewComment() {

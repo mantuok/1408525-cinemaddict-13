@@ -15,10 +15,11 @@ import {filter} from "../utils/filter.js"
 import SortingMenuPresenter from "../presenter/sorting-menu.js";
 
 export default class FilmsBoard {
-  constructor(mainElement, filmsModel, filtersModel) {
+  constructor(mainElement, filmsModel, filtersModel, commentsModel) {
     this._mainElement = mainElement;
     this._filmsModel = filmsModel;
     this._filtersModel = filtersModel;
+    this._commentsModel = commentsModel;
     this._filmCardPresenter = {};
 
     this._filmsListsContainerComponent = new FilmsListsContainerView();
@@ -39,8 +40,8 @@ export default class FilmsBoard {
     this._filtersModel.addObserver(this._handleModelEvent);
   }
 
-  init(comments) {
-    this._comments = comments.slice();
+  init() {
+    // this._comments = comments.slice();
     this._sortedFilmsList = null;
 
     this._sortingMenuPresenter.init(this._handleSortAction);
@@ -61,6 +62,11 @@ export default class FilmsBoard {
         return films.sort((a, b) => b.comments.length - a.comments.length);
     }
   };
+
+  _getComments(film) {
+    const comments = this._commentsModel.getComments().slice();
+    return comments.filter((comment) => film.comments.includes(comment.id));
+  }
 
   _renderListsContainer() {
     render(this._mainElement, this._filmsListsContainerComponent);
@@ -93,7 +99,8 @@ export default class FilmsBoard {
         this._mainElement,
         this._handleViewAction
     );
-    filmCardPresenter.init(film, this._comments);
+    const filmComments = this._getComments(film)
+    filmCardPresenter.init(film, filmComments);
     if (!listComponent.isExtraList()) {
       this._filmCardPresenter[film.id] = filmCardPresenter;
     }

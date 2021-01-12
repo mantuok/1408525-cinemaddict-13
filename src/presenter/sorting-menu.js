@@ -28,6 +28,11 @@ export default class SortingMenu {
 
   set currentSortType(value) {
     this._currentSortType = value;
+
+  }
+
+  resetSortType() {
+    this._handleSortTypeChange(SortType.DEAFULT);
   }
 
   getSortedFilmsList() {

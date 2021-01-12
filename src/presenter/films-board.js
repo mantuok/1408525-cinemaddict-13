@@ -6,8 +6,7 @@ import {render, remove} from "../utils/render.js";
 import {
   FilmsListType,
   UserAction,
-  UpdateType,
-  SortType
+  UpdateType
 } from "../const.js";
 import {
   isEmptyList
@@ -135,7 +134,7 @@ export default class FilmsBoard {
     remove(this._showMoreButtonComponent);
 
     if (resetSortType) {
-      this._sortingMenuPresenter.currentSortType = SortType.DEAFULT;
+      this._sortingMenuPresenter.resetSortType()
     }
   }
 

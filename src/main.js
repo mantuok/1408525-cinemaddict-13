@@ -30,9 +30,9 @@ const footerElement = document.querySelector(`.footer`);
 const userProfilePresenter = new UserProfilePresenter(headerElement, filmsModel);
 const mainNavigationPresenter = new MainNavigationPresenter(mainElement, filtersModel, filmsModel);
 const filmsBoardPresenter = new FilmsBoardPresenter(mainElement, filmsModel, filtersModel);
-const filmsCountPresenter = new FilmsCountPresenter(footerElement);
+const filmsCountPresenter = new FilmsCountPresenter(footerElement, filmsModel);
 
 userProfilePresenter.init();
 mainNavigationPresenter.init();
 filmsBoardPresenter.init(comments);
-filmsCountPresenter.init(films);
+filmsCountPresenter.init();

@@ -4,12 +4,14 @@ import {render} from "../utils/render.js";
 const countFilms = (films) => films.length;
 
 export default class FilmsCount {
-  constructor(containerElement) {
+  constructor(containerElement, filmsModel) {
     this._containerElement = containerElement;
+    this._filmsModel = filmsModel;
     this._view = null;
   }
 
-  init(films) {
+  init() {
+    const films = this._filmsModel.getFilms();
     const count = countFilms(films);
     this._view = new FilmsCountView(count);
 

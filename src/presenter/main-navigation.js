@@ -75,8 +75,6 @@ export default class MainNavigation {
   }
 
   _handleFilterTypeClick(filterType) {
-    console.log()
-
     if (this._currentFilterType === FilterType) {
       return;
     }

@@ -50,7 +50,6 @@ export default class FilmsBoard {
   }
 
   _getFilms(filmsListType) {
-    // debugger
     const films = this._filmsModel.getFilms().slice();
     const filterType = this._filtersModel.getFilter();
 
@@ -90,7 +89,6 @@ export default class FilmsBoard {
   }
 
   _createFilmCard(film, listComponent) {
-    // debugger
     const filmCardPresenter = new FilmCardPresenter(
         listComponent.getContainerElement(),
         this._mainElement,
@@ -143,26 +141,11 @@ export default class FilmsBoard {
 
   _handleShowMoreButtonClick() {
     if (this._sortedFilmsList) {
-      this._renderMainFilmsCards(this._mainFilmsListComponent, this._sortedFilmsList);
+      this._renderMainFilmsCards(this._sortedFilmsList);
       return
     }
-    this._renderMainFilmsCards(this._mainFilmsListComponent);
+    this._renderMainFilmsCards();
   }
-
-  // _handleViewAction(actionType, update) {
-  //   switch (actionType) {
-  //     case UserAction.UPDATE_FILM:
-  //       this._films = updateItemById(this._films, update);
-  //       this._filmCardPresenter[update.id].init(update, this._comments);
-  //       this._filmCardPresenter[update.id].updatePopup(update);
-  //       break;
-  //     case UserAction.OPEN_POPUP:
-  //       Object
-  //           .values(this._filmCardPresenter)
-  //           .forEach((presenter) => presenter.resetView());
-  //       break;
-  //   }
-  // }
 
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
@@ -184,6 +167,7 @@ export default class FilmsBoard {
         this._filmCardPresenter[data.id].updatePopup(data);
         break;
       case UpdateType.MINOR:
+        this._filmCardPresenter[data.id].updatePopup(data);
         this._clearFilmList();
         this._renderMainFilmsCards();
         this._renderShowMoreButton();
@@ -199,10 +183,7 @@ export default class FilmsBoard {
   _handleSortAction(sortedFilms) {
     this._sortedFilmsList = sortedFilms;
     this._clearFilmList();
-    this._renderMainFilmsCards(
-        this._mainFilmsListComponent,
-        this._sortedFilmsList
-    );
+    this._renderMainFilmsCards(this._sortedFilmsList);
     this._renderShowMoreButton();
   }
 

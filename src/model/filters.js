@@ -13,7 +13,6 @@ export default class Films extends Observer {
   }
 
   getFilter() {
-    console.log(this._activeFilter)
     return this._activeFilter;
   }
 }

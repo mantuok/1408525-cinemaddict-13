@@ -6,10 +6,9 @@ import FilmsModel from "./model/films.js";
 import FiltersModel from "./model/filters.js"
 import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
-import {generateFilter} from "./mock/filter.js";
 
 const FilmCount = {
-  MAIN: 4,
+  MAIN: 19,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 };
@@ -17,17 +16,7 @@ const FilmCount = {
 const COMMENT_COUNT = 5;
 
 const films = Array.from({length: FilmCount.MAIN}, generateFilm);
-const topCommentedFilms = [...films].sort((a, b) => b.comments.length - a.comments.length);
-const topRatedFilms = [...films].sort((a, b) => b.rating - a.rating);
 const comments = Array.from({length: COMMENT_COUNT}, generateComment);
-// const filters = generateFilter(films);
-// const filters = [
-//   {
-//     type: `all`,
-//     name: `ALL`,
-//     count: 0
-//   }
-// ]
 
 const filmsModel = new FilmsModel();
 filmsModel.setFilms(films);
@@ -38,12 +27,12 @@ const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 
-const userProfilePresenter = new UserProfilePresenter(headerElement);
+const userProfilePresenter = new UserProfilePresenter(headerElement, filmsModel);
 const mainNavigationPresenter = new MainNavigationPresenter(mainElement, filtersModel, filmsModel);
 const filmsBoardPresenter = new FilmsBoardPresenter(mainElement, filmsModel, filtersModel);
 const filmsCountPresenter = new FilmsCountPresenter(footerElement);
 
-userProfilePresenter.init(films);
+userProfilePresenter.init();
 mainNavigationPresenter.init();
 filmsBoardPresenter.init(comments);
 filmsCountPresenter.init(films);

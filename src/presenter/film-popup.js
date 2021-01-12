@@ -123,7 +123,7 @@ export default class FilmPopup {
   _handleAddToWatchlistClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
-        UpdateType.PATCH,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -137,7 +137,7 @@ export default class FilmPopup {
   _handleMarkAsWatchedClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
-        UpdateType.PATCH,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -151,7 +151,7 @@ export default class FilmPopup {
   _handleFavoriteClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
-        UpdateType.PATCH,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,

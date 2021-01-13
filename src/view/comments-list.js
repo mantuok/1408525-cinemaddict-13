@@ -12,7 +12,7 @@ const createFilmCommentTemplate = (comments) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${comment.author}</span>
           <span class="film-details__comment-day">${getHumanDateFormat(comment.date)}</span>
-          <button class="film-details__comment-delete">Delete</button>
+          <button class="film-details__comment-delete" data-id="${comment.id}">Delete</button>
         </p>
       </div>
     </li>`)
@@ -27,9 +27,28 @@ export default class CommentsList extends AbstractView {
   constructor(comments) {
     super();
     this._comments = comments;
+    this._deleteButtonClickHandler = this._deleteButtonClickHandler.bind(this);
   }
 
   getTemplate() {
     return createCommentsListTemplate(this._comments);
   }
+
+  setDeleteButtonClickHandler(callback) {
+    this._callback.deleteButtonClick = callback;
+    // this.getElement()
+    //     .querySelectorAll(`.film-details__comment-delete`)
+    //     .forEach((deleteButton) =>
+    //         deleteButton.addEventListener(`click`, this._deleteButtonClickHandler));
+    this.getElement().addEventListener(`click`, this._deleteButtonClickHandler);
+  }
+
+  _deleteButtonClickHandler(evt) {
+    if (evt.target.className !== `film-details__comment-delete`) {
+      return;
+    }
+    evt.preventDefault();
+    this._callback.deleteButtonClick(evt.target.dataset.id)
+  }
+
 }

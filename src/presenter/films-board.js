@@ -41,11 +41,8 @@ export default class FilmsBoard {
   }
 
   init() {
-    // this._comments = comments.slice();
     this._sortedFilmsList = null;
-
     this._sortingMenuPresenter.init(this._handleSortAction);
-
     this._render();
   }
 
@@ -63,31 +60,26 @@ export default class FilmsBoard {
     }
   };
 
-  _getComments(film) {
-    const comments = this._commentsModel.getComments().slice();
-    return comments.filter((comment) => film.comments.includes(comment.id));
-  }
+  // _getComments(film) {
+  //   const comments = this._commentsModel.getComments().slice();
+  //   return comments.filter((comment) => film.comments.includes(comment.id));
+  // }
 
   _renderListsContainer() {
     render(this._mainElement, this._filmsListsContainerComponent);
   }
-
   _renderMainFilmsList() {
     render(this._filmsListsContainerComponent, this._mainFilmsListComponent);
   }
-
   _renderTopRatedFilmsList() {
     render(this._filmsListsContainerComponent, this._topRatedFilmsListComponent);
   }
-
   _renderTopCommentedFilmsList() {
     render(this._filmsListsContainerComponent, this._topCommentedFilmsListComponent);
   }
-
   _renderEmptyList() {
     render(this._filmsListsContainerComponent, new FilmsListView(FilmsListType.EMPTY));
   }
-
   _renderShowMoreButton() {
     render(this._mainFilmsListComponent, this._showMoreButtonComponent);
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
@@ -97,10 +89,10 @@ export default class FilmsBoard {
     const filmCardPresenter = new FilmCardPresenter(
         listComponent.getContainerElement(),
         this._mainElement,
-        this._handleViewAction
+        this._handleViewAction,
+        this._commentsModel
     );
-    const filmComments = this._getComments(film)
-    filmCardPresenter.init(film, filmComments);
+    filmCardPresenter.init(film);
     if (!listComponent.isExtraList()) {
       this._filmCardPresenter[film.id] = filmCardPresenter;
     }

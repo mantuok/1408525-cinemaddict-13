@@ -1,16 +1,17 @@
 import AbstractView from "./abstract.js";
 
-const createCommentsTitle = (film) => {
-  return `<h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film.comments.length}</span>
+const createCommentsTitle = (comments) => {
+
+  return `<h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span>
   </h3>`;
 };
 
 export default class CommentsTitle extends AbstractView {
-  constructor(film) {
+  constructor(comments) {
     super();
-    this._film = film;
+    this._comments = comments;
   }
   getTemplate() {
-    return createCommentsTitle(this._film);
+    return createCommentsTitle(this._comments);
   }
 }

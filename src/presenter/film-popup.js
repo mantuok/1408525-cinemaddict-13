@@ -83,16 +83,11 @@ export default class FilmPopup {
     replace(this._commentsListComponent, prevCommentsListComponent);
     this._commentsListComponent.setDeleteButtonClickHandler(this._handleDeleteButtonClick);
     remove(prevCommentsListComponent);
-
-
   }
 
-  updatetitle() {
+  updateTitle() {
     const prevCommentsTitleComponent = this._commentsTitleComponent;
     this._commentsTitleComponent = new CommentsTitleView(this._getFilmComments());
-    console.log(prevCommentsTitleComponent.getElement())
-    console.log(this._commentsTitleComponent.getElement())
-    // debugger
     replace(this._commentsTitleComponent, prevCommentsTitleComponent);
     remove(prevCommentsTitleComponent);
   }
@@ -116,7 +111,7 @@ export default class FilmPopup {
     render(this._popupTopContainerComponent, this._filmControlsComponent);
   }
   _renderCommentsTitle() {
-    render(this._commentsContainerElement, new CommentsTitleView(this._getFilmComments()));
+    render(this._commentsContainerElement, this._commentsTitleComponent);
   }
   _renderCommentsList() {
     render(this._commentsContainerElement, this._commentsListComponent);

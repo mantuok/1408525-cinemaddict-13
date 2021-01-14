@@ -72,7 +72,7 @@ export default class FilmCard {
     if (this._filmPopupPresenter !== null) {
       this._filmPopupPresenter.updateControls(updatedFilm);
       this._filmPopupPresenter.updateComments();
-      this._filmPopupPresenter.updatetitle();
+      this._filmPopupPresenter.updateTitle();
     }
   }
 

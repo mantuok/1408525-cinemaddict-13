@@ -29,7 +29,7 @@ const filtersModel = new FiltersModel();
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
-const footerElement = document.querySelector(`.footer`);
+const footerElement = document.querySelector(`.footer__statistics`);
 
 const userProfilePresenter = new UserProfilePresenter(headerElement, filmsModel);
 const mainNavigationPresenter = new MainNavigationPresenter(mainElement, filtersModel, filmsModel);

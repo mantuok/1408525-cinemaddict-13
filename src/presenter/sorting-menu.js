@@ -41,15 +41,21 @@ export default class SortingMenu {
 
   _sortFilms(sortType) {
     const films = this._getFilms();
+    let sortedFilms = [];
 
     switch (sortType) {
       case SortType.DEAFULT:
-        return films;
+        sortedFilms = films;
+        break;
       case SortType.BY_DATE:
-        return films.sort(sortByDate);
+        sortedFilms = films.sort(sortByDate);
+        break;
       case SortType.BY_RATING:
-        return films.sort((a, b) => b.rating - a.rating);
+        sortedFilms = films.sort((a, b) => b.rating - a.rating);
+        break;
     }
+
+    return sortedFilms;
   }
 
   _getFilms() {

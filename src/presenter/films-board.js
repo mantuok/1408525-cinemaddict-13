@@ -11,7 +11,7 @@ import {
 import {
   isEmptyList
 } from "../utils/common.js";
-import {filter} from "../utils/filter.js"
+import {filter} from "../utils/filter.js";
 import SortingMenuPresenter from "../presenter/sorting-menu.js";
 
 export default class FilmsBoard {
@@ -49,21 +49,22 @@ export default class FilmsBoard {
   _getFilms(filmsListType) {
     const films = this._filmsModel.getFilms().slice();
     const filterType = this._filtersModel.getFilter();
+    let filteredFilms = [];
 
     switch (filmsListType) {
       case FilmsListType.MAIN:
-        return filter[filterType](this._sortingMenuPresenter.getSortedFilmsList());
+        filteredFilms = filter[filterType](this._sortingMenuPresenter.getSortedFilmsList());
+        break;
       case FilmsListType.TOP_RATED:
-        return films.sort((a, b) =>  b.rating - a.rating);
+        filteredFilms = films.sort((a, b) => b.rating - a.rating);
+        break;
       case FilmsListType.TOP_COMMENTED:
-        return films.sort((a, b) => b.comments.length - a.comments.length);
+        filteredFilms = films.sort((a, b) => b.comments.length - a.comments.length);
+        break;
     }
-  };
 
-  // _getComments(film) {
-  //   const comments = this._commentsModel.getComments().slice();
-  //   return comments.filter((comment) => film.comments.includes(comment.id));
-  // }
+    return filteredFilms;
+  }
 
   _renderListsContainer() {
     render(this._mainElement, this._filmsListsContainerComponent);
@@ -133,14 +134,14 @@ export default class FilmsBoard {
     remove(this._showMoreButtonComponent);
 
     if (resetSortType) {
-      this._sortingMenuPresenter.resetSortType()
+      this._sortingMenuPresenter.resetSortType();
     }
   }
 
   _handleShowMoreButtonClick() {
     if (this._sortedFilmsList) {
       this._renderMainFilmsCards(this._sortedFilmsList);
-      return
+      return;
     }
     this._renderMainFilmsCards();
   }
@@ -148,7 +149,7 @@ export default class FilmsBoard {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this._filmsModel.updateFilm(updateType, update)
+        this._filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.OPEN_POPUP:
         Object
@@ -158,7 +159,7 @@ export default class FilmsBoard {
     }
   }
 
-  _handleModelEvent(updateType, data){
+  _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
         this._filmCardPresenter[data.id].init(data, this._comments);

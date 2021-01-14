@@ -9,7 +9,7 @@ export default class Films extends Observer {
 
   setFilter(updateType, filter) {
     this._activeFilter = filter;
-    this._notify(updateType, filter)
+    this._notify(updateType, filter);
   }
 
   getFilter() {

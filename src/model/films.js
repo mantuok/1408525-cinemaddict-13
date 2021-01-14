@@ -1,4 +1,4 @@
-import Observer from "./observer.js"
+import Observer from "./observer.js";
 
 export default class Films extends Observer {
   constructor() {
@@ -18,7 +18,7 @@ export default class Films extends Observer {
     const index = this._films.findIndex((item) => item.id === update.id);
 
     if (index === -1) {
-      return items;
+      throw new Error(`Can't update unexisting film`);
     }
 
     this._films = [
@@ -27,6 +27,6 @@ export default class Films extends Observer {
       ...this._films.slice(index + 1)
     ];
 
-    this._notify(updateType, update)
+    this._notify(updateType, update);
   }
 }

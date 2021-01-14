@@ -32,7 +32,7 @@ export default class MainNavigation extends AbstractView {
 
   setFilterTypeClickHandler(callback) {
     this._callback.filterTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._filterTypeClickHandler)
+    this.getElement().addEventListener(`click`, this._filterTypeClickHandler);
   }
 
   _filterTypeClickHandler(evt) {

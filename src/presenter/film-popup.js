@@ -63,7 +63,7 @@ export default class FilmPopup {
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick);
     this._commentsListComponent.setDeleteButtonClickHandler(this._handleDeleteButtonClick);
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
-    document.addEventListener(`keydown`, this._handleFormSubmit)
+    document.addEventListener(`keydown`, this._handleFormSubmit);
 
     this._render();
   }
@@ -108,7 +108,6 @@ export default class FilmPopup {
   }
 
   updateNewComment() {
-    console.log(`update new comment`)
     const prevNewCommentComponent = this._newCommentComponent;
     this._newCommentComponent = new NewCommentView();
     replace(this._newCommentComponent, prevNewCommentComponent);
@@ -235,29 +234,29 @@ export default class FilmPopup {
     switch (actionType) {
       case UserAction.ADD_COMMENT:
         this._changeView(
-          UserAction.UPDATE_FILM,
-          UpdateType.PATCH,
-          Object.assign(
-              {},
-              this._film,
-              {
-                comments: [data.id, ...this._film.comments]
-              }
-          )
-        )
-        break;
-      case UserAction.DELETE_COMMENT:
-          this._changeView(
             UserAction.UPDATE_FILM,
             UpdateType.PATCH,
             Object.assign(
                 {},
                 this._film,
                 {
-                  comments: this._film.comments.filter((comment) => comment != data)
+                  comments: [data.id, ...this._film.comments]
                 }
             )
-          )
+        );
+        break;
+      case UserAction.DELETE_COMMENT:
+        this._changeView(
+            UserAction.UPDATE_FILM,
+            UpdateType.PATCH,
+            Object.assign(
+                {},
+                this._film,
+                {
+                  comments: this._film.comments.filter((comment) => comment !== parseInt(data, 10))
+                }
+            )
+        );
         break;
     }
   }

@@ -11,7 +11,7 @@ const Emoji = {
 const EMPTY_COMMENT = {
   text: ``,
   emotion: ``
-}
+};
 
 const createEmojiItemTemplate = (emoji, isChecked) => {
   return `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}" ${isChecked ? ` checked` : ``}>
@@ -88,12 +88,12 @@ export default class NewComment extends SmartView {
     }, false);
 
     this._newComment = Object.assign(
-      {},
-      this._newComment,
-      {
-        emotion: evt.target.value
-      }
-    )
+        {},
+        this._newComment,
+        {
+          emotion: evt.target.value
+        }
+    );
   }
 
   _commentInputHandler(evt) {
@@ -104,12 +104,12 @@ export default class NewComment extends SmartView {
     }, true);
 
     this._newComment = Object.assign(
-      {},
-      this._newComment,
-      {
-        text: evt.target.value
-      }
-    )
+        {},
+        this._newComment,
+        {
+          text: evt.target.value
+        }
+    );
   }
 
   _setInnerHandlers() {

@@ -45,7 +45,7 @@ export default class CommentsList extends AbstractView {
       return;
     }
     evt.preventDefault();
-    this._callback.deleteButtonClick(evt.target.dataset.id)
+    this._callback.deleteButtonClick(evt.target.dataset.id);
   }
 
 }

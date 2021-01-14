@@ -1,10 +1,10 @@
-import Observer from "./observer.js"
+import Observer from "./observer.js";
 
 export default class Films extends Observer {
-   constructor() {
-     super();
-     this._comments = [];
-   }
+  constructor() {
+    super();
+    this._comments = [];
+  }
 
   setComments(comments) {
     this._comments = comments.slice();
@@ -15,7 +15,7 @@ export default class Films extends Observer {
   }
 
   deleteComment(actionType, commentId) {
-    const index = this._comments.findIndex((comment) => comment.id = commentId);
+    const index = this._comments.findIndex((comment) => comment.id === parseInt(commentId, 10));
 
     if (index === -1) {
       throw new Error(`Can't delete unexisting comment`);
@@ -33,8 +33,8 @@ export default class Films extends Observer {
     this._comments = [
       update,
       ...this._comments
-    ]
+    ];
 
-    this._notify(actionType, update)
+    this._notify(actionType, update);
   }
- }
+}

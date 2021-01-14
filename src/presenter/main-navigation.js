@@ -1,5 +1,5 @@
 import MainNavigationView from "../view/main-navigation.js";
-import {filter} from "../utils/filter.js"
+import {filter} from "../utils/filter.js";
 import {
   render,
   replace,
@@ -8,7 +8,7 @@ import {
 import {
   FilterType,
   UpdateType
-} from "../const.js"
+} from "../const.js";
 
 export default class MainNavigation {
   constructor(containerElement, filtersModel, filmsModel) {

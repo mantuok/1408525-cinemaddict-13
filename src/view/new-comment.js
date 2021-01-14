@@ -1,4 +1,5 @@
 import SmartView from "./smart.js";
+import he from "he";
 
 const Emoji = {
   SMILE: `smile`,
@@ -33,7 +34,7 @@ const createNewCommentTemplate = (message) => {
     ${setEmotionTemplate()}
   </div>
   <label class="film-details__comment-label">
-    <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${text}</textarea>
+    <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(text)}</textarea>
   </label>
   <div class="film-details__emoji-list">
   ${createEmojiItemTemplate(Emoji.SMILE, isChecked(Emoji.SMILE))}

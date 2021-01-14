@@ -1,5 +1,6 @@
 import AbstractView from "./abstract.js";
 import {getHumanDateFormat} from "../utils/day.js";
+import he from "he";
 
 const createFilmCommentTemplate = (comments) => {
   return comments.map((comment) =>
@@ -8,7 +9,7 @@ const createFilmCommentTemplate = (comments) => {
         <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">
       </span>
       <div>
-        <p class="film-details__comment-text">${comment.text}</p>
+        <p class="film-details__comment-text">${he.encode(comment.text)}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${comment.author}</span>
           <span class="film-details__comment-day">${getHumanDateFormat(comment.date)}</span>
@@ -36,10 +37,6 @@ export default class CommentsList extends AbstractView {
 
   setDeleteButtonClickHandler(callback) {
     this._callback.deleteButtonClick = callback;
-    // this.getElement()
-    //     .querySelectorAll(`.film-details__comment-delete`)
-    //     .forEach((deleteButton) =>
-    //         deleteButton.addEventListener(`click`, this._deleteButtonClickHandler));
     this.getElement().addEventListener(`click`, this._deleteButtonClickHandler);
   }
 

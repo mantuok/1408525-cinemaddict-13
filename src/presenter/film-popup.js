@@ -115,7 +115,6 @@ export default class FilmPopup {
     remove(prevNewCommentComponent);
   }
 
-
   _getFilmComments() {
     const comments = this._commentsModel.getComments().slice();
     return comments.filter((comment) => this._film.comments.includes(comment.id));
@@ -215,11 +214,8 @@ export default class FilmPopup {
       newComment.author = `Tom Smith`;
       newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
 
-      console.log(newComment)
-
       this._commentsModel.addComment(UserAction.ADD_COMMENT, newComment);
     }
-
   }
 
   _escapeKeydownHandler(evt) {

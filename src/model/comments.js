@@ -14,8 +14,7 @@ export default class Films extends Observer {
     return this._comments;
   }
 
-  deleteComment(updateType, commentId) {
-    // debugger
+  deleteComment(actionType, commentId) {
     const index = this._comments.findIndex((comment) => comment.id = commentId);
 
     if (index === -1) {
@@ -27,15 +26,15 @@ export default class Films extends Observer {
       ...this._comments.slice(index + 1)
     ];
 
-    this._notify(updateType, commentId);
+    this._notify(actionType, commentId);
   }
 
-  addComment(updateType, update) {
+  addComment(actionType, update) {
     this._comments = [
       update,
       ...this._comments
     ]
 
-    this._notify(updateType, update)
+    this._notify(actionType, update)
   }
  }

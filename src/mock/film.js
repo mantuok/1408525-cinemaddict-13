@@ -42,25 +42,19 @@ const genres = [
   [`thriller`, `comedy`, `drama`]
 ];
 
-const comments = [
-  {id: 1},
-  {id: 2},
-  {id: 3},
-  {id: 4},
-  {id: 5}
-];
+const comments = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}];
 
 const getFilmRating = () => getRandom(Rating.MIN, Rating.MAX);
 const getDescription = () => shuffleArray(descriptions)
   .slice(0, getRandom(DescriptionLength.MIN, DescriptionLength.MAX))
   .join(` `);
 const getGenres = () => getRandomFrom(genres);
-const getCommets = () => getRandomArray(comments);
+const getComments = () => getRandomArray(comments);
 const getWatchDate = (isWatched) => isWatched ? watchDate : null;
 
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);
-  const commentsList = getCommets();
+  const commentsList = getComments();
   const getCommentsIds = () => commentsList.map(({id}) => id);
   return {
     id: getFilmId(),

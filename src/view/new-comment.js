@@ -7,6 +7,11 @@ const Emoji = {
   ANGRY: `angry`
 };
 
+const EMPTY_COMMENT = {
+  text: ``,
+  emotion: ``
+}
+
 const createEmojiItemTemplate = (emoji, isChecked) => {
   return `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}" ${isChecked ? ` checked` : ``}>
     <label class="film-details__emoji-label" for="emoji-${emoji}">
@@ -49,6 +54,8 @@ export default class NewComment extends SmartView {
       scroll: 0
     };
 
+    this._newComment = EMPTY_COMMENT;
+
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._setScrollValue = this._setScrollValue.bind(this);
@@ -58,6 +65,10 @@ export default class NewComment extends SmartView {
 
   getTemplate() {
     return createNewCommentTemplate(this._data);
+  }
+
+  getNewComment() {
+    return this._newComment;
   }
 
   restoreHandlers() {
@@ -70,9 +81,18 @@ export default class NewComment extends SmartView {
 
   _emojiClickHandler(evt) {
     evt.preventDefault();
+
     this.updateData({
       emotion: evt.target.value
     }, false);
+
+    this._newComment = Object.assign(
+      {},
+      this._newComment,
+      {
+        emotion: evt.target.value
+      }
+    )
   }
 
   _commentInputHandler(evt) {
@@ -81,6 +101,14 @@ export default class NewComment extends SmartView {
       text: evt.target.value,
       scroll: evt.target.scrollTop
     }, true);
+
+    this._newComment = Object.assign(
+      {},
+      this._newComment,
+      {
+        text: evt.target.value
+      }
+    )
   }
 
   _setInnerHandlers() {

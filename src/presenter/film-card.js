@@ -73,6 +73,7 @@ export default class FilmCard {
       this._filmPopupPresenter.updateControls(updatedFilm);
       this._filmPopupPresenter.updateComments();
       this._filmPopupPresenter.updateTitle();
+      this._filmPopupPresenter.updateNewComment();
     }
   }
 

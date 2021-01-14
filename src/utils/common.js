@@ -2,7 +2,8 @@ import dayjs from "dayjs";
 
 const MINUTE_IN_HOUR = 60;
 const KeyboardKey = {
-  ESCAPE: `Escape`
+  ESCAPE: `Escape`,
+  ENTER: `Enter`
 };
 
 export const changeFirstCharToUppercase = (word) =>
@@ -17,6 +18,8 @@ export const getTruncatedText = (text, maxLength) =>
     : text;
 
 export const isEscapeKey = (key) => key === KeyboardKey.ESCAPE;
+
+export const isEnterKey = (key) => key === KeyboardKey.ENTER;
 
 export const isEmptyList = (items) => items.length === 0;
 

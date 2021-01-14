@@ -11,7 +11,10 @@ import {
   remove,
   replace
 } from "../utils/render.js";
-import {isEscapeKey} from "../utils/common.js";
+import {
+  isEscapeKey,
+  isEnterKey
+} from "../utils/common.js";
 import {
   UserAction,
   UpdateType
@@ -33,7 +36,7 @@ export default class FilmPopup {
     this._handleMarkAsWatchedClick = this._handleMarkAsWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteButtonClick = this._handleDeleteButtonClick.bind(this);
-    this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
     this._commentsModel.addObserver(this._handleModelEvent);
@@ -50,6 +53,7 @@ export default class FilmPopup {
     this._commentsContainerElement = this._popupBottomContainerComponent.getCommetsContainer();
     this._commentsListComponent = new CommentsListView(this._getFilmComments());
     this._commentsTitleComponent = new CommentsTitleView(this._getFilmComments());
+    this._newCommentComponent = new NewCommentView();
 
     render(this._mainElement, this._filmDetailsPopupComponent);
     render(this._filmDetailsFormElement, this._popupTopContainerComponent);
@@ -59,6 +63,7 @@ export default class FilmPopup {
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick);
     this._commentsListComponent.setDeleteButtonClickHandler(this._handleDeleteButtonClick);
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
+    document.addEventListener(`keydown`, this._handleFormSubmit)
 
     this._render();
   }
@@ -67,6 +72,16 @@ export default class FilmPopup {
     this._closeFilmDetailsPopup();
     document.removeEventListener(`keydown`, this._escapeKeydownHandler);
   }
+
+  // udpdateComponent(component, view, data) {
+  //   // debugger
+  //   const prevComponent = component;
+  //   component = new CommentsTitleView(this._getFilmComments());
+  //   console.log(prevComponent)
+  //   console.log(component)
+  //   replace(component, prevComponent);
+  //   remove(prevComponent);
+  // }
 
   updateControls(updatedfilm) {
     this._film = updatedfilm;
@@ -92,9 +107,17 @@ export default class FilmPopup {
     remove(prevCommentsTitleComponent);
   }
 
+  updateNewComment() {
+    console.log(`update new comment`)
+    const prevNewCommentComponent = this._newCommentComponent;
+    this._newCommentComponent = new NewCommentView();
+    replace(this._newCommentComponent, prevNewCommentComponent);
+    remove(prevNewCommentComponent);
+  }
+
+
   _getFilmComments() {
     const comments = this._commentsModel.getComments().slice();
-    // console.log(comments)
     return comments.filter((comment) => this._film.comments.includes(comment.id));
   }
 
@@ -117,7 +140,7 @@ export default class FilmPopup {
     render(this._commentsContainerElement, this._commentsListComponent);
   }
   _renderNewComment() {
-    render(this._commentsContainerElement, new NewCommentView());
+    render(this._commentsContainerElement, this._newCommentComponent);
   }
   _closeFilmDetailsPopup() {
     remove(this._filmDetailsPopupComponent);
@@ -131,19 +154,6 @@ export default class FilmPopup {
     this._renderCommentsList();
     this._renderNewComment();
     this._setControlClickHandlers();
-  }
-
-  _escapeKeydownHandler(evt) {
-    if (isEscapeKey(evt.key)) {
-      evt.preventDefault();
-      this._closeFilmDetailsPopup();
-      document.removeEventListener(`keydown`, this._escapeKeydownHandler);
-    }
-  }
-
-  _handleClosePopupButtonClick() {
-    this._closeFilmDetailsPopup();
-    document.removeEventListener(`keydown`, this._escapeKeydownHandler);
   }
 
   _handleAddToWatchlistClick() {
@@ -189,26 +199,58 @@ export default class FilmPopup {
   }
 
   _handleDeleteButtonClick(commentId) {
-    this._handleViewAction(UpdateType.MINOR, UserAction.DELETE_COMMENT, commentId);
+    this._commentsModel.deleteComment(UserAction.DELETE_COMMENT, commentId);
   }
 
-  _handleViewAction(updateType, actionType, commentId) {
-    switch (actionType) {
-      case UserAction.ADD_COMMENT:
-        this._commentsModel.addComment(updateType, comment);
-        break;
-      case UserAction.DELETE_COMMENT:
-        this._commentsModel.deleteComment(updateType, commentId);
-        break;
+  _handleFormSubmit(evt) {
+    if (evt.ctrlKey && isEnterKey(evt.key)) {
+
+      const newComment = this._newCommentComponent.getNewComment();
+
+      if (newComment.emotion === `` || newComment.text === ``) {
+        return;
+      }
+
+      newComment.date = new Date();
+      newComment.author = `Tom Smith`;
+      newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
+
+      console.log(newComment)
+
+      this._commentsModel.addComment(UserAction.ADD_COMMENT, newComment);
+    }
+
+  }
+
+  _escapeKeydownHandler(evt) {
+    if (isEscapeKey(evt.key)) {
+      evt.preventDefault();
+      this._closeFilmDetailsPopup();
+      document.removeEventListener(`keydown`, this._escapeKeydownHandler);
     }
   }
 
-  _handleModelEvent(updateType, data) {
-    // debugger
-    switch (updateType) {
-      case UpdateType.PATCH:
+  _handleClosePopupButtonClick() {
+    this._closeFilmDetailsPopup();
+    document.removeEventListener(`keydown`, this._escapeKeydownHandler);
+  }
+
+  _handleModelEvent(actionType, data) {
+    switch (actionType) {
+      case UserAction.ADD_COMMENT:
+        this._changeView(
+          UserAction.UPDATE_FILM,
+          UpdateType.PATCH,
+          Object.assign(
+              {},
+              this._film,
+              {
+                comments: [data.id, ...this._film.comments]
+              }
+          )
+        )
         break;
-      case UpdateType.MINOR:
+      case UserAction.DELETE_COMMENT:
           this._changeView(
             UserAction.UPDATE_FILM,
             UpdateType.PATCH,
@@ -220,20 +262,7 @@ export default class FilmPopup {
                 }
             )
           )
-
-        break;
-      case UpdateType.MAJOR:
         break;
     }
   }
-
-
-
-  // _handleDeleteClick(comment) {
-  //   this._changeView(
-  //       UserAction.DELETE_COMMENT,
-  //       UpdateType.MINOR,
-  //       comment
-  //   )
-  // }
 }

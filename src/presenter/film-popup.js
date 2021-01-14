@@ -73,7 +73,7 @@ export default class FilmPopup {
     document.removeEventListener(`keydown`, this._escapeKeydownHandler);
   }
 
-  // udpdateComponent(component, view, data) {
+  // updateComponent(component, view, data) {
   //   // debugger
   //   const prevComponent = component;
   //   component = new CommentsTitleView(this._getFilmComments());

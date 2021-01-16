@@ -1,5 +1,5 @@
 import MainNavigationView from "../view/main-navigation.js";
-import {filter} from "../utils/filter.js";
+import {filterTypeToFilmsFilter} from "../utils/filter.js";
 import {
   render,
   replace,
@@ -16,7 +16,7 @@ export default class MainNavigation {
     this._view = null;
     this._filtersModel = filtersModel;
     this._filmsModel = filmsModel;
-    this._currentFilterType = null;
+    this._currentFilterType = ``;
 
     this._handleFilterTypeClick = this._handleFilterTypeClick.bind(this);
     this._handleStatsClick = this._handleStatsClick.bind(this);
@@ -27,7 +27,7 @@ export default class MainNavigation {
   }
 
   init() {
-    this._currentFilterType = this._filtersModel.getFilter();
+    this._currentFilterType = this._filtersModel.get();
 
     const filters = this._getFilters();
     const prevView = this._view;
@@ -46,28 +46,28 @@ export default class MainNavigation {
   }
 
   _getFilters() {
-    const films = this._filmsModel.getFilms();
+    const films = this._filmsModel.get();
 
     return [
       {
         type: FilterType.ALL,
         name: `all`,
-        count: filter[FilterType.ALL](films).length
+        count: filterTypeToFilmsFilter[FilterType.ALL](films).length
       },
       {
         type: FilterType.WATCHLIST,
         name: `watchlist`,
-        count: filter[FilterType.WATCHLIST](films).length
+        count: filterTypeToFilmsFilter[FilterType.WATCHLIST](films).length
       },
       {
         type: FilterType.FAVORITES,
         name: `favorites`,
-        count: filter[FilterType.FAVORITES](films).length
+        count: filterTypeToFilmsFilter[FilterType.FAVORITES](films).length
       },
       {
         type: FilterType.HISTORY,
         name: `history`,
-        count: filter[FilterType.HISTORY](films).length
+        count: filterTypeToFilmsFilter[FilterType.HISTORY](films).length
       }
     ];
   }
@@ -81,10 +81,10 @@ export default class MainNavigation {
       return;
     }
 
-    this._filtersModel.setFilter(UpdateType.MAJOR, filterType);
+    this._filtersModel.set(UpdateType.MAJOR, filterType);
   }
 
   _handleStatsClick() {
-    this._filtersModel.setFilter(UpdateType.MAJOR, FilterType.STATS)
+    this._filtersModel.set(UpdateType.MAJOR, FilterType.STATS)
   }
 }

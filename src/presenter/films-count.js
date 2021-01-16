@@ -11,7 +11,7 @@ export default class FilmsCount {
   }
 
   init() {
-    const films = this._filmsModel.getFilms();
+    const films = this._filmsModel.get();
     const count = countFilms(films);
     this._view = new FilmsCountView(count);
 

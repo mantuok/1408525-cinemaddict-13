@@ -32,7 +32,7 @@ export default class FilmCard {
     this._component = new FilmCardView(this._film);
 
     this._component.setClickHandler(() => {
-      this._changeView(UserAction.OPEN_POPUP, this.resetView);
+      this._changeView(UserAction.OPEN_POPUP, this.destroyPopup);
       this._filmPopupPresenter = new FilmPopupPresenter(
           this._mainElement,
           this._changeView,
@@ -55,13 +55,15 @@ export default class FilmCard {
     }
 
     remove(prevFilmCardComponent);
+
+    this.updatePopup(film);
   }
 
   destroy() {
     remove(this._component);
   }
 
-  resetView() {
+  destroyPopup() {
     if (this._filmPopupPresenter !== null) {
       this._filmPopupPresenter.destroy();
       this._filmPopupPresenter = null;

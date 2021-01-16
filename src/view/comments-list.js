@@ -37,7 +37,8 @@ export default class CommentsList extends AbstractView {
 
   setDeleteButtonClickHandler(callback) {
     this._callback.deleteButtonClick = callback;
-    this.getElement().addEventListener(`click`, this._deleteButtonClickHandler);
+    this.getElement()
+        .addEventListener(`click`, this._deleteButtonClickHandler);
   }
 
   _deleteButtonClickHandler(evt) {

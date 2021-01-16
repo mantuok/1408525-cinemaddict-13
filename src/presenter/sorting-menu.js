@@ -7,28 +7,22 @@ import {
 
 
 export default class SortingMenu {
-  constructor(containerElement, filmsModel) {
+  constructor(containerElement, filmsModel, changeSortType) {
     this._containerElement = containerElement;
     this._filmsModel = filmsModel;
+    this._changeSortType = changeSortType;
+    this._currentSortType = SortType.DEAFULT;
     this._view = null;
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
-  init(changeSortType) {
-    this._changeSortType = changeSortType;
-
+  init() {
     this._view = new SortingMenuView();
     render(this._containerElement, this._view);
 
-    this._currentSortType = SortType.DEAFULT;
     this._view.toggleActiveControl(SortType.DEAFULT);
     this._view.setSortTypeChangeHandler(this._handleSortTypeChange);
-  }
-
-  set currentSortType(value) {
-    this._currentSortType = value;
-
   }
 
   resetSortType() {
@@ -59,14 +53,13 @@ export default class SortingMenu {
   }
 
   _getFilms() {
-    return this._filmsModel.getFilms().slice();
+    return this._filmsModel.get().slice();
   }
 
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
     }
-
     this._view.toggleActiveControl(this._currentSortType);
     this._changeSortType(this._sortFilms(sortType));
     this._currentSortType = sortType;

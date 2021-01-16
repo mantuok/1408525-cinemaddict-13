@@ -68,7 +68,7 @@ export default class NewComment extends SmartView {
     return createNewCommentTemplate(this._data);
   }
 
-  getNewComment() {
+  get() {
     return this._newComment;
   }
 

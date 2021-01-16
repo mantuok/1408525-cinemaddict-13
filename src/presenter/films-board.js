@@ -10,10 +10,7 @@ import {
   UpdateType,
   FilterType
 } from "../const.js";
-import {
-  isEmptyList
-} from "../utils/common.js";
-import {filter} from "../utils/filter.js";
+import {filterTypeToFilmsFilter} from "../utils/filter.js";
 import SortingMenuPresenter from "../presenter/sorting-menu.js";
 
 export default class FilmsBoard {
@@ -23,14 +20,7 @@ export default class FilmsBoard {
     this._filtersModel = filtersModel;
     this._commentsModel = commentsModel;
     this._filmCardPresenter = {};
-
-    this._filmsListsContainerComponent = new FilmsListsContainerView();
-    this._mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
-    this._topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
-    this._topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
-    this._showMoreButtonComponent = new ShowMoreButtonView();
-    this._sortingMenuPresenter = new SortingMenuPresenter(this._mainElement, this._filmsModel);
-
+    this._sortedFilmsList = [];
     this._filmToRenderCursor = 0;
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
@@ -38,24 +28,30 @@ export default class FilmsBoard {
     this._handleSortAction = this._handleSortAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
+    this._filmsListsContainerComponent = new FilmsListsContainerView();
+    this._mainFilmsListComponent = new FilmsListView(FilmsListType.MAIN);
+    this._topRatedFilmsListComponent = new FilmsListView(FilmsListType.TOP_RATED);
+    this._topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
+    this._showMoreButtonComponent = new ShowMoreButtonView();
+    this._sortingMenuPresenter = new SortingMenuPresenter(this._mainElement, this._filmsModel, this._handleSortAction);
+
     this._filmsModel.addObserver(this._handleModelEvent);
     this._filtersModel.addObserver(this._handleModelEvent);
   }
 
   init() {
-    this._sortedFilmsList = null;
-    this._sortingMenuPresenter.init(this._handleSortAction);
+    this._sortingMenuPresenter.init();
     this._render();
   }
 
   _getFilms(filmsListType) {
-    const films = this._filmsModel.getFilms().slice();
-    const filterType = this._filtersModel.getFilter();
+    const films = this._filmsModel.get().slice();
+    const filterType = this._filtersModel.get();
     let filteredFilms = [];
 
     switch (filmsListType) {
       case FilmsListType.MAIN:
-        filteredFilms = filter[filterType](this._sortingMenuPresenter.getSortedFilmsList());
+        filteredFilms = filterTypeToFilmsFilter[filterType](this._sortingMenuPresenter.getSortedFilmsList());
         break;
       case FilmsListType.TOP_RATED:
         filteredFilms = films.sort((a, b) => b.rating - a.rating);
@@ -121,8 +117,14 @@ export default class FilmsBoard {
   _renderTopFilmsCards(listComponent, filmsListType) {
     const films = this._getFilms(filmsListType);
     const filmRenderStep = filmsListType.renderStep;
-    for (let i = 0; i < filmRenderStep; i++) {
-      this._createFilmCard(films[i], listComponent);
+    if (films.length < filmRenderStep) {
+      for (let i = 0; i < films.length; i++) {
+        this._createFilmCard(films[i], listComponent);
+      }
+    } else {
+      for (let i = 0; i < filmRenderStep; i++) {
+        this._createFilmCard(films[i], listComponent);
+      }
     }
   }
 
@@ -143,7 +145,7 @@ export default class FilmsBoard {
   _renderStats() {
     debugger
     this._statsPresenter = new StatsPresenter(this._mainElement);
-    this._statsPresenter.init(this._filmsModel.getFilms().slice());
+    this._statsPresenter.init(this._filmsModel.get().slice());
   }
 
   _destroyStats() {
@@ -151,7 +153,7 @@ export default class FilmsBoard {
   }
 
   _handleShowMoreButtonClick() {
-    if (this._sortedFilmsList) {
+    if (this._sortedFilmsList.length > 0) {
       this._renderMainFilmsCards(this._sortedFilmsList);
       return;
     }
@@ -161,12 +163,12 @@ export default class FilmsBoard {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this._filmsModel.updateFilm(updateType, update);
+        this._filmsModel.update(updateType, update);
         break;
       case UserAction.OPEN_POPUP:
         Object
             .values(this._filmCardPresenter)
-            .forEach((presenter) => presenter.resetView());
+            .forEach((presenter) => presenter.destroyPopup());
         break;
     }
   }
@@ -174,8 +176,7 @@ export default class FilmsBoard {
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
-        this._filmCardPresenter[data.id].init(data, this._comments);
-        this._filmCardPresenter[data.id].updatePopup(data);
+        this._filmCardPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
         this._filmCardPresenter[data.id].updatePopup(data);
@@ -205,7 +206,7 @@ export default class FilmsBoard {
   _render() {
     this._renderListsContainer();
 
-    if (isEmptyList(this._getFilms(FilmsListType.MAIN))) {
+    if (this._filmsModel.isEmpty()) {
       this._renderEmptyList();
     } else {
       this._renderMainFilmsList();

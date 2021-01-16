@@ -36,7 +36,7 @@ export default class FilmPopup {
     this._handleMarkAsWatchedClick = this._handleMarkAsWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteButtonClick = this._handleDeleteButtonClick.bind(this);
-    this._handleFormSubmit = this._handleFormSubmit.bind(this);
+    this._submitKeydownHandler = this._submitKeydownHandler.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
     this._commentsModel.addObserver(this._handleModelEvent);
@@ -63,7 +63,7 @@ export default class FilmPopup {
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick);
     this._commentsListComponent.setDeleteButtonClickHandler(this._handleDeleteButtonClick);
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
-    document.addEventListener(`keydown`, this._handleFormSubmit);
+    document.addEventListener(`keydown`, this._submitKeydownHandler);
 
     this._render();
   }
@@ -115,7 +115,7 @@ export default class FilmPopup {
   }
 
   _getFilmComments() {
-    const comments = this._commentsModel.getComments().slice();
+    const comments = this._commentsModel.get().slice();
     return comments.filter((comment) => this._film.comments.includes(comment.id));
   }
 
@@ -197,13 +197,13 @@ export default class FilmPopup {
   }
 
   _handleDeleteButtonClick(commentId) {
-    this._commentsModel.deleteComment(UserAction.DELETE_COMMENT, commentId);
+    this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
   }
 
-  _handleFormSubmit(evt) {
+  _submitKeydownHandler(evt) {
     if (evt.ctrlKey && isEnterKey(evt.key)) {
 
-      const newComment = this._newCommentComponent.getNewComment();
+      const newComment = this._newCommentComponent.get();
 
       if (newComment.emotion === `` || newComment.text === ``) {
         return;
@@ -213,7 +213,7 @@ export default class FilmPopup {
       newComment.author = `Tom Smith`;
       newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
 
-      this._commentsModel.addComment(UserAction.ADD_COMMENT, newComment);
+      this._commentsModel.add(UserAction.ADD_COMMENT, newComment);
     }
   }
 
@@ -253,7 +253,7 @@ export default class FilmPopup {
                 {},
                 this._film,
                 {
-                  comments: this._film.comments.filter((comment) => comment !== parseInt(data, 10))
+                  comments: this._film.comments.filter((id) => id !== parseInt(data, 10))
                 }
             )
         );

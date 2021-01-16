@@ -9,7 +9,7 @@ import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
 
 const FilmCount = {
-  MAIN: 19,
+  MAIN: 1,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 };
@@ -20,10 +20,10 @@ const films = Array.from({length: FilmCount.MAIN}, generateFilm);
 const comments = Array.from({length: COMMENT_COUNT}, generateComment);
 
 const filmsModel = new FilmsModel();
-filmsModel.setFilms(films);
+filmsModel.set(films);
 
 const commentsModel = new CommentsModel();
-commentsModel.setComments(comments);
+commentsModel.set(comments);
 
 const filtersModel = new FiltersModel();
 

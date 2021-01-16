@@ -31,7 +31,7 @@ export default class UserProfile {
   }
 
   init() {
-    const films = this._filmsModel.getFilms();
+    const films = this._filmsModel.get();
     const count = countWatchedFilms(films);
     const title = getRatingTitle(count);
 

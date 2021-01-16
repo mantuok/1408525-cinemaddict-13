@@ -32,7 +32,7 @@ export default class MainNavigation extends AbstractView {
   }
 
   setFilterTypeClickHandler(callback) {
-    this._callback.filterTypeChange = callback;
+    this._callback.clickFilterType = callback;
     this.getElement()
         .querySelectorAll(`.main-navigation__item`)
         .forEach((item) =>
@@ -49,7 +49,7 @@ export default class MainNavigation extends AbstractView {
 
   _filterTypeClickHandler(evt) {
     evt.preventDefault();
-    this._callback.filterTypeChange(evt.target.dataset.filterType);
+    this._callback.clickFilterType(evt.target.dataset.filterType);
   }
 
   _statsClickHandler(evt) {

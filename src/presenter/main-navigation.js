@@ -19,6 +19,7 @@ export default class MainNavigation {
     this._currentFilterType = null;
 
     this._handleFilterTypeClick = this._handleFilterTypeClick.bind(this);
+    this._handleStatsClick = this._handleStatsClick.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
     this._filtersModel.addObserver(this._handleModelEvent);
@@ -33,6 +34,7 @@ export default class MainNavigation {
 
     this._view = new MainNavigationView(filters, this._currentFilterType);
     this._view.setFilterTypeClickHandler(this._handleFilterTypeClick);
+    this._view.setStatsClickHandler(this._handleStatsClick);
 
     if (prevView === null) {
       render(this._containerElement, this._view);
@@ -80,5 +82,9 @@ export default class MainNavigation {
     }
 
     this._filtersModel.setFilter(UpdateType.MAJOR, filterType);
+  }
+
+  _handleStatsClick() {
+    this._filtersModel.setFilter(UpdateType.MAJOR, FilterType.STATS)
   }
 }

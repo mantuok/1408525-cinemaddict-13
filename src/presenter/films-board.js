@@ -2,11 +2,13 @@ import FilmsListsContainerView from "../view/films-lists-container.js";
 import FilmsListView from "../view/films-list.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
 import FilmCardPresenter from "../presenter/film-card.js";
+import StatsPresenter from "../presenter/stats.js";
 import {render, remove} from "../utils/render.js";
 import {
   FilmsListType,
   UserAction,
-  UpdateType
+  UpdateType,
+  FilterType
 } from "../const.js";
 import {
   isEmptyList
@@ -138,6 +140,16 @@ export default class FilmsBoard {
     }
   }
 
+  _renderStats() {
+    debugger
+    this._statsPresenter = new StatsPresenter(this._mainElement);
+    this._statsPresenter.init(this._filmsModel.getFilms().slice());
+  }
+
+  _destroyStats() {
+
+  }
+
   _handleShowMoreButtonClick() {
     if (this._sortedFilmsList) {
       this._renderMainFilmsCards(this._sortedFilmsList);
@@ -173,6 +185,10 @@ export default class FilmsBoard {
         break;
       case UpdateType.MAJOR:
         this._clearFilmList({resetSortType: true});
+        if (data === FilterType.STATS) {
+          this._renderStats();
+          break;
+        }
         this._renderMainFilmsCards();
         this._renderShowMoreButton();
         break;

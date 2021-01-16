@@ -24,6 +24,7 @@ export default class MainNavigation extends AbstractView {
     this._filters = filters;
     this._currentFilterType = currentFilterType;
     this._filterTypeClickHandler = this._filterTypeClickHandler.bind(this);
+    this._statsClickHandler = this._statsClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -32,15 +33,28 @@ export default class MainNavigation extends AbstractView {
 
   setFilterTypeClickHandler(callback) {
     this._callback.filterTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._filterTypeClickHandler);
+    this.getElement()
+        .querySelectorAll(`.main-navigation__item`)
+        .forEach((item) =>
+          item.addEventListener(`click`, this._filterTypeClickHandler)
+        );
+  }
+
+  setStatsClickHandler(callback) {
+    this._callback.statsClick = callback;
+    this.getElement()
+        .querySelector(`.main-navigation__additional`)
+        .addEventListener(`click`, this._statsClickHandler);
   }
 
   _filterTypeClickHandler(evt) {
-    if (evt.target.tagName !== `A`) {
-      return;
-    }
     evt.preventDefault();
     this._callback.filterTypeChange(evt.target.dataset.filterType);
+  }
+
+  _statsClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.statsClick();
   }
 }
 

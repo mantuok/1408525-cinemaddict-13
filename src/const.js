@@ -48,5 +48,6 @@ export const FilterType = {
   ALL: `ALL`,
   WATCHLIST: `WATCHLIST`,
   FAVORITES: `FAVORITES`,
-  HISTORY: `HISTORY`
+  HISTORY: `HISTORY`,
+  STATS: `STATS`
 }

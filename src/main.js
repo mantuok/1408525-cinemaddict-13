@@ -9,7 +9,7 @@ import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
 
 const FilmCount = {
-  MAIN: 11,
+  MAIN: 6,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 };

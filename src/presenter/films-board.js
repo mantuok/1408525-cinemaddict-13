@@ -100,7 +100,6 @@ export default class FilmsBoard {
   }
 
   _renderMainFilmsCards(films = this._getFilms(FilmsListType.MAIN)) {
-    console.log(this._filmToRenderCursor)
     const filmRenderStep = FilmsListType.MAIN.renderStep;
     if ((films.length - this._filmToRenderCursor) > filmRenderStep) {
       const maxFilmToRender = filmRenderStep + this._filmToRenderCursor;
@@ -131,17 +130,17 @@ export default class FilmsBoard {
     }
   }
 
-  _clearFilmsList({resetSortType = false, resetFilmToRenderCursor = false} = {}) {
+  _clearFilmsList({resetSortType = false} = {}) {
     Object
         .values(this._filmCardPresenter)
         .forEach((presenter) => presenter.destroy());
     this._filmCardPresenter = {};
+    this._filmToRenderCursor = 0;
 
     remove(this._showMoreButtonComponent);
 
-    if (resetFilmToRenderCursor) {
-      this._filmToRenderCursor = 0;
-    }
+
+
 
     if (resetSortType) {
       this._sortingMenuPresenter.resetSortType();

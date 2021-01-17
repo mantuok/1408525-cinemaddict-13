@@ -1,7 +1,7 @@
 import SmartView from "./smart.js";
 
 const createStatsTemplate = () => {
-  return `<section class="statistic">
+  return `<section class="statistic" style="display: none">
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
@@ -52,4 +52,9 @@ export default class Stats extends SmartView {
   getTemplate() {
     return createStatsTemplate();
   }
+  
+  show() {
+    this.getElement().style.display = `block`
+  }
 }
+

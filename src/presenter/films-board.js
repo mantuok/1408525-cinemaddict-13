@@ -22,6 +22,7 @@ export default class FilmsBoard {
     this._filmCardPresenter = {};
     this._sortedFilmsList = [];
     this._filmToRenderCursor = 0;
+    this._areStatsShown = false;
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -34,6 +35,7 @@ export default class FilmsBoard {
     this._topCommentedFilmsListComponent = new FilmsListView(FilmsListType.TOP_COMMENTED);
     this._showMoreButtonComponent = new ShowMoreButtonView();
     this._sortingMenuPresenter = new SortingMenuPresenter(this._mainElement, this._filmsModel, this._handleSortAction);
+    this._statsPresenter = new StatsPresenter(this._mainElement);
 
     this._filmsModel.addObserver(this._handleModelEvent);
     this._filtersModel.addObserver(this._handleModelEvent);
@@ -41,6 +43,7 @@ export default class FilmsBoard {
 
   init() {
     this._sortingMenuPresenter.init();
+    this._statsPresenter.init(this._filmsModel.get().slice());
     this._render();
   }
 
@@ -60,7 +63,6 @@ export default class FilmsBoard {
         filteredFilms = films.sort((a, b) => b.comments.length - a.comments.length);
         break;
     }
-
     return filteredFilms;
   }
 
@@ -128,7 +130,7 @@ export default class FilmsBoard {
     }
   }
 
-  _clearFilmList({resetSortType = false} = {}) {
+  _clearFilmsList({resetSortType = false} = {}) {
     Object
         .values(this._filmCardPresenter)
         .forEach((presenter) => presenter.destroy());
@@ -143,13 +145,22 @@ export default class FilmsBoard {
   }
 
   _renderStats() {
-    debugger
     this._statsPresenter = new StatsPresenter(this._mainElement);
     this._statsPresenter.init(this._filmsModel.get().slice());
   }
 
-  _destroyStats() {
+  _swtichFromFilmsToStats() {
+    this._statsPresenter.show();
+    this._sortingMenuPresenter.hide();
+    this._filmsListsContainerComponent.hide();
+    this._areStatsShown = true;
+  }
 
+  _switchFromStatsToFilms() {
+    this._statsPresenter.hide();
+    this._sortingMenuPresenter.show();
+    this._filmsListsContainerComponent.show();
+    this._areStatsShown = false;
   }
 
   _handleShowMoreButtonClick() {
@@ -180,25 +191,27 @@ export default class FilmsBoard {
         break;
       case UpdateType.MINOR:
         this._filmCardPresenter[data.id].updatePopup(data);
-        this._clearFilmList();
+        this._clearFilmsList();
         this._renderMainFilmsCards();
         this._renderShowMoreButton();
         break;
       case UpdateType.MAJOR:
-        this._clearFilmList({resetSortType: true});
-        if (data === FilterType.STATS) {
-          this._renderStats();
+        if (this._areStatsShown) {
+          this._switchFromStatsToFilms();
           break;
         }
+        this._clearFilmsList({resetSortType: true});
         this._renderMainFilmsCards();
         this._renderShowMoreButton();
         break;
+      case UpdateType.SWITCH:
+        this._swtichFromFilmsToStats()
     }
   }
 
   _handleSortAction(sortedFilms) {
     this._sortedFilmsList = sortedFilms;
-    this._clearFilmList();
+    this._clearFilmsList();
     this._renderMainFilmsCards(this._sortedFilmsList);
     this._renderShowMoreButton();
   }

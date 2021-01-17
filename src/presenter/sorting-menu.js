@@ -33,6 +33,14 @@ export default class SortingMenu {
     return this._sortFilms(this._currentSortType);
   }
 
+  hide() {
+    this._view.hide();
+  }
+
+  show() {
+    this._view.show()
+  }
+
   _sortFilms(sortType) {
     const films = this._getFilms();
     let sortedFilms = [];

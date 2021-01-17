@@ -1,5 +1,6 @@
 import SmartView from "./smart.js";
 
+
 const createStatsTemplate = () => {
   return `<section class="statistic" style="display: none">
       <p class="statistic__rank">
@@ -49,10 +50,14 @@ const createStatsTemplate = () => {
 };
 
 export default class Stats extends SmartView {
+  constructor(films) {
+    super();
+    this._films = films;
+  }
   getTemplate() {
     return createStatsTemplate();
   }
-  
+
   show() {
     this.getElement().style.display = `block`
   }

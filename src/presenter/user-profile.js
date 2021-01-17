@@ -4,13 +4,7 @@ import {
   remove,
   replace
 } from "../utils/render.js";
-
-const RATING_TITLES = [
-  {rating: 21, title: `Movie Buff`},
-  {rating: 11, title: `Fan`},
-  {rating: 1, title: `Novice`},
-  {rating: 0, title: ``}
-];
+import {RATING_TITLES} from  "../const.js";
 
 const getRatingTitle = (value) => RATING_TITLES
   .find(({rating}) => rating <= value)

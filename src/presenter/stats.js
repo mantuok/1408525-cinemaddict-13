@@ -14,7 +14,7 @@ export default class Stats {
   init(films) {
     this._films = films;
 
-    this._view = new StatsView();
+    this._view = new StatsView(this._films);
     render(this._containerElement, this._view);
   }
 

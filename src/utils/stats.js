@@ -15,18 +15,23 @@ import {
 
 dayjs.extend(isBetween);
 
-export const totalWatchedFilms = (films) => {
+export const getTotalWatchedFilms = (films) => {
   return filterTypeToFilmsFilter[FilterType.HISTORY](films);
 }
 
-export const watchedFilmsByPeriond = (totalWatchedFilms, period) => {
-  const arr = []
-  totalWatchedFilms.forEach((watchedFilm) => {
-    if (dayjs(watchedFilm.watchDate).isBetween(dayjs(), dayjs().subtract(1, period))) {
-      arr.push(watchedFilm)
-    }
-  })
-  return arr;
+export const getWatchedFilmsByPeriond = (films, period) => {
+  const totalWatchedFilms = getTotalWatchedFilms(films);
+  if (period === TimePeriod.ALL_TIME) {
+    return totalWatchedFilms;
+  } else {
+    const watchedFilmsByPeriond = [];
+    totalWatchedFilms.forEach((watchedFilm) => {
+      if (dayjs(watchedFilm.watchDate).isBetween(dayjs(), dayjs().subtract(1, period))) {
+        watchedFilmsByPeriond.push(watchedFilm)
+      }
+    });
+    return watchedFilmsByPeriond;
+  }
 }
 
 export const getWatchedFilmsDuration = (watchedFilms) => {
@@ -40,14 +45,17 @@ export const getWatchedFilmsDuration = (watchedFilms) => {
   }
 }
 
-export const getFavouriteGenre = (watchedFilms) => {
-  const watchedGenres = watchedFilms.map((film) => film.genres).flat();
+export const getWatchedGenres = (watchedFilms) => watchedFilms.map((film) => film.genres).flat();
+
+export const getWatchedGenresCount = (watchedFilms) => {
+  const watchedGenres = getWatchedGenres(watchedFilms);
   const genresCount = {};
-  watchedGenres.forEach((genre) => genresCount[genre] = (genresCount[genre] || 0) + 1)
-  return Object.entries(genresCount)
-      .sort((a, b) => b[1] - a[1])[0][0]
+  watchedGenres.forEach((genre) => genresCount[genre] = (genresCount[genre] || 0) + 1);
+  return genresCount;
 }
 
-export const countWatchedFilmsInPeriodByGenre = (films, period) => {
-
+export const getFavouriteGenre = (watchedFilms) => {
+  const watchedGenresCount = getWatchedGenresCount(watchedFilms);
+  return Object.entries(watchedGenresCount)
+      .sort((a, b) => b[1] - a[1])[0][0]
 }

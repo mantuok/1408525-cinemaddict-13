@@ -3,48 +3,97 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import SmartView from "./smart.js";
 import {
   getRatingTitle,
-  getHours,
-  getMinutes,
-  countWatchedFilms
 } from "../utils/common.js"
 import {
-  watchedFilmsByPeriond
+  getTotalWatchedFilms,
+  getWatchedFilmsByPeriond,
+  getWatchedFilmsDuration,
+  getFavouriteGenre,
+  getWatchedGenres,
+  getWatchedGenresCount
 } from "../utils/stats.js"
 import {
   FilterType,
   TimePeriod
 } from "../const.js";
-import {filterTypeToFilmsFilter} from "../utils/filter.js";
 
-const getWatchedFilmsDuration = (watchedFilms) => {
-  let totalDuration = 0;
-  watchedFilms.forEach((watchedFilm) => {
-        totalDuration += watchedFilm.duration
-      })
-  return {
-    hours: getHours(totalDuration),
-    minutes: getMinutes(totalDuration)
-  }
-}
+const renderChart = (statisticCtx, data) => {
+  const BAR_HEIGHT = 50;
+  const watchedGenresTotalCount = Object.entries
+      (getWatchedGenresCount(
+          getWatchedFilmsByPeriond(data.films, data.period))).length
 
-const getFavouriteGenre = (watchedFilms) => {
-  const watchedGenres = watchedFilms.map((film) => film.genres).flat();
-  const genresCount = {};
-  watchedGenres.forEach((genre) => genresCount[genre] = (genresCount[genre] || 0) + 1)
-  return Object.entries(genresCount)
-      .sort((a, b) => b[1] - a[1])[0][0]
+  // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
+
+  statisticCtx.height = BAR_HEIGHT * watchedGenresTotalCount
+
+  return new Chart(statisticCtx, {
+      plugins: [ChartDataLabels],
+      type: `horizontalBar`,
+      data: {
+          labels: [`Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`],
+          datasets: [{
+              data: [11, 8, 7, 4, 3],
+              backgroundColor: `#ffe800`,
+              hoverBackgroundColor: `#ffe800`,
+              anchor: `start`
+          }]
+      },
+      options: {
+          plugins: {
+              datalabels: {
+                  font: {
+                      size: 20
+                  },
+                  color: `#ffffff`,
+                  anchor: 'start',
+                  align: 'start',
+                  offset: 40,
+              }
+          },
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      fontColor: `#ffffff`,
+                      padding: 100,
+                      fontSize: 20
+                  },
+                  gridLines: {
+                      display: false,
+                      drawBorder: false
+                  },
+                  barThickness: 24
+              }],
+              xAxes: [{
+                  ticks: {
+                      display: false,
+                      beginAtZero: true
+                  },
+                  gridLines: {
+                      display: false,
+                      drawBorder: false
+                  },
+              }],
+          },
+          legend: {
+              display: false
+          },
+          tooltips: {
+              enabled: false
+          }
+      }
+  });
 }
 
 const createStatsTemplate = (data) => {
-  const watchedFilms = filterTypeToFilmsFilter[FilterType.HISTORY](data.films);
-
-  console.log(watchedFilmsByPeriond(watchedFilms, TimePeriod.WEEK))
+  const watchedFilmsByPeriod = getWatchedFilmsByPeriond(data.films, data.period);
+  const totalWatchedFilms = getTotalWatchedFilms(data.films)
 
   return `<section class="statistic" style="display: none">
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">${getRatingTitle(watchedFilms.length)}</span>
+        <span class="statistic__rank-label">${getRatingTitle(totalWatchedFilms.length)}</span>
       </p>
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -69,15 +118,15 @@ const createStatsTemplate = (data) => {
       <ul class="statistic__text-list">
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">You watched</h4>
-          <p class="statistic__item-text">${watchedFilms.length} <span class="statistic__item-description">movies</span></p>
+          <p class="statistic__item-text">${watchedFilmsByPeriod.length} <span class="statistic__item-description">movies</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
-          <p class="statistic__item-text">${getWatchedFilmsDuration(watchedFilms).hours}<span class="statistic__item-description">h</span>${getWatchedFilmsDuration(watchedFilms).minutes} <span class="statistic__item-description">m</span></p>
+          <p class="statistic__item-text">${getWatchedFilmsDuration(watchedFilmsByPeriod).hours}<span class="statistic__item-description">h</span>${getWatchedFilmsDuration(watchedFilmsByPeriod).minutes} <span class="statistic__item-description">m</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">${getFavouriteGenre(watchedFilms)}</p>
+          <p class="statistic__item-text">${getFavouriteGenre(watchedFilmsByPeriod)}</p>
         </li>
       </ul>
 
@@ -91,22 +140,18 @@ export default class Stats extends SmartView {
   constructor(films) {
     super();
 
-    // this._statsPeriod = TimePeriod.ALL_TIME;
-    // this._watchedFilms = filterTypeToFilmsFilter[FilterType.HISTORY](films);
-    // this._watchedFilmsCount = this._watchedFilms.length;
-    // this._watchedFilmsDuration = getWatchedFilmsDuration(this._watchedFilms);
-    // this._favouriteGenre = getFavouriteGenre(this._watchedFilms);
+    this._statsChart = null;
 
     this._data = {
       films,
-      period: TimePeriod.ALL_TIME
+      period: TimePeriod.MONTH
     }
 
     this._timePeriodClickHandler = this._timePeriodClickHandler.bind(this);
-
     this._setCharts();
-
+    this._setInnerHandlers();
   }
+
   getTemplate() {
     return createStatsTemplate(this._data)
   }
@@ -115,8 +160,17 @@ export default class Stats extends SmartView {
     this.getElement().style.display = `block`
   }
 
-  _setCharts() {
+  restoreHandlers() {
+    this._setCharts();
+    this._setInnerHandlers();
+  }
 
+  _setCharts() {
+    if (this._statsChart !== null) {
+      this._statsChart = null;
+    }
+    const statisticCtx = this.getElement().querySelector(`.statistic__chart`);
+    this._statsChart = renderChart(statisticCtx, this._data)
   }
 
   _timePeriodClickHandler(evt) {

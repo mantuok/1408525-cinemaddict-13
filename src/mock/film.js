@@ -44,9 +44,13 @@ const watchDates = [
 ]
 
 const genres = [
-  [`drama`],
-  [`comedy`, `drama`],
-  [`thriller`, `comedy`, `drama`]
+  [`Sci-Fi`],
+  [`Animation`],
+  [`Fantasy`],
+  [`Comedy`],
+  [`TV Series`],
+  [`Comedy`, `Animation`],
+  [`Fantasy`, `Sci-Fi`, `Animation`]
 ];
 
 const comments = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}];

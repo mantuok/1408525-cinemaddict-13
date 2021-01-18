@@ -4,14 +4,10 @@ import {
   remove,
   replace
 } from "../utils/render.js";
-import {RATING_TITLES} from  "../const.js";
-
-const getRatingTitle = (value) => RATING_TITLES
-  .find(({rating}) => rating <= value)
-  .title;
-
-const countWatchedFilms = (films) => films
-  .reduce((count, {isMarkedAsWatched}) => isMarkedAsWatched ? count + 1 : count, 0);
+import {
+  getRatingTitle,
+  countWatchedFilms
+} from "../utils/common.js";
 
 export default class UserProfile {
   constructor(containerElement, filmsModel) {

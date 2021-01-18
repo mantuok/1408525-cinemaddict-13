@@ -58,3 +58,11 @@ export const RATING_TITLES = [
   {rating: 1, title: `Novice`},
   {rating: 0, title: ``}
 ];
+
+export const TimePeriod = {
+  ALL_TIME: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
+}

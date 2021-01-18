@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import {RATING_TITLES} from  "../const.js";
 
 const MINUTE_IN_HOUR = 60;
 const KeyboardKey = {
@@ -9,8 +10,12 @@ const KeyboardKey = {
 export const changeFirstCharToUppercase = (word) =>
   `${word[0].toUpperCase()}${word.slice(1)}`;
 
-export const getHourMinuteFormat = (duration) =>
-  `${Math.floor(duration / MINUTE_IN_HOUR)}h ${duration % MINUTE_IN_HOUR}m`;
+export const getHourMinuteFormat = (time) =>
+  `${getHours(time)}h ${getMinutes(time)}m`;
+
+export const getHours = (time) => Math.floor(time / MINUTE_IN_HOUR);
+export const getMinutes = (time) => time % MINUTE_IN_HOUR;
+
 
 export const getTruncatedText = (text, maxLength) =>
   text.length > maxLength
@@ -38,3 +43,10 @@ export const updateItemById = (items, update) => {
 };
 
 export const sortByDate = (itemA, itemB) => dayjs(itemB.date).diff(dayjs(itemA.date));
+
+export const getRatingTitle = (value) => RATING_TITLES
+  .find(({rating}) => rating <= value)
+  .title;
+
+export const countWatchedFilms = (films) => films
+  .reduce((count, {isMarkedAsWatched}) => isMarkedAsWatched ? count + 1 : count, 0);

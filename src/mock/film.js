@@ -34,7 +34,14 @@ const dates = [
   new Date(1955, 11, 14)
 ];
 
-const watchDate = new Date(2020, 10, 25);
+const watchDates = [
+  new Date(2020, 10, 25),
+  new Date(2019, 1, 25),
+  new Date(2021, 0, 15),
+  new Date(2020, 11, 30),
+  new Date(2020, 11, 10),
+  new Date(2020, 0, 13)
+]
 
 const genres = [
   [`drama`],
@@ -50,7 +57,7 @@ const getDescription = () => shuffleArray(descriptions)
   .join(` `);
 const getGenres = () => getRandomFrom(genres);
 const getComments = () => getRandomArray(comments);
-const getWatchDate = (isWatched) => isWatched ? watchDate : null;
+const getWatchDate = getRandomFrom(watchDates);
 
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);
@@ -75,8 +82,7 @@ export const generateFilm = () => {
     isInWatchlist: getRandomBoolean(),
     isFavorite: getRandomBoolean(),
     isMarkedAsWatched: getRandomBoolean(),
-    get watchDate() {
-      return getWatchDate(this.isWatched);
-    }
+    watchDate: getRandomFrom(watchDates)
+
   };
 };

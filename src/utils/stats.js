@@ -31,7 +31,6 @@ export const getWatchedFilmsByPeriond = (films, period) => {
     }
   });
   return watchedFilmsByPeriond;
-
 }
 
 export const getWatchedFilmsDuration = (watchedFilms) => {

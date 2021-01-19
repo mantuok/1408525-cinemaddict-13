@@ -19,11 +19,9 @@ import {
 
 const renderChart = (statisticCtx, data) => {
   const BAR_HEIGHT = 50;
-  const watchedGenresTotalCount = Object.entries
-      (getWatchedGenresCount(
-          getWatchedFilmsByPeriond(data.films, data.period))).length
-
-  // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
+  const watchedFilmsByPeriod = getWatchedFilmsByPeriond(data.films, data.period)
+  const watchedGenresCount = getWatchedGenresCount(watchedFilmsByPeriod)
+  const watchedGenresTotalCount = Object.entries(watchedGenresCount).length
 
   statisticCtx.height = BAR_HEIGHT * watchedGenresTotalCount
 
@@ -31,9 +29,9 @@ const renderChart = (statisticCtx, data) => {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
       data: {
-          labels: [`Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`],
+          labels: Object.keys(watchedGenresCount),
           datasets: [{
-              data: [11, 8, 7, 4, 3],
+              data: Object.values(watchedGenresCount),
               backgroundColor: `#ffe800`,
               hoverBackgroundColor: `#ffe800`,
               anchor: `start`
@@ -144,7 +142,7 @@ export default class Stats extends SmartView {
 
     this._data = {
       films,
-      period: TimePeriod.MONTH
+      period: TimePeriod.ALL_TIME
     }
 
     this._timePeriodClickHandler = this._timePeriodClickHandler.bind(this);
@@ -174,6 +172,8 @@ export default class Stats extends SmartView {
   }
 
   _timePeriodClickHandler(evt) {
+    console.log(evt.target.value)
+
     evt.preventDefault();
     this.updateData({
       period: evt.target.value
@@ -182,12 +182,9 @@ export default class Stats extends SmartView {
 
   _setInnerHandlers() {
     this.getElement()
-        .querySelectorAll(`.statistic__filters-label`)
+        .querySelectorAll(`.statistic__filters-input`)
         .forEach((element) =>
             element.addEventListener(`click`, this._timePeriodClickHandler))
   }
-
-
-
 }
 

@@ -74,9 +74,6 @@ export default class NewComment extends SmartView {
 
   restoreHandlers() {
     this._setInnerHandlers();
-  }
-
-  restoreState() {
     this._setScrollValue();
   }
 

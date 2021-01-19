@@ -23,18 +23,24 @@ export const getWatchedFilmsByPeriond = (films, period) => {
   const totalWatchedFilms = getTotalWatchedFilms(films);
   if (period === TimePeriod.ALL_TIME) {
     return totalWatchedFilms;
-  } else {
-    const watchedFilmsByPeriond = [];
-    totalWatchedFilms.forEach((watchedFilm) => {
-      if (dayjs(watchedFilm.watchDate).isBetween(dayjs(), dayjs().subtract(1, period))) {
-        watchedFilmsByPeriond.push(watchedFilm)
-      }
-    });
-    return watchedFilmsByPeriond;
   }
+  const watchedFilmsByPeriond = [];
+  totalWatchedFilms.forEach((watchedFilm) => {
+    if (dayjs(watchedFilm.watchDate).isBetween(dayjs(), dayjs().subtract(1, period))) {
+      watchedFilmsByPeriond.push(watchedFilm)
+    }
+  });
+  return watchedFilmsByPeriond;
+
 }
 
 export const getWatchedFilmsDuration = (watchedFilms) => {
+  if (watchedFilms.length === 0) {
+    return {
+      hours: 0,
+      minutes: 0
+    }
+  }
   let totalDuration = 0;
   watchedFilms.forEach((watchedFilm) => {
         totalDuration += watchedFilm.duration
@@ -55,6 +61,9 @@ export const getWatchedGenresCount = (watchedFilms) => {
 }
 
 export const getFavouriteGenre = (watchedFilms) => {
+  if (watchedFilms.length === 0) {
+    return ``;
+  }
   const watchedGenresCount = getWatchedGenresCount(watchedFilms);
   return Object.entries(watchedGenresCount)
       .sort((a, b) => b[1] - a[1])[0][0]

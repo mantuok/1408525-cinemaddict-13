@@ -77,6 +77,21 @@ export default class NewComment extends SmartView {
     this._setScrollValue();
   }
 
+  _setScrollValue() {
+    this.getElement()
+        .querySelector(`.film-details__comment-input`)
+        .scrollTop = this._data.scroll;
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+        .querySelectorAll(`.film-details__emoji-item`)
+        .forEach((element) => element.addEventListener(`click`, this._emojiClickHandler));
+    this.getElement()
+        .querySelector(`.film-details__comment-input`)
+        .addEventListener(`input`, this._commentInputHandler);
+  }
+
   _emojiClickHandler(evt) {
     evt.preventDefault();
 
@@ -107,20 +122,5 @@ export default class NewComment extends SmartView {
           text: evt.target.value
         }
     );
-  }
-
-  _setInnerHandlers() {
-    this.getElement()
-        .querySelectorAll(`.film-details__emoji-item`)
-        .forEach((element) => element.addEventListener(`click`, this._emojiClickHandler));
-    this.getElement()
-        .querySelector(`.film-details__comment-input`)
-        .addEventListener(`input`, this._commentInputHandler);
-  }
-
-  _setScrollValue() {
-    this.getElement()
-        .querySelector(`.film-details__comment-input`)
-        .scrollTop = this._data.scroll;
   }
 }

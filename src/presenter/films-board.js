@@ -19,7 +19,7 @@ export default class FilmsBoard {
     this._filtersModel = filtersModel;
     this._commentsModel = commentsModel;
     this._filmCardPresenter = {};
-    this._sortedFilmsList = [];
+    this._sortedFilms = [];
     this._filmToRenderCursor = 0;
     this._areStatsShown = false;
 
@@ -163,8 +163,8 @@ export default class FilmsBoard {
   }
 
   _handleShowMoreButtonClick() {
-    if (this._sortedFilmsList.length > 0) {
-      this._renderMainFilmsCards(this._sortedFilmsList);
+    if (this._sortedFilms.length > 0) {
+      this._renderMainFilmsCards(this._sortedFilms);
       return;
     }
     this._renderMainFilmsCards();
@@ -209,9 +209,9 @@ export default class FilmsBoard {
   }
 
   _handleSortAction(sortedFilms) {
-    this._sortedFilmsList = sortedFilms;
+    this._sortedFilms = sortedFilms;
     this._clearFilmsList();
-    this._renderMainFilmsCards(this._sortedFilmsList);
+    this._renderMainFilmsCards(this._sortedFilms);
     this._renderShowMoreButton();
   }
 

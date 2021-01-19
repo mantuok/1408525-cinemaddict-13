@@ -18,7 +18,7 @@ export default class MainNavigation {
     this._filmsModel = filmsModel;
     this._currentFilterType = ``;
 
-    this._handleFilterTypeClick = this._handleFilterTypeClick.bind(this);
+    this._handleNavigationItemClick = this._handleNavigationItemClick.bind(this);
     this._handleStatsClick = this._handleStatsClick.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
@@ -33,7 +33,7 @@ export default class MainNavigation {
     const prevView = this._view;
 
     this._view = new MainNavigationView(filters, this._currentFilterType);
-    this._view.setFilterTypeClickHandler(this._handleFilterTypeClick);
+    this._view.setNavigationItemClickHandler(this._handleNavigationItemClick);
     this._view.setStatsClickHandler(this._handleStatsClick);
 
     if (prevView === null) {
@@ -76,7 +76,7 @@ export default class MainNavigation {
     this.init();
   }
 
-  _handleFilterTypeClick(filterType) {
+  _handleNavigationItemClick(filterType) {
     if (this._currentFilterType === FilterType) {
       return;
     }

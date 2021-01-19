@@ -15,8 +15,9 @@ import {
   TimePeriod
 } from "../const.js";
 
+const BAR_HEIGHT = 50;
+
 const renderChart = (statisticCtx, data) => {
-  const BAR_HEIGHT = 50;
   const watchedFilmsByPeriod = getWatchedFilmsByPeriond(data.films, data.period);
   const watchedGenresCount = getWatchedGenresCount(watchedFilmsByPeriod);
   const watchedGenresTotalCount = Object.entries(watchedGenresCount).length;
@@ -143,7 +144,7 @@ export default class Stats extends SmartView {
       period: TimePeriod.ALL_TIME
     };
 
-    this._timePeriodClickHandler = this._timePeriodClickHandler.bind(this);
+    this._statisticFilteInputHandler = this._statisticFilteInputHandler.bind(this);
     this._setCharts();
     this._setInnerHandlers();
   }
@@ -170,17 +171,17 @@ export default class Stats extends SmartView {
     this._statsChart = renderChart(statisticCtx, this._data);
   }
 
-  _timePeriodClickHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      period: evt.target.value
-    }, false);
-  }
-
   _setInnerHandlers() {
     this.getElement()
         .querySelectorAll(`.statistic__filters-input`)
         .forEach((element) =>
-          element.addEventListener(`click`, this._timePeriodClickHandler));
+          element.addEventListener(`input`, this._statisticFilteInputHandler));
+  }
+
+  _statisticFilteInputHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      period: evt.target.value
+    }, false);
   }
 }

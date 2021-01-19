@@ -32,7 +32,7 @@ export default class FilmCard {
     this._component = new FilmCardView(this._film);
 
     this._component.setClickHandler(() => {
-      this._changeView(UserAction.OPEN_POPUP, this.destroyPopup);
+      this._changeView(UserAction.OPEN_POPUP);
       this._filmPopupPresenter = new FilmPopupPresenter(
           this._mainElement,
           this._changeView,

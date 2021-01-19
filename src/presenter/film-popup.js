@@ -69,19 +69,9 @@ export default class FilmPopup {
   }
 
   destroy() {
-    this._closeFilmDetailsPopup();
+    this._close();
     document.removeEventListener(`keydown`, this._escapeKeydownHandler);
   }
-
-  // updateComponent(component, view, data) {
-  //   // debugger
-  //   const prevComponent = component;
-  //   component = new CommentsTitleView(this._getFilmComments());
-  //   console.log(prevComponent)
-  //   console.log(component)
-  //   replace(component, prevComponent);
-  //   remove(prevComponent);
-  // }
 
   updateControls(updatedfilm) {
     this._film = updatedfilm;
@@ -119,12 +109,6 @@ export default class FilmPopup {
     return comments.filter((comment) => this._film.comments.includes(comment.id));
   }
 
-  _setControlClickHandlers() {
-    this._filmControlsComponent.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
-    this._filmControlsComponent.setMarkAsWatchedClickHandler(this._handleMarkAsWatchedClick);
-    this._filmControlsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-  }
-
   _renderFilmDetails() {
     render(this._popupTopContainerComponent, new FilmDetailsView(this._film));
   }
@@ -140,7 +124,8 @@ export default class FilmPopup {
   _renderNewComment() {
     render(this._commentsContainerElement, this._newCommentComponent);
   }
-  _closeFilmDetailsPopup() {
+
+  _close() {
     remove(this._filmDetailsPopupComponent);
     document.body.classList.remove(`hide-overflow`);
   }
@@ -152,6 +137,21 @@ export default class FilmPopup {
     this._renderCommentsList();
     this._renderNewComment();
     this._setControlClickHandlers();
+  }
+
+  _setControlClickHandlers() {
+    this._filmControlsComponent.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
+    this._filmControlsComponent.setMarkAsWatchedClickHandler(this._handleMarkAsWatchedClick);
+    this._filmControlsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+  }
+
+  _handleClosePopupButtonClick() {
+    this._close();
+    document.removeEventListener(`keydown`, this._escapeKeydownHandler);
+  }
+
+  _handleDeleteButtonClick(commentId) {
+    this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
   }
 
   _handleAddToWatchlistClick() {
@@ -196,40 +196,6 @@ export default class FilmPopup {
     );
   }
 
-  _handleDeleteButtonClick(commentId) {
-    this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
-  }
-
-  _submitKeydownHandler(evt) {
-    if (evt.ctrlKey && isEnterKey(evt.key)) {
-
-      const newComment = this._newCommentComponent.get();
-
-      if (newComment.emotion === `` || newComment.text === ``) {
-        return;
-      }
-
-      newComment.date = new Date();
-      newComment.author = `Tom Smith`;
-      newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
-
-      this._commentsModel.add(UserAction.ADD_COMMENT, newComment);
-    }
-  }
-
-  _escapeKeydownHandler(evt) {
-    if (isEscapeKey(evt.key)) {
-      evt.preventDefault();
-      this._closeFilmDetailsPopup();
-      document.removeEventListener(`keydown`, this._escapeKeydownHandler);
-    }
-  }
-
-  _handleClosePopupButtonClick() {
-    this._closeFilmDetailsPopup();
-    document.removeEventListener(`keydown`, this._escapeKeydownHandler);
-  }
-
   _handleModelEvent(actionType, data) {
     switch (actionType) {
       case UserAction.ADD_COMMENT:
@@ -258,6 +224,31 @@ export default class FilmPopup {
             )
         );
         break;
+    }
+  }
+
+  _submitKeydownHandler(evt) {
+    if (evt.ctrlKey && isEnterKey(evt.key)) {
+
+      const newComment = this._newCommentComponent.get();
+
+      if (newComment.emotion === `` || newComment.text === ``) {
+        return;
+      }
+
+      newComment.date = new Date();
+      newComment.author = `Tom Smith`;
+      newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
+
+      this._commentsModel.add(UserAction.ADD_COMMENT, newComment);
+    }
+  }
+
+  _escapeKeydownHandler(evt) {
+    if (isEscapeKey(evt.key)) {
+      evt.preventDefault();
+      this._close();
+      document.removeEventListener(`keydown`, this._escapeKeydownHandler);
     }
   }
 }

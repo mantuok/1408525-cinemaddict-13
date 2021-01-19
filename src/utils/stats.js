@@ -22,13 +22,13 @@ export const getWatchedFilmsByPeriond = (films, period) => {
   if (period === TimePeriod.ALL_TIME) {
     return totalWatchedFilms;
   }
-  const watchedFilmsByPeriond = [];
+  const watchedByPeriondFilms = [];
   totalWatchedFilms.forEach((watchedFilm) => {
     if (dayjs(watchedFilm.watchDate).isBetween(dayjs(), dayjs().subtract(1, period))) {
-      watchedFilmsByPeriond.push(watchedFilm);
+      watchedByPeriondFilms.push(watchedFilm);
     }
   });
-  return watchedFilmsByPeriond;
+  return watchedByPeriondFilms;
 };
 
 export const getWatchedFilmsDuration = (watchedFilms) => {

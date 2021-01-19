@@ -3,36 +3,36 @@ import Observer from "./observer.js";
 export default class Comments extends Observer {
   constructor() {
     super();
-    this._comments = [];
+    this._items = [];
   }
 
   set(comments) {
-    this._comments = comments.slice();
+    this._items = comments.slice();
   }
 
   get() {
-    return this._comments;
+    return this._items;
   }
 
   delete(actionType, commentId) {
-    const index = this._comments.findIndex((comment) => comment.id === parseInt(commentId, 10));
+    const index = this._items.findIndex((item) => item.id === parseInt(commentId, 10));
 
     if (index === -1) {
       throw new Error(`Can't delete unexisting comment`);
     }
 
-    this._comments = [
-      ...this._comments.slice(0, index),
-      ...this._comments.slice(index + 1)
+    this._items = [
+      ...this._items.slice(0, index),
+      ...this._items.slice(index + 1)
     ];
 
     this._notify(actionType, commentId);
   }
 
   add(actionType, update) {
-    this._comments = [
+    this._items = [
       update,
-      ...this._comments
+      ...this._items
     ];
 
     this._notify(actionType, update);

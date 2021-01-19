@@ -3,34 +3,34 @@ import Observer from "./observer.js";
 export default class Films extends Observer {
   constructor() {
     super();
-    this._films = [];
+    this._items = [];
   }
 
   set(films) {
-    this._films = films.slice();
+    this._items = films.slice();
   }
 
   get() {
-    return this._films;
+    return this._items;
   }
 
   update(updateType, update) {
-    const index = this._films.findIndex((item) => item.id === update.id);
+    const index = this._items.findIndex((item) => item.id === update.id);
 
     if (index === -1) {
       throw new Error(`Can't update unexisting film`);
     }
 
-    this._films = [
-      ...this._films.slice(0, index),
+    this._items = [
+      ...this._items.slice(0, index),
       update,
-      ...this._films.slice(index + 1)
+      ...this._items.slice(index + 1)
     ];
 
     this._notify(updateType, update);
   }
 
   isEmpty() {
-    return this._films.length === 0;
+    return this._items.length === 0;
   }
 }

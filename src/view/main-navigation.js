@@ -23,38 +23,38 @@ export default class MainNavigation extends AbstractView {
     super();
     this._filters = filters;
     this._currentFilterType = currentFilterType;
-    this._filterTypeClickHandler = this._filterTypeClickHandler.bind(this);
-    this._statsClickHandler = this._statsClickHandler.bind(this);
+    this._navigationItemClickHandler = this._navigationItemClickHandler.bind(this);
+    this._navigationAdditionalClickHandler = this._navigationAdditionalClickHandler.bind(this);
   }
 
   getTemplate() {
     return createMainNavigationTemplate(this._filters, this._currentFilterType);
   }
 
-  setFilterTypeClickHandler(callback) {
-    this._callback.clickFilterType = callback;
+  setNavigationItemClickHandler(callback) {
+    this._callback.clickNavigationItem = callback;
     this.getElement()
         .querySelectorAll(`.main-navigation__item`)
         .forEach((item) =>
-          item.addEventListener(`click`, this._filterTypeClickHandler)
+          item.addEventListener(`click`, this._navigationItemClickHandler)
         );
   }
 
   setStatsClickHandler(callback) {
-    this._callback.statsClick = callback;
+    this._callback.navigationAdditional = callback;
     this.getElement()
         .querySelector(`.main-navigation__additional`)
-        .addEventListener(`click`, this._statsClickHandler);
+        .addEventListener(`click`, this._navigationAdditionalClickHandler);
   }
 
-  _filterTypeClickHandler(evt) {
+  _navigationItemClickHandler(evt) {
     evt.preventDefault();
-    this._callback.clickFilterType(evt.target.dataset.filterType);
+    this._callback.clickNavigationItem(evt.target.dataset.filterType);
   }
 
-  _statsClickHandler(evt) {
+  _navigationAdditionalClickHandler(evt) {
     evt.preventDefault();
-    this._callback.statsClick();
+    this._callback.navigationAdditional();
   }
 }
 

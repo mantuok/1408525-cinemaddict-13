@@ -85,6 +85,6 @@ export default class MainNavigation {
   }
 
   _handleStatsClick() {
-    this._filtersModel.set(UpdateType.SWITCH, FilterType.STATS)
+    this._filtersModel.set(UpdateType.SWITCH, FilterType.STATS);
   }
 }

@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import {RATING_TITLES} from  "../const.js";
+import {RATING_TITLES} from "../const.js";
 
 const MINUTE_IN_HOUR = 60;
 const KeyboardKey = {

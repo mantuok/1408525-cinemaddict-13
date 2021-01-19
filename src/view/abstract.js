@@ -26,11 +26,11 @@ export default class Abstract {
   }
 
   hide() {
-    this._element.style.display = `none`
+    this._element.style.display = `none`;
   }
 
   show() {
-    this._element.style.display = `flex`
+    this._element.style.display = `flex`;
   }
 }
 

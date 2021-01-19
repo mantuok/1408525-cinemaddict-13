@@ -38,7 +38,7 @@ export default class SortingMenu {
   }
 
   show() {
-    this._view.show()
+    this._view.show();
   }
 
   _sortFilms(sortType) {

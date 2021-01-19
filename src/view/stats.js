@@ -3,89 +3,87 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import SmartView from "./smart.js";
 import {
   getRatingTitle,
-} from "../utils/common.js"
+} from "../utils/common.js";
 import {
   getTotalWatchedFilms,
   getWatchedFilmsByPeriond,
   getWatchedFilmsDuration,
   getFavouriteGenre,
-  getWatchedGenres,
   getWatchedGenresCount
-} from "../utils/stats.js"
+} from "../utils/stats.js";
 import {
-  FilterType,
   TimePeriod
 } from "../const.js";
 
 const renderChart = (statisticCtx, data) => {
   const BAR_HEIGHT = 50;
-  const watchedFilmsByPeriod = getWatchedFilmsByPeriond(data.films, data.period)
-  const watchedGenresCount = getWatchedGenresCount(watchedFilmsByPeriod)
-  const watchedGenresTotalCount = Object.entries(watchedGenresCount).length
+  const watchedFilmsByPeriod = getWatchedFilmsByPeriond(data.films, data.period);
+  const watchedGenresCount = getWatchedGenresCount(watchedFilmsByPeriod);
+  const watchedGenresTotalCount = Object.entries(watchedGenresCount).length;
 
-  statisticCtx.height = BAR_HEIGHT * watchedGenresTotalCount
+  statisticCtx.height = BAR_HEIGHT * watchedGenresTotalCount;
 
   return new Chart(statisticCtx, {
-      plugins: [ChartDataLabels],
-      type: `horizontalBar`,
-      data: {
-          labels: Object.keys(watchedGenresCount),
-          datasets: [{
-              data: Object.values(watchedGenresCount),
-              backgroundColor: `#ffe800`,
-              hoverBackgroundColor: `#ffe800`,
-              anchor: `start`
-          }]
+    plugins: [ChartDataLabels],
+    type: `horizontalBar`,
+    data: {
+      labels: Object.keys(watchedGenresCount),
+      datasets: [{
+        data: Object.values(watchedGenresCount),
+        backgroundColor: `#ffe800`,
+        hoverBackgroundColor: `#ffe800`,
+        anchor: `start`
+      }]
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          font: {
+            size: 20
+          },
+          color: `#ffffff`,
+          anchor: `start`,
+          align: `start`,
+          offset: 40,
+        }
       },
-      options: {
-          plugins: {
-              datalabels: {
-                  font: {
-                      size: 20
-                  },
-                  color: `#ffffff`,
-                  anchor: 'start',
-                  align: 'start',
-                  offset: 40,
-              }
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: `#ffffff`,
+            padding: 100,
+            fontSize: 20
           },
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      fontColor: `#ffffff`,
-                      padding: 100,
-                      fontSize: 20
-                  },
-                  gridLines: {
-                      display: false,
-                      drawBorder: false
-                  },
-                  barThickness: 24
-              }],
-              xAxes: [{
-                  ticks: {
-                      display: false,
-                      beginAtZero: true
-                  },
-                  gridLines: {
-                      display: false,
-                      drawBorder: false
-                  },
-              }],
+          gridLines: {
+            display: false,
+            drawBorder: false
           },
-          legend: {
-              display: false
+          barThickness: 24
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true
           },
-          tooltips: {
-              enabled: false
-          }
+          gridLines: {
+            display: false,
+            drawBorder: false
+          },
+        }],
+      },
+      legend: {
+        display: false
+      },
+      tooltips: {
+        enabled: false
       }
+    }
   });
-}
+};
 
 const createStatsTemplate = (data) => {
   const watchedFilmsByPeriod = getWatchedFilmsByPeriond(data.films, data.period);
-  const totalWatchedFilms = getTotalWatchedFilms(data.films)
+  const totalWatchedFilms = getTotalWatchedFilms(data.films);
 
   return `<section class="statistic" style="display: none">
       <p class="statistic__rank">
@@ -143,7 +141,7 @@ export default class Stats extends SmartView {
     this._data = {
       films,
       period: TimePeriod.ALL_TIME
-    }
+    };
 
     this._timePeriodClickHandler = this._timePeriodClickHandler.bind(this);
     this._setCharts();
@@ -151,11 +149,11 @@ export default class Stats extends SmartView {
   }
 
   getTemplate() {
-    return createStatsTemplate(this._data)
+    return createStatsTemplate(this._data);
   }
 
   show() {
-    this.getElement().style.display = `block`
+    this.getElement().style.display = `block`;
   }
 
   restoreHandlers() {
@@ -169,12 +167,10 @@ export default class Stats extends SmartView {
       this._statsChart = null;
     }
     const statisticCtx = this.getElement().querySelector(`.statistic__chart`);
-    this._statsChart = renderChart(statisticCtx, this._data)
+    this._statsChart = renderChart(statisticCtx, this._data);
   }
 
   _timePeriodClickHandler(evt) {
-    console.log(evt.target.value)
-
     evt.preventDefault();
     this.updateData({
       period: evt.target.value
@@ -185,7 +181,6 @@ export default class Stats extends SmartView {
     this.getElement()
         .querySelectorAll(`.statistic__filters-input`)
         .forEach((element) =>
-            element.addEventListener(`click`, this._timePeriodClickHandler))
+          element.addEventListener(`click`, this._timePeriodClickHandler));
   }
 }
-

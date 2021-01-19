@@ -7,8 +7,7 @@ import {render, remove} from "../utils/render.js";
 import {
   FilmsListType,
   UserAction,
-  UpdateType,
-  FilterType
+  UpdateType
 } from "../const.js";
 import {filterTypeToFilmsFilter} from "../utils/filter.js";
 import SortingMenuPresenter from "../presenter/sorting-menu.js";
@@ -139,9 +138,6 @@ export default class FilmsBoard {
 
     remove(this._showMoreButtonComponent);
 
-
-
-
     if (resetSortType) {
       this._sortingMenuPresenter.resetSortType();
     }
@@ -208,7 +204,7 @@ export default class FilmsBoard {
         this._renderShowMoreButton();
         break;
       case UpdateType.SWITCH:
-        this._swtichFromFilmsToStats()
+        this._swtichFromFilmsToStats();
     }
   }
 

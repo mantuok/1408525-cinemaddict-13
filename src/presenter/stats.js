@@ -1,8 +1,6 @@
 import StatsView from "../view/stats.js";
 import {
-  render,
-  remove,
-  replace
+  render
 } from "../utils/render.js";
 
 export default class Stats {
@@ -23,6 +21,6 @@ export default class Stats {
   }
 
   show() {
-    this._view.show()
+    this._view.show();
   }
 }

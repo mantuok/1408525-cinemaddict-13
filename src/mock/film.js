@@ -41,7 +41,7 @@ const watchDates = [
   new Date(2020, 11, 30),
   new Date(2020, 11, 10),
   new Date(2020, 0, 13)
-]
+];
 
 const genres = [
   [`Sci-Fi`],
@@ -61,7 +61,6 @@ const getDescription = () => shuffleArray(descriptions)
   .join(` `);
 const getGenres = () => getRandomFrom(genres);
 const getComments = () => getRandomArray(comments);
-const getWatchDate = getRandomFrom(watchDates);
 
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);

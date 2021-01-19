@@ -33,14 +33,9 @@ export default class Smart extends AbstractView {
     parent.replaceChild(newElement, prevElement);
 
     this.restoreHandlers();
-    this.restoreState();
   }
 
   restoreHandlers() {
     throw new Error(`Abstract method not implemented: restoreHandlers`);
-  }
-
-  restoreState() {
-    throw new Error(`Abstract method not implemented: restoreState`);
   }
 }

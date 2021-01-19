@@ -5,36 +5,40 @@ import {
   replace,
   remove
 } from "../utils/render.js";
-import {UserAction} from "../const.js";
+import {
+  UserAction,
+  UpdateType
+} from "../const.js";
 
 export default class FilmCard {
-  constructor(filmListElement, mainElement, changeView) {
+  constructor(filmListElement, mainElement, changeView, commentsModel) {
     this._mainElement = mainElement;
     this._filmsListElement = filmListElement;
     this._changeView = changeView;
     this._component = null;
     this._filmPopupPresenter = null;
+    this._commentsModel = commentsModel;
 
     this._handleAddToWatchlistClick = this._handleAddToWatchlistClick.bind(this);
     this._handleMarkAsWatchedClick = this._handleMarkAsWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
-  init(film, comments) {
+  init(film) {
     this._film = film;
-    this._comments = comments;
 
     const prevFilmCardComponent = this._component;
 
     this._component = new FilmCardView(this._film);
 
     this._component.setClickHandler(() => {
-      this._changeView(UserAction.OPEN_POPUP, this.resetView);
+      this._changeView(UserAction.OPEN_POPUP);
       this._filmPopupPresenter = new FilmPopupPresenter(
           this._mainElement,
-          this._changeView
+          this._changeView,
+          this._commentsModel
       );
-      this._filmPopupPresenter.init(this._film, this._comments);
+      this._filmPopupPresenter.init(this._film);
     });
 
     this._component.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
@@ -51,13 +55,15 @@ export default class FilmCard {
     }
 
     remove(prevFilmCardComponent);
+
+    this.updatePopup(film);
   }
 
   destroy() {
     remove(this._component);
   }
 
-  resetView() {
+  destroyPopup() {
     if (this._filmPopupPresenter !== null) {
       this._filmPopupPresenter.destroy();
       this._filmPopupPresenter = null;
@@ -67,6 +73,9 @@ export default class FilmCard {
   updatePopup(updatedFilm) {
     if (this._filmPopupPresenter !== null) {
       this._filmPopupPresenter.updateControls(updatedFilm);
+      this._filmPopupPresenter.updateComments();
+      this._filmPopupPresenter.updateTitle();
+      this._filmPopupPresenter.updateNewComment();
     }
   }
 
@@ -77,6 +86,7 @@ export default class FilmCard {
   _handleAddToWatchlistClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -90,6 +100,7 @@ export default class FilmCard {
   _handleMarkAsWatchedClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -103,6 +114,7 @@ export default class FilmCard {
   _handleFavoriteClick() {
     this._changeView(
         UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,

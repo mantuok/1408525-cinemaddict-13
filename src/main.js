@@ -1,15 +1,15 @@
 import FilmsBoardPresenter from "./presenter/films-board.js";
 import UserProfilePresenter from "./presenter/user-profile.js";
 import MainNavigationPresenter from "./presenter/main-navigation.js";
-import SortingMenuPresenter from "./presenter/sorting-menu.js";
-import FilmsCountPresenter from "./presenter/films-count.js"
+import FilmsCountPresenter from "./presenter/films-count.js";
+import FilmsModel from "./model/films.js";
+import FiltersModel from "./model/filters.js";
+import CommentsModel from "./model/comments.js";
 import {generateFilm} from "./mock/film.js";
 import {generateComment} from "./mock/comments.js";
-import {generateFilter} from "./mock/filter.js";
-import {sortBy} from "./utils/common.js"
 
 const FilmCount = {
-  MAIN: 19,
+  MAIN: 26,
   TOP_RATED: 2,
   TOP_COMMENTED: 2
 };
@@ -17,27 +17,26 @@ const FilmCount = {
 const COMMENT_COUNT = 5;
 
 const films = Array.from({length: FilmCount.MAIN}, generateFilm);
-
-// const topCommentedFilms = sortBy(films, `comments.length`);
-const topCommentedFilms = [...films].sort((a, b) => b.comments.length - a.comments.length);
-const topRatedFilms = [...films].sort((a, b) => b.rating - a.rating);
-
-
 const comments = Array.from({length: COMMENT_COUNT}, generateComment);
-const filters = generateFilter(films);
+
+const filmsModel = new FilmsModel();
+filmsModel.set(films);
+
+const commentsModel = new CommentsModel();
+commentsModel.set(comments);
+
+const filtersModel = new FiltersModel();
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
-const footerElement = document.querySelector(`.footer`);
+const footerElement = document.querySelector(`.footer__statistics`);
 
-const userProfilePresenter = new UserProfilePresenter(headerElement);
-const mainNavigationPresenter = new MainNavigationPresenter(mainElement);
-// const sortingMenuPresenter = new SortingMenuPresenter(mainElement);
-const filmsBoardPresenter = new FilmsBoardPresenter(mainElement);
-const filmsCountPresenter = new FilmsCountPresenter(footerElement);
+const userProfilePresenter = new UserProfilePresenter(headerElement, filmsModel);
+const mainNavigationPresenter = new MainNavigationPresenter(mainElement, filtersModel, filmsModel);
+const filmsBoardPresenter = new FilmsBoardPresenter(mainElement, filmsModel, filtersModel, commentsModel);
+const filmsCountPresenter = new FilmsCountPresenter(footerElement, filmsModel);
 
-userProfilePresenter.init(films);
-mainNavigationPresenter.init(filters);
-// sortingMenuPresenter.init();
-filmsBoardPresenter.init(films, comments, topCommentedFilms, topRatedFilms);
-filmsCountPresenter.init(films);
+userProfilePresenter.init();
+mainNavigationPresenter.init();
+filmsBoardPresenter.init();
+filmsCountPresenter.init();

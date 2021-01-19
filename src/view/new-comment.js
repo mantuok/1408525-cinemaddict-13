@@ -1,10 +1,16 @@
 import SmartView from "./smart.js";
+import he from "he";
 
 const Emoji = {
   SMILE: `smile`,
   SLEEPING: `sleeping`,
   PUKE: `puke`,
   ANGRY: `angry`
+};
+
+const EMPTY_COMMENT = {
+  text: ``,
+  emotion: ``
 };
 
 const createEmojiItemTemplate = (emoji, isChecked) => {
@@ -28,7 +34,7 @@ const createNewCommentTemplate = (message) => {
     ${setEmotionTemplate()}
   </div>
   <label class="film-details__comment-label">
-    <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${text}</textarea>
+    <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(text)}</textarea>
   </label>
   <div class="film-details__emoji-list">
   ${createEmojiItemTemplate(Emoji.SMILE, isChecked(Emoji.SMILE))}
@@ -49,6 +55,8 @@ export default class NewComment extends SmartView {
       scroll: 0
     };
 
+    this._newComment = EMPTY_COMMENT;
+
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._setScrollValue = this._setScrollValue.bind(this);
@@ -60,27 +68,19 @@ export default class NewComment extends SmartView {
     return createNewCommentTemplate(this._data);
   }
 
-  restoreHandlers() {
-    this._setInnerHandlers();
+  get() {
+    return this._newComment;
   }
 
-  restoreState() {
+  restoreHandlers() {
+    this._setInnerHandlers();
     this._setScrollValue();
   }
 
-  _emojiClickHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      emotion: evt.target.value
-    }, false);
-  }
-
-  _commentInputHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      text: evt.target.value,
-      scroll: evt.target.scrollTop
-    }, true);
+  _setScrollValue() {
+    this.getElement()
+        .querySelector(`.film-details__comment-input`)
+        .scrollTop = this._data.scroll;
   }
 
   _setInnerHandlers() {
@@ -92,9 +92,35 @@ export default class NewComment extends SmartView {
         .addEventListener(`input`, this._commentInputHandler);
   }
 
-  _setScrollValue() {
-    this.getElement()
-        .querySelector(`.film-details__comment-input`)
-        .scrollTop = this._data.scroll;
+  _emojiClickHandler(evt) {
+    evt.preventDefault();
+
+    this.updateData({
+      emotion: evt.target.value
+    }, false);
+
+    this._newComment = Object.assign(
+        {},
+        this._newComment,
+        {
+          emotion: evt.target.value
+        }
+    );
+  }
+
+  _commentInputHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      text: evt.target.value,
+      scroll: evt.target.scrollTop
+    }, true);
+
+    this._newComment = Object.assign(
+        {},
+        this._newComment,
+        {
+          text: evt.target.value
+        }
+    );
   }
 }

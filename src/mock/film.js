@@ -34,33 +34,37 @@ const dates = [
   new Date(1955, 11, 14)
 ];
 
-const watchDate = new Date(2020, 10, 25);
+const watchDates = [
+  new Date(2020, 10, 25),
+  new Date(2019, 1, 25),
+  new Date(2021, 0, 15),
+  new Date(2020, 11, 30),
+  new Date(2020, 11, 10),
+  new Date(2020, 0, 13)
+];
 
 const genres = [
-  [`drama`],
-  [`comedy`, `drama`],
-  [`thriller`, `comedy`, `drama`]
+  [`Sci-Fi`],
+  [`Animation`],
+  [`Fantasy`],
+  [`Comedy`],
+  [`TV Series`],
+  [`Comedy`, `Animation`],
+  [`Fantasy`, `Sci-Fi`, `Animation`]
 ];
 
-const comments = [
-  {id: 1},
-  {id: 2},
-  {id: 3},
-  {id: 4},
-  {id: 5}
-];
+const comments = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}];
 
 const getFilmRating = () => getRandom(Rating.MIN, Rating.MAX);
 const getDescription = () => shuffleArray(descriptions)
   .slice(0, getRandom(DescriptionLength.MIN, DescriptionLength.MAX))
   .join(` `);
 const getGenres = () => getRandomFrom(genres);
-const getCommets = () => getRandomArray(comments);
-const getWatchDate = (isWatched) => isWatched ? watchDate : null;
+const getComments = () => getRandomArray(comments);
 
 export const generateFilm = () => {
   const filmDate = getRandomFrom(dates);
-  const commentsList = getCommets();
+  const commentsList = getComments();
   const getCommentsIds = () => commentsList.map(({id}) => id);
   return {
     id: getFilmId(),
@@ -81,8 +85,7 @@ export const generateFilm = () => {
     isInWatchlist: getRandomBoolean(),
     isFavorite: getRandomBoolean(),
     isMarkedAsWatched: getRandomBoolean(),
-    get watchDate() {
-      return getWatchDate(this.isWatched);
-    }
+    watchDate: getRandomFrom(watchDates)
+
   };
 };

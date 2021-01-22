@@ -26,16 +26,19 @@ const mainNavigationPresenter = new MainNavigationPresenter(mainElement, filters
 const filmsBoardPresenter = new FilmsBoardPresenter(mainElement, filmsModel, filtersModel, commentsModel, api);
 const filmsCountPresenter = new FilmsCountPresenter(footerElement, filmsModel);
 
+const handleFilmDownload = (films) => {
+  filmsModel.set(UpdateType.INIT, films);
+  mainNavigationPresenter.init();
+  filmsCountPresenter.init();
+}
+
 userProfilePresenter.init();
 filmsBoardPresenter.init();
-filmsCountPresenter.init();
 
 api.getFilms()
   .then((films) => {
-    filmsModel.set(UpdateType.INIT, films);
-    mainNavigationPresenter.init();
+    handleFilmDownload(films);
   })
   .catch(() => {
-    filmsModel.set(UpdateType.INIT, []);
-    mainNavigationPresenter.init();
+    handleFilmDownload([]);
   })

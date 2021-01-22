@@ -7,7 +7,7 @@ const createFilterTemplate = (filters, currentFilterType) => filters.map((filter
       data-filter-type="${filter.type}"
     >
   ${changeFirstCharToUppercase(filter.name)}
-  <span class="main-navigation__item-count">${filter.count}</span></a>`);
+  <span class="main-navigation__item-count" data-filter-type="${filter.type}">${filter.count}</span></a>`);
 
 const createMainNavigationTemplate = (filters, currentFilterType) => {
   return `<nav class="main-navigation">
@@ -49,6 +49,7 @@ export default class MainNavigation extends AbstractView {
 
   _navigationItemClickHandler(evt) {
     evt.preventDefault();
+    console.log(evt.target.dataset.filterType)
     this._callback.clickNavigationItem(evt.target.dataset.filterType);
   }
 

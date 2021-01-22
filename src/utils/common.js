@@ -50,3 +50,5 @@ export const getRatingTitle = (value) => RATING_TITLES
 
 export const countWatchedFilms = (films) => films
   .reduce((count, {isMarkedAsWatched}) => isMarkedAsWatched ? count + 1 : count, 0);
+
+export const getFilmId = () => Date.now() + parseInt(Math.random() * 10000, 10);

@@ -45,7 +45,6 @@ export default class FilmsBoard {
   }
 
   init() {
-    this._statsPresenter.init(this._filmsModel.get().slice());
     this._renderFilms();
   }
 
@@ -183,7 +182,7 @@ export default class FilmsBoard {
         this._api.updateFilm(update)
           .then((response) => {
             this._filmsModel.update(updateType, response);
-          })
+          });
         break;
       case UserAction.OPEN_POPUP:
         Object
@@ -215,11 +214,13 @@ export default class FilmsBoard {
         break;
       case UpdateType.SWITCH:
         this._swtichFromFilmsToStats();
+        break;
       case UpdateType.INIT:
         this._isLoading = false;
         remove(this._loadingComponent);
         this._sortingMenuPresenter.init();
         this._renderFilms();
+        break;
     }
   }
 
@@ -248,6 +249,7 @@ export default class FilmsBoard {
       this._renderMainFilmsCards();
       this._renderTopFilmsCards(this._topRatedFilmsListComponent, FilmsListType.TOP_RATED);
       this._renderTopFilmsCards(this._topCommentedFilmsListComponent, FilmsListType.TOP_COMMENTED);
+      this._statsPresenter.init(this._filmsModel.get().slice());
     }
   }
 }

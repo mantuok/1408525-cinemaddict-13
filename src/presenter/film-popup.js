@@ -6,7 +6,7 @@ import FilmControlsView from "../view/film-controls.js";
 import CommentsListView from "../view/comments-list.js";
 import CommentsTitleView from "../view/comments-title.js";
 import NewCommentView from "../view/new-comment.js";
-import LoadingView from "../view/loading.js"
+import LoadingView from "../view/loading.js";
 import {
   render,
   remove,
@@ -68,7 +68,7 @@ export default class FilmPopup {
     this._api.getComments(film.id)
       .then((comments) => {
         this._commentsModel.set(UpdateType.INIT, comments);
-      })
+      });
 
     this._render();
   }
@@ -239,7 +239,8 @@ export default class FilmPopup {
         );
         break;
       case UpdateType.INIT:
-        this._initComments()
+        this._initComments();
+        break;
     }
   }
 

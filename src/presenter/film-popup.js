@@ -165,7 +165,9 @@ export default class FilmPopup {
   }
 
   _handleDeleteButtonClick(commentId) {
-    this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
+    this._api.deleteComment(commentId).then((response) => {
+      this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
+    })
   }
 
   _handleAddToWatchlistClick() {
@@ -233,7 +235,7 @@ export default class FilmPopup {
                 {},
                 this._film,
                 {
-                  comments: this._film.comments.filter((id) => id !== parseInt(data, 10))
+                  comments: this._film.comments.filter((id) => id !== data)
                 }
             )
         );
@@ -253,11 +255,12 @@ export default class FilmPopup {
         return;
       }
 
-      newComment.date = new Date();
-      newComment.author = `Tom Smith`;
-      newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
-
-      this._commentsModel.add(UserAction.ADD_COMMENT, newComment);
+      // newComment.date = new Date();
+      // newComment.author = `Tom Smith`;
+      // newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
+      this._api.addComment(newComment).then((response) => {
+        this._commentsModel.add(UserAction.ADD_COMMENT, newComment);
+      })
     }
   }
 

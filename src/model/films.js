@@ -86,7 +86,7 @@ export default class Films extends Observer {
             "alternative_title": film.titleOriginal,
             "genre": film.genres,
             "release": {
-              "date": film.date,
+              "date": film.date.toISOString(),
               "release_country": film.country,
             },
           },
@@ -94,7 +94,7 @@ export default class Films extends Observer {
             "already_watched": film.isMarkedAsWatched,
             "watchlist": film.isInWatchlist,
             "favorite": film.isFavorite,
-            "watching_date": film.watchDate
+            "watching_date": film.watchDate.toISOString()
           }
         }
     );

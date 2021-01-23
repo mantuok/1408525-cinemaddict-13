@@ -111,6 +111,7 @@ export default class FilmPopup {
 
   _getFilmComments() {
     const comments = this._commentsModel.get().slice();
+    console.log(comments.filter((comment) => this._film.comments.includes(comment.id)))
     return comments.filter((comment) => this._film.comments.includes(comment.id));
   }
 
@@ -255,11 +256,8 @@ export default class FilmPopup {
         return;
       }
 
-      // newComment.date = new Date();
-      // newComment.author = `Tom Smith`;
-      // newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
-      this._api.addComment(newComment).then((response) => {
-        this._commentsModel.add(UserAction.ADD_COMMENT, newComment);
+      this._api.addComment(newComment, this._film.id).then((response) => {
+        this._commentsModel.add(UserAction.ADD_COMMENT, response);
       })
     }
   }

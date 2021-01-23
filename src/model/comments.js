@@ -32,12 +32,16 @@ export default class Comments extends Observer {
   }
 
   add(actionType, update) {
+    const newComment = (
+      update.filter((comment) =>
+      !this._items.some(other => comment.id === other.id))
+    )[0];
     this._items = [
-      update,
+      newComment,
       ...this._items
     ];
 
-    this._notify(actionType, update);
+    this._notify(actionType, newComment);
   }
 
   static adaptToClient(comment) {
@@ -56,6 +60,7 @@ export default class Comments extends Observer {
   }
 
   static adaptToServer(comment) {
+
     const adaptedComment = Object.assign(
       {},
       comment,

@@ -119,7 +119,8 @@ export default class NewComment extends SmartView {
         {},
         this._newComment,
         {
-          text: evt.target.value
+          text: evt.target.value,
+          date: new Date()
         }
     );
   }

@@ -3,12 +3,11 @@ import {getHumanDateFormat} from "../utils/day.js";
 import he from "he";
 
 const getDeleteButton = (isInProcess, commentId, clickedButton) => {
-  // debugger
   if (isInProcess && commentId === clickedButton) {
-    return `<button class="film-details__comment-delete" data-id="${commentId}" Disabled}>Deleting...</button>`
+    return `<button class="film-details__comment-delete" data-id="${commentId}" Disabled}>Deleting...</button>`;
   }
-  return `<button class="film-details__comment-delete" data-id="${commentId}"}>Delete</button>`
-}
+  return `<button class="film-details__comment-delete" data-id="${commentId}"}>Delete</button>`;
+};
 
 const createFilmCommentTemplate = (comments, data) => {
   const {isInProcess, clickedButton} = data;
@@ -41,7 +40,7 @@ export default class CommentsList extends SmartView {
     this._data = {
       clickedButton: null,
       isInProcess: false
-    }
+    };
   }
 
   getTemplate() {
@@ -49,7 +48,7 @@ export default class CommentsList extends SmartView {
   }
 
   restoreHandlers() {
-    return
+    return;
   }
 
   setDeleteButtonClickHandler(callback) {

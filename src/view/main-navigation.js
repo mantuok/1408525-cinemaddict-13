@@ -49,7 +49,6 @@ export default class MainNavigation extends AbstractView {
 
   _navigationItemClickHandler(evt) {
     evt.preventDefault();
-    console.log(evt.target.dataset.filterType)
     this._callback.clickNavigationItem(evt.target.dataset.filterType);
   }
 

@@ -154,12 +154,12 @@ export default class FilmPopup {
     document.addEventListener(`keydown`, this._submitKeydownHandler);
   }
 
-  _setViewState(state,component) {
-    const resetViewState = (component) => {
+  _setViewState(state, component) {
+    const resetViewState = () => {
       component.updateData({
         isInProcess: false
-      })
-    }
+      });
+    };
 
     switch (state) {
       case ViewState.SAVING:
@@ -170,10 +170,10 @@ export default class FilmPopup {
       case ViewState.DELETING:
         this._commentsListComponent.updateData({
           isInProcess: true
-        })
+        });
         break;
       case ViewState.ABORTING:
-        component.shake(() => resetViewState(component));
+        component.shake(resetViewState);
         break;
     }
   }
@@ -192,12 +192,12 @@ export default class FilmPopup {
   _handleDeleteButtonClick(commentId) {
     this._setViewState(ViewState.DELETING);
     this._api.deleteComment(commentId)
-      .then((response) => {
+      .then(() => {
         this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
       })
       .catch(() => {
         this._setViewState(ViewState.ABORTING, this._commentsListComponent);
-      })
+      });
   }
 
   _handleAddToWatchlistClick() {
@@ -292,7 +292,7 @@ export default class FilmPopup {
         })
         .catch(() => {
           this._setViewState(ViewState.ABORTING, this._newCommentComponent);
-        })
+        });
     }
   }
 

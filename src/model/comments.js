@@ -34,7 +34,7 @@ export default class Comments extends Observer {
   add(actionType, update) {
     const newComment = (
       update.filter((comment) =>
-      !this._items.some(other => comment.id === other.id))
+        !this._items.some((other) => comment.id === other.id))
     )[0];
     this._items = [
       ...this._items,
@@ -62,13 +62,13 @@ export default class Comments extends Observer {
   static adaptToServer(comment) {
 
     const adaptedComment = Object.assign(
-      {},
-      comment,
-      {
-        "date": comment.date.toISOString(),
-        "comment": comment.text,
-      }
-    )
+        {},
+        comment,
+        {
+          "date": comment.date.toISOString(),
+          "comment": comment.text,
+        }
+    );
     delete comment.text;
 
     return adaptedComment;

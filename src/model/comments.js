@@ -37,8 +37,8 @@ export default class Comments extends Observer {
       !this._items.some(other => comment.id === other.id))
     )[0];
     this._items = [
-      newComment,
-      ...this._items
+      ...this._items,
+      newComment
     ];
 
     this._notify(actionType, newComment);

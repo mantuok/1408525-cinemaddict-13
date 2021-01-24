@@ -18,7 +18,8 @@ import {
 } from "../utils/common.js";
 import {
   UserAction,
-  UpdateType
+  UpdateType,
+  ViewState
 } from "../const.js";
 
 export default class FilmPopup {
@@ -111,7 +112,6 @@ export default class FilmPopup {
 
   _getFilmComments() {
     const comments = this._commentsModel.get().slice();
-    console.log(comments.filter((comment) => this._film.comments.includes(comment.id)))
     return comments.filter((comment) => this._film.comments.includes(comment.id));
   }
 
@@ -154,6 +154,22 @@ export default class FilmPopup {
     document.addEventListener(`keydown`, this._submitKeydownHandler);
   }
 
+  _setViewState(state) {
+    switch (state) {
+      case ViewState.SAVING:
+        this._newCommentComponent.updateData({
+          isDisabled: true,
+          isSaving: true
+        });
+        break;
+      case VIewState.DELETING:
+        this._commentsListComponent.updateData({
+          isDisabled: true,
+          isDeleting: true
+        })
+    }
+  }
+
   _setControlClickHandlers() {
     this._filmControlsComponent.setAddToWatchlistClickHandler(this._handleAddToWatchlistClick);
     this._filmControlsComponent.setMarkAsWatchedClickHandler(this._handleMarkAsWatchedClick);
@@ -166,6 +182,7 @@ export default class FilmPopup {
   }
 
   _handleDeleteButtonClick(commentId) {
+    this._setViewState(ViewState.DELETING);
     this._api.deleteComment(commentId).then((response) => {
       this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
     })
@@ -256,6 +273,7 @@ export default class FilmPopup {
         return;
       }
 
+      this._setViewState(ViewState.SAVING);
       this._api.addComment(newComment, this._film.id).then((response) => {
         this._commentsModel.add(UserAction.ADD_COMMENT, response);
       })

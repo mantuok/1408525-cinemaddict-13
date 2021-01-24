@@ -67,3 +67,8 @@ export const TimePeriod = {
   MONTH: `month`,
   YEAR: `year`
 }
+
+export const ViewState = {
+  SAVING: `SAVING`,
+  DELETING: `DELETING`
+}

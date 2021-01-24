@@ -41,7 +41,8 @@ export const SortType = {
 export const UpdateType = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
-  MAJOR: `MAJOR`
+  MAJOR: `MAJOR`,
+  INIT: `INIT`
 }
 
 export const FilterType = {
@@ -65,4 +66,10 @@ export const TimePeriod = {
   WEEK: `week`,
   MONTH: `month`,
   YEAR: `year`
+}
+
+export const ViewState = {
+  SAVING: `SAVING`,
+  DELETING: `DELETING`,
+  ABORTING: `ABORTING`
 }

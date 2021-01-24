@@ -11,9 +11,10 @@ import {
 } from "../const.js";
 import {filterTypeToFilmsFilter} from "../utils/filter.js";
 import SortingMenuPresenter from "../presenter/sorting-menu.js";
+import LoadingView from "../view/loading.js";
 
 export default class FilmsBoard {
-  constructor(mainElement, filmsModel, filtersModel, commentsModel) {
+  constructor(mainElement, filmsModel, filtersModel, commentsModel, api) {
     this._mainElement = mainElement;
     this._filmsModel = filmsModel;
     this._filtersModel = filtersModel;
@@ -22,6 +23,8 @@ export default class FilmsBoard {
     this._sortedFilms = [];
     this._filmToRenderCursor = 0;
     this._areStatsShown = false;
+    this._isLoading = true;
+    this._api = api;
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -35,14 +38,13 @@ export default class FilmsBoard {
     this._showMoreButtonComponent = new ShowMoreButtonView();
     this._sortingMenuPresenter = new SortingMenuPresenter(this._mainElement, this._filmsModel, this._handleSortAction);
     this._statsPresenter = new StatsPresenter(this._mainElement);
+    this._loadingComponent = new LoadingView();
 
     this._filmsModel.addObserver(this._handleModelEvent);
     this._filtersModel.addObserver(this._handleModelEvent);
   }
 
   init() {
-    this._sortingMenuPresenter.init();
-    this._statsPresenter.init(this._filmsModel.get().slice());
     this._renderFilms();
   }
 
@@ -68,6 +70,9 @@ export default class FilmsBoard {
   _renderListsContainer() {
     render(this._mainElement, this._filmsListsContainerComponent);
   }
+  _renderLoading() {
+    render(this._filmsListsContainerComponent, this._loadingComponent);
+  }
   _renderMainFilmsList() {
     render(this._filmsListsContainerComponent, this._mainFilmsListComponent);
   }
@@ -90,7 +95,8 @@ export default class FilmsBoard {
         listComponent.getContainerElement(),
         this._mainElement,
         this._handleViewAction,
-        this._commentsModel
+        this._commentsModel,
+        this._api
     );
     filmCardPresenter.init(film);
     if (!listComponent.isExtraList()) {
@@ -173,7 +179,10 @@ export default class FilmsBoard {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this._filmsModel.update(updateType, update);
+        this._api.updateFilm(update)
+          .then((response) => {
+            this._filmsModel.update(updateType, response);
+          });
         break;
       case UserAction.OPEN_POPUP:
         Object
@@ -205,6 +214,13 @@ export default class FilmsBoard {
         break;
       case UpdateType.SWITCH:
         this._swtichFromFilmsToStats();
+        break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._sortingMenuPresenter.init();
+        this._renderFilms();
+        break;
     }
   }
 
@@ -218,6 +234,11 @@ export default class FilmsBoard {
   _renderFilms() {
     this._renderListsContainer();
 
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
     if (this._filmsModel.isEmpty()) {
       this._renderEmptyList();
     } else {
@@ -228,6 +249,7 @@ export default class FilmsBoard {
       this._renderMainFilmsCards();
       this._renderTopFilmsCards(this._topRatedFilmsListComponent, FilmsListType.TOP_RATED);
       this._renderTopFilmsCards(this._topCommentedFilmsListComponent, FilmsListType.TOP_COMMENTED);
+      this._statsPresenter.init(this._filmsModel.get().slice());
     }
   }
 }

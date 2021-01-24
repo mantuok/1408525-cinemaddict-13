@@ -6,8 +6,9 @@ export default class Films extends Observer {
     this._items = [];
   }
 
-  set(films) {
+  set(updateType, films) {
     this._items = films.slice();
+    this._notify(updateType);
   }
 
   get() {
@@ -32,5 +33,71 @@ export default class Films extends Observer {
 
   isEmpty() {
     return this._items.length === 0;
+  }
+
+  static adaptToClient(film) {
+    const filmInfo = film.film_info;
+    const userDetails = film.user_details;
+    const adaptedFilm = Object.assign(
+        {},
+        film,
+        {
+          poster: filmInfo.poster,
+          title: filmInfo.title,
+          titleOriginal: filmInfo.alternative_title,
+          rating: filmInfo.total_rating,
+          director: filmInfo.director,
+          writers: filmInfo.writers,
+          actors: filmInfo.actors,
+          date: new Date(filmInfo.release.date),
+          duration: filmInfo.runtime,
+          country: filmInfo.release.release_country,
+          genres: filmInfo.genre,
+          description: filmInfo.description,
+          contentRating: filmInfo.age_rating,
+          isInWatchlist: userDetails.watchlist,
+          isFavorite: userDetails.favorite,
+          isMarkedAsWatched: userDetails.already_watched,
+          watchDate: new Date(userDetails.watching_date)
+        }
+    );
+    delete adaptedFilm.film_info;
+    delete adaptedFilm.user_details;
+
+    return adaptedFilm;
+  }
+
+  static adaptToServer(film) {
+    const adaptedFilm = Object.assign(
+        {},
+        {
+          "id": film.id,
+          "comments": film.comments,
+          "film_info": {
+            "title": film.title,
+            "poster": film.poster,
+            "age_rating": film.contentRating,
+            "runtime": film.duration,
+            "total_rating": film.rating,
+            "director": film.director,
+            "writers": film.writers,
+            "actors": film.actors,
+            "description": film.description,
+            "alternative_title": film.titleOriginal,
+            "genre": film.genres,
+            "release": {
+              "date": film.date.toISOString(),
+              "release_country": film.country,
+            },
+          },
+          "user_details": {
+            "already_watched": film.isMarkedAsWatched,
+            "watchlist": film.isInWatchlist,
+            "favorite": film.isFavorite,
+            "watching_date": film.watchDate.toISOString()
+          }
+        }
+    );
+    return adaptedFilm;
   }
 }

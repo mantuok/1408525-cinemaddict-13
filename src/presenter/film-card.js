@@ -11,13 +11,14 @@ import {
 } from "../const.js";
 
 export default class FilmCard {
-  constructor(filmListElement, mainElement, changeView, commentsModel) {
+  constructor(filmListElement, mainElement, changeView, commentsModel, api) {
     this._mainElement = mainElement;
     this._filmsListElement = filmListElement;
     this._changeView = changeView;
     this._component = null;
     this._filmPopupPresenter = null;
     this._commentsModel = commentsModel;
+    this._api = api;
 
     this._handleAddToWatchlistClick = this._handleAddToWatchlistClick.bind(this);
     this._handleMarkAsWatchedClick = this._handleMarkAsWatchedClick.bind(this);
@@ -36,7 +37,8 @@ export default class FilmCard {
       this._filmPopupPresenter = new FilmPopupPresenter(
           this._mainElement,
           this._changeView,
-          this._commentsModel
+          this._commentsModel,
+          this._api
       );
       this._filmPopupPresenter.init(this._film);
     });
@@ -78,6 +80,10 @@ export default class FilmCard {
       this._filmPopupPresenter.updateNewComment();
     }
   }
+
+  // setPopupViewState(state) {
+  //   this._filmPopupPresenter.setViewState(state);
+  // }
 
   _render() {
     render(this._filmsListElement, this._component);

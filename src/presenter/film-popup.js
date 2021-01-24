@@ -6,6 +6,7 @@ import FilmControlsView from "../view/film-controls.js";
 import CommentsListView from "../view/comments-list.js";
 import CommentsTitleView from "../view/comments-title.js";
 import NewCommentView from "../view/new-comment.js";
+import LoadingView from "../view/loading.js";
 import {
   render,
   remove,
@@ -17,14 +18,17 @@ import {
 } from "../utils/common.js";
 import {
   UserAction,
-  UpdateType
+  UpdateType,
+  ViewState
 } from "../const.js";
 
 export default class FilmPopup {
-  constructor(mainElement, changeView, commentsModel) {
+  constructor(mainElement, changeView, commentsModel, api) {
     this._mainElement = mainElement;
     this._changeView = changeView;
     this._commentsModel = commentsModel;
+    this._api = api;
+    this._isLoadingComments = true;
 
     this._filmControlsComponent = null;
     this._commentsListComponent = null;
@@ -51,19 +55,21 @@ export default class FilmPopup {
     this._filmControlsComponent = new FilmControlsView(this._film);
     this._popupBottomContainerComponent = new PopupBottomContainerView();
     this._commentsContainerElement = this._popupBottomContainerComponent.getCommetsContainer();
-    this._commentsListComponent = new CommentsListView(this._getFilmComments());
-    this._commentsTitleComponent = new CommentsTitleView(this._getFilmComments());
-    this._newCommentComponent = new NewCommentView();
+    this._loadingComponent = new LoadingView();
 
     render(this._mainElement, this._filmDetailsPopupComponent);
     render(this._filmDetailsFormElement, this._popupTopContainerComponent);
     render(this._filmDetailsFormElement, this._popupBottomContainerComponent);
+    render(this._commentsContainerElement, this._loadingComponent);
 
     document.body.classList.add(`hide-overflow`);
     this._popupTopContainerComponent.setCloseButtonClickHandler(this._handleClosePopupButtonClick);
-    this._commentsListComponent.setDeleteButtonClickHandler(this._handleDeleteButtonClick);
     document.addEventListener(`keydown`, this._escapeKeydownHandler);
-    document.addEventListener(`keydown`, this._submitKeydownHandler);
+
+    this._api.getComments(film.id)
+      .then((comments) => {
+        this._commentsModel.set(UpdateType.INIT, comments);
+      });
 
     this._render();
   }
@@ -133,10 +139,43 @@ export default class FilmPopup {
   _render() {
     this._renderFilmDetails();
     this._renderFilmControls();
+    this._setControlClickHandlers();
+  }
+
+  _initComments() {
+    remove(this._loadingComponent);
+    this._commentsTitleComponent = new CommentsTitleView(this._getFilmComments());
+    this._commentsListComponent = new CommentsListView(this._getFilmComments());
+    this._newCommentComponent = new NewCommentView();
     this._renderCommentsTitle();
     this._renderCommentsList();
     this._renderNewComment();
-    this._setControlClickHandlers();
+    this._commentsListComponent.setDeleteButtonClickHandler(this._handleDeleteButtonClick);
+    document.addEventListener(`keydown`, this._submitKeydownHandler);
+  }
+
+  _setViewState(state, component) {
+    const resetViewState = () => {
+      component.updateData({
+        isInProcess: false
+      });
+    };
+
+    switch (state) {
+      case ViewState.SAVING:
+        this._newCommentComponent.updateData({
+          isInProcess: true
+        });
+        break;
+      case ViewState.DELETING:
+        this._commentsListComponent.updateData({
+          isInProcess: true
+        });
+        break;
+      case ViewState.ABORTING:
+        component.shake(resetViewState);
+        break;
+    }
   }
 
   _setControlClickHandlers() {
@@ -151,7 +190,14 @@ export default class FilmPopup {
   }
 
   _handleDeleteButtonClick(commentId) {
-    this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
+    this._setViewState(ViewState.DELETING);
+    this._api.deleteComment(commentId)
+      .then(() => {
+        this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
+      })
+      .catch(() => {
+        this._setViewState(ViewState.ABORTING, this._commentsListComponent);
+      });
   }
 
   _handleAddToWatchlistClick() {
@@ -219,10 +265,13 @@ export default class FilmPopup {
                 {},
                 this._film,
                 {
-                  comments: this._film.comments.filter((id) => id !== parseInt(data, 10))
+                  comments: this._film.comments.filter((id) => id !== data)
                 }
             )
         );
+        break;
+      case UpdateType.INIT:
+        this._initComments();
         break;
     }
   }
@@ -236,11 +285,14 @@ export default class FilmPopup {
         return;
       }
 
-      newComment.date = new Date();
-      newComment.author = `Tom Smith`;
-      newComment.id = Date.now() + parseInt(Math.random() * 10000, 10);
-
-      this._commentsModel.add(UserAction.ADD_COMMENT, newComment);
+      this._setViewState(ViewState.SAVING);
+      this._api.addComment(newComment, this._film.id)
+        .then((response) => {
+          this._commentsModel.add(UserAction.ADD_COMMENT, response);
+        })
+        .catch(() => {
+          this._setViewState(ViewState.ABORTING, this._newCommentComponent);
+        });
     }
   }
 

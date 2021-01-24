@@ -162,9 +162,8 @@ export default class FilmPopup {
           isSaving: true
         });
         break;
-      case VIewState.DELETING:
+      case ViewState.DELETING:
         this._commentsListComponent.updateData({
-          isDisabled: true,
           isDeleting: true
         })
     }

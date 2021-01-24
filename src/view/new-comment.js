@@ -13,18 +13,19 @@ const EMPTY_COMMENT = {
   emotion: ``
 };
 
-const createEmojiItemTemplate = (emoji, isChecked, isDisabled) => {
+const createEmojiItemTemplate = (emoji, isChecked, isInProcess) => {
   return `<input class="film-details__emoji-item visually-hidden"
       name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}"
       ${isChecked ? ` checked` : ``}
-      ${isDisabled ? ` disabled` : ``}>
+      ${isInProcess ? ` disabled` : ``}>
     <label class="film-details__emoji-label" for="emoji-${emoji}">
       <img src="./images/emoji/${emoji}.png" width="30" height="30" alt="emoji">
     </label>`;
 };
 
 const createNewCommentTemplate = (message) => {
-  const {emotion, text, isDisabled, isSaving} = message;
+  // const {emotion, text, isDisabled, isSaving} = message;
+  const {emotion, text, isInProcess} = message;
 
   const isChecked = (emoji) => emoji === emotion;
 
@@ -38,14 +39,13 @@ const createNewCommentTemplate = (message) => {
   </div>
   <label class="film-details__comment-label">
     <textarea class="film-details__comment-input"
-    placeholder="Select reaction below and write comment here" name="comment"${isDisabled ? ` disabled` : ``}>${isSaving ? `Saving...` : he.encode(text)}</textarea>
-
+    placeholder="Select reaction below and write comment here" name="comment"${isInProcess ? ` disabled` : ``}>${isInProcess ? `Saving...` : he.encode(text)}</textarea>
   </label>
   <div class="film-details__emoji-list">
-  ${createEmojiItemTemplate(Emoji.SMILE, isChecked(Emoji.SMILE), isDisabled)}
-  ${createEmojiItemTemplate(Emoji.SLEEPING, isChecked(Emoji.SLEEPING), isDisabled)}
-  ${createEmojiItemTemplate(Emoji.PUKE, isChecked(Emoji.PUKE), isDisabled)}
-  ${createEmojiItemTemplate(Emoji.ANGRY, isChecked(Emoji.ANGRY), isDisabled)}
+  ${createEmojiItemTemplate(Emoji.SMILE, isChecked(Emoji.SMILE), isInProcess)}
+  ${createEmojiItemTemplate(Emoji.SLEEPING, isChecked(Emoji.SLEEPING), isInProcess)}
+  ${createEmojiItemTemplate(Emoji.PUKE, isChecked(Emoji.PUKE), isInProcess)}
+  ${createEmojiItemTemplate(Emoji.ANGRY, isChecked(Emoji.ANGRY), isInProcess)}
   </div>
 </div>`;
 };
@@ -58,8 +58,9 @@ export default class NewComment extends SmartView {
       emotion: null,
       text: ``,
       scroll: 0,
-      isDisabled: false,
-      isSaving: false
+      isInProcess: false
+      // isDisabled: false,
+      // isSaving: false
     };
 
     this._newComment = EMPTY_COMMENT;

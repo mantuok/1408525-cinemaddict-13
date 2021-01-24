@@ -2,15 +2,16 @@ import SmartView from "./smart.js";
 import {getHumanDateFormat} from "../utils/day.js";
 import he from "he";
 
-const getDeleteButton = (isDeleting, commentId, clickedButton) => {
-  if (isDeleting && commentId === clickedButton) {
+const getDeleteButton = (isInProcess, commentId, clickedButton) => {
+  // debugger
+  if (isInProcess && commentId === clickedButton) {
     return `<button class="film-details__comment-delete" data-id="${commentId}" Disabled}>Deleting...</button>`
   }
   return `<button class="film-details__comment-delete" data-id="${commentId}"}>Delete</button>`
 }
 
 const createFilmCommentTemplate = (comments, data) => {
-  const {isDeleting, clikedButton} = data;
+  const {isInProcess, clickedButton} = data;
   return comments.map((comment) =>
     `<li class="film-details__comment">
       <span class="film-details__comment-emoji">
@@ -21,7 +22,7 @@ const createFilmCommentTemplate = (comments, data) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${comment.author}</span>
           <span class="film-details__comment-day">${getHumanDateFormat(comment.date)}</span>
-          ${getDeleteButton(isDeleting, comment.id, clikedButton)}
+          ${getDeleteButton(isInProcess, comment.id, clickedButton)}
         </p>
       </div>
     </li>`)
@@ -38,8 +39,8 @@ export default class CommentsList extends SmartView {
     this._comments = comments;
     this._deleteButtonClickHandler = this._deleteButtonClickHandler.bind(this);
     this._data = {
-      clikedButton: null,
-      isDeleting: false
+      clickedButton: null,
+      isInProcess: false
     }
   }
 
@@ -62,8 +63,7 @@ export default class CommentsList extends SmartView {
       return;
     }
     evt.preventDefault();
-    this._data.clikedButton = evt.target.dataset.id;
+    this._data.clickedButton = evt.target.dataset.id;
     this._callback.deleteButtonClick(evt.target.dataset.id);
   }
-
 }

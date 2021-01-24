@@ -154,18 +154,27 @@ export default class FilmPopup {
     document.addEventListener(`keydown`, this._submitKeydownHandler);
   }
 
-  _setViewState(state) {
+  _setViewState(state,component) {
+    const resetViewState = (component) => {
+      component.updateData({
+        isInProcess: false
+      })
+    }
+
     switch (state) {
       case ViewState.SAVING:
         this._newCommentComponent.updateData({
-          isDisabled: true,
-          isSaving: true
+          isInProcess: true
         });
         break;
       case ViewState.DELETING:
         this._commentsListComponent.updateData({
-          isDeleting: true
+          isInProcess: true
         })
+        break;
+      case ViewState.ABORTING:
+        component.shake(() => resetViewState(component));
+        break;
     }
   }
 
@@ -182,9 +191,13 @@ export default class FilmPopup {
 
   _handleDeleteButtonClick(commentId) {
     this._setViewState(ViewState.DELETING);
-    this._api.deleteComment(commentId).then((response) => {
-      this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
-    })
+    this._api.deleteComment(commentId)
+      .then((response) => {
+        this._commentsModel.delete(UserAction.DELETE_COMMENT, commentId);
+      })
+      .catch(() => {
+        this._setViewState(ViewState.ABORTING, this._commentsListComponent);
+      })
   }
 
   _handleAddToWatchlistClick() {
@@ -273,9 +286,13 @@ export default class FilmPopup {
       }
 
       this._setViewState(ViewState.SAVING);
-      this._api.addComment(newComment, this._film.id).then((response) => {
-        this._commentsModel.add(UserAction.ADD_COMMENT, response);
-      })
+      this._api.addComment(newComment, this._film.id)
+        .then((response) => {
+          this._commentsModel.add(UserAction.ADD_COMMENT, response);
+        })
+        .catch(() => {
+          this._setViewState(ViewState.ABORTING, this._newCommentComponent);
+        })
     }
   }
 

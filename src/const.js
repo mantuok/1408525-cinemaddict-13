@@ -70,5 +70,6 @@ export const TimePeriod = {
 
 export const ViewState = {
   SAVING: `SAVING`,
-  DELETING: `DELETING`
+  DELETING: `DELETING`,
+  ABORTING: `ABORTING`
 }

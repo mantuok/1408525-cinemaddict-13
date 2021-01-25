@@ -81,10 +81,6 @@ export default class FilmCard {
     }
   }
 
-  // setPopupViewState(state) {
-  //   this._filmPopupPresenter.setViewState(state);
-  // }
-
   _render() {
     render(this._filmsListElement, this._component);
   }

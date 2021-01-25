@@ -24,7 +24,6 @@ const createEmojiItemTemplate = (emoji, isChecked, isInProcess) => {
 };
 
 const createNewCommentTemplate = (message) => {
-  // const {emotion, text, isDisabled, isSaving} = message;
   const {emotion, text, isInProcess} = message;
 
   const isChecked = (emoji) => emoji === emotion;
@@ -59,8 +58,6 @@ export default class NewComment extends SmartView {
       text: ``,
       scroll: 0,
       isInProcess: false
-      // isDisabled: false,
-      // isSaving: false
     };
 
     this._newComment = EMPTY_COMMENT;

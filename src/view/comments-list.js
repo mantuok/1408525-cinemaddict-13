@@ -3,10 +3,8 @@ import {getHumanDateFormat} from "../utils/day.js";
 import he from "he";
 
 const getDeleteButton = (isInProcess, commentId, clickedButton) => {
-  if (isInProcess && commentId === clickedButton) {
-    return `<button class="film-details__comment-delete" data-id="${commentId}" Disabled}>Deleting...</button>`;
-  }
-  return `<button class="film-details__comment-delete" data-id="${commentId}"}>Delete</button>`;
+  const isDeleting = isInProcess && (commentId === clickedButton);
+  return `<button class="film-details__comment-delete" data-id="${commentId}" ${isDeleting ? `Disabled` : ``}> ${isDeleting ? `Deleting...` : `Delete`}</button>`;
 };
 
 const createFilmCommentTemplate = (comments, data) => {

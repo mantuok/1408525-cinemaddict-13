@@ -155,12 +155,6 @@ export default class FilmPopup {
   }
 
   _setViewState(state, component) {
-    const resetViewState = () => {
-      component.updateData({
-        isInProcess: false
-      });
-    };
-
     switch (state) {
       case ViewState.SAVING:
         this._newCommentComponent.updateData({
@@ -173,6 +167,11 @@ export default class FilmPopup {
         });
         break;
       case ViewState.ABORTING:
+        const resetViewState = () => {
+          component.updateData({
+            isInProcess: false
+          });
+        };
         component.shake(resetViewState);
         break;
     }

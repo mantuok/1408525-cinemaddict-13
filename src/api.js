@@ -1,5 +1,5 @@
-import filmsModel from "./model/films.js"
-import commentsModel from "./model/comments.js"
+import filmsModel from "./model/films.js";
+import commentsModel from "./model/comments.js";
 
 const Method = {
   GET: `GET`,
@@ -11,7 +11,7 @@ const Method = {
 const SuccessHTTPStatusRange = {
   MIN: 200,
   MAX: 299
-}
+};
 
 export default class Api {
   constructor(endPoint, authorization) {
@@ -68,8 +68,8 @@ export default class Api {
   }) {
     headers.append(`Authorization`, this._authorization);
     return fetch(
-      `${this._endPoint}/${url}`,
-      {method, body, headers}
+        `${this._endPoint}/${url}`,
+        {method, body, headers}
     )
       .then(Api.checkStatus)
       .catch(Api.catchError);

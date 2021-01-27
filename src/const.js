@@ -36,14 +36,14 @@ export const SortType = {
   DEAFULT: `DEFAULT`,
   BY_DATE: `BY_DATE`,
   BY_RATING: `BY_RATING`
-}
+};
 
 export const UpdateType = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
   INIT: `INIT`
-}
+};
 
 export const FilterType = {
   ALL: `ALL`,
@@ -51,7 +51,7 @@ export const FilterType = {
   FAVORITES: `FAVORITES`,
   HISTORY: `HISTORY`,
   STATS: `STATS`
-}
+};
 
 export const RATING_TITLES = [
   {rating: 21, title: `Movie Buff`},
@@ -66,10 +66,10 @@ export const TimePeriod = {
   WEEK: `week`,
   MONTH: `month`,
   YEAR: `year`
-}
+};
 
 export const ViewState = {
   SAVING: `SAVING`,
   DELETING: `DELETING`,
   ABORTING: `ABORTING`
-}
+};

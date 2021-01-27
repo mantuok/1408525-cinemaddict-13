@@ -6,12 +6,12 @@ import FilmsModel from "./model/films.js";
 import FiltersModel from "./model/filters.js";
 import CommentsModel from "./model/comments.js";
 import Api from "./api.js";
-import {UpdateType} from "./const.js"
+import {UpdateType} from "./const.js";
 
 const END_POINT = `https://13.ecmascript.pages.academy/cinemaddict`;
 const AUTHORIZATION = `Basic 8pqmOeOPAOZ1FSl`;
 
-const api = new Api(END_POINT, AUTHORIZATION)
+const api = new Api(END_POINT, AUTHORIZATION);
 
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
@@ -30,7 +30,7 @@ const handleFilmDownload = (films) => {
   filmsModel.set(UpdateType.INIT, films);
   mainNavigationPresenter.init();
   filmsCountPresenter.init();
-}
+};
 
 userProfilePresenter.init();
 filmsBoardPresenter.init();
@@ -41,4 +41,4 @@ api.getFilms()
   })
   .catch(() => {
     handleFilmDownload([]);
-  })
+  });
